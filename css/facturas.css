@@ -1,0 +1,139 @@
+/*
+CSS para ManGoApp
+FACTURAS
+Autor: Danny Estrada
+*/
+
+.rdm-factura-ticket{
+    background-color: #fff;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    font-size: 1em;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    padding: 0.25em;
+    width: 100%;
+    border-radius: 0.5em;
+}
+
+.rdm-factura--ticket-contenedor{
+    margin: 1em auto;
+    max-width: 500px;
+    width: 80%;
+}
+
+.rdm-factura--ticket-fila{
+    padding: 0.5em 0;
+    text-align: center;
+    width: 100%;
+}
+
+.rdm-factura--ticket-item{
+    border-bottom: dashed 1px #555;
+    display: block;
+    padding: 0.2em 0em 0em 0em;
+}
+
+.rdm-factura--ticket-izquierda{
+    display: inline-block;    
+    text-align: left;
+    width: 63%;
+}
+
+.rdm-factura--ticket-derecha{
+    display: inline-block;    
+    text-align: right;
+    width: 34%;
+}
+
+
+
+
+
+.rdm-factura-estandar{
+    background-color: #fff;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    font-size: 1em;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    padding: 0.25em;
+    width: 100%;
+    border-radius: 0.5em;
+}
+
+.rdm-factura--estandar-contenedor{
+    margin: 1em auto;
+    width: 99%;
+    box-sizing: border-box;
+}
+
+.rdm-factura--estandar-fila{
+    display: flex;
+    text-align: center;
+    width: 100%;
+}
+
+.rdm-factura--estandar-columna{
+    align-self: center; 
+    margin: 0em;
+    padding: 0.25em;
+    text-align: center;
+    width: 100%;
+}
+
+.rdm-factura--estandar-item{
+    border-bottom: dashed 1px #555;
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.rdm--contenedor-imprimir{
+    box-sizing: border-box; /*el padding y margin no incrementan el ancho*/ 
+    margin: 0 auto; /*espacio entre el contenido y el borde*/
+    width: 100%; /*ancho del contenedor*/
+    font-size: 0.8em;
+    padding: 0em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
