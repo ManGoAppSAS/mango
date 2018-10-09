@@ -104,7 +104,6 @@ if ($fila = $consulta->fetch_assoc())
         $impuesto = 0;
         $impuesto_porcentaje = 0;
     }
-
    
 }
 else
@@ -350,14 +349,6 @@ else
                 </label>
             </p>
             <p class="rdm-formularios--ayuda">¿El impuesto está incluido en el precio?</p>
-
-
-
-
-
-
-
-
             
             <p class="rdm-formularios--label"><label for="tipo">Tipo de inventario*</label></p>
             <p><select id="tipo" name="tipo" onchange="mostrar_costo(this)" required>
@@ -366,17 +357,6 @@ else
                 <option value="simple">Simple</option>
             </select></p>
             <p class="rdm-formularios--ayuda">Al crear un producto <b>simple</b> tambien se crea el componente</p>
-
-            <div id="costo_div" >
-                <p class="rdm-formularios--label"><label for="costo">Costo</label></p>
-                <p><input type="tel" id="costo" name="costo" value="<?php echo "$costo"; ?>" /></p>
-                <p class="rdm-formularios--ayuda">Si es inventario de tipo simple agrega el costo</p>
-            </div>
-
-
-
-
-
 
             <?php
             //consulto y muestro los locales
