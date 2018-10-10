@@ -21,7 +21,7 @@ $hoy = date("Y-m-d");
 $consulta_usuario = $conexion->query("SELECT * FROM usuario");
 
 if ($consulta_usuario->num_rows == 0)
-{
+{    
     $insercion_usuario = $conexion->query("INSERT INTO usuario values ('', '$ahora', '', '', '1', '', '', 'activo', 'soporte', 'técnico', 'CC', '123', 'soporte técnico', 'demo@demo.com', 'demo', '', '', '$hoy', 'no', '', '1')");
 }
 
@@ -40,31 +40,23 @@ if ($consulta_local->num_rows == 0)
 $consulta = $conexion->query("SELECT * FROM usuario WHERE correo = '$correo'");
 
 if ($fila = $consulta->fetch_assoc())
-{
+{	
 	$contrasena_almacenada = $fila['contrasena'];
 
 	//si la contraseña enviada es igual a la guardada en la base de datos
 	if ($contrasena_almacenada == $contrasena)
 	{
 		$_SESSION['id'] = $fila['usuario_id'];
-		$_SESSION['correo'] = $fila['correo'];
-
-    // crear $_SESSION variable para mandar un aviso solo una vez por session
-    $_SESSION["correo_envio"]=0;
-    // crear $_SESSION variable para mandar un correo solo una vez por session
-    //el primero mes
-    $_SESSION["correo_envio_primero"]=0;
-
-
-
+		$_SESSION['correo'] = $fila['correo'];		
+		
 		header("location:index.php");
-	}
+	} 
 	else
-	{
+	{	
 		header("location:logueo.php?caso=2&correo=$correo");
 	}
-}
-else
+} 
+else 
 {
 	header("location:logueo.php?caso=1&correo=$correo");
 }

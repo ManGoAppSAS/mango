@@ -763,7 +763,7 @@ if ($eliminar == 'si')
             <div class="rdm-tarjeta--separador"></div>
 
             <div class="rdm-tarjeta--acciones-izquierda">
-                <a href=""><button class="rdm-boton--plano-resaltado">Editar</button></a>
+                <a href="productos_composicion.php?producto_id=<?php echo "$producto_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
             </div>
 
         </section>
