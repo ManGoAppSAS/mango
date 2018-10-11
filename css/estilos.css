@@ -15,6 +15,7 @@ Autor: Danny Estrada
 @import "formularios.css";
 @import "vacio.css";
 @import "facturas.css";
+@import "elevacion.css";
 @import "https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css";
 
 @media print {

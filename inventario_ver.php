@@ -65,7 +65,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
     </div>
 </header>
 
-<main class="rdm--contenedor-toolbar">                
+<main class="rdm--contenedor-toolbar">
 
     <?php
     //consulto el componente en el inventario
@@ -73,7 +73,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 
     if ($consulta->num_rows == 0)
     {
-        ?>        
+        ?>
 
         <h2 class="rdm-lista--titulo-largo">Inventario</h2>
 
@@ -106,46 +106,44 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
     {   
         ?>   
 
-        <input type="search" name="busqueda" id="busqueda" value="<?php echo "$consultaBusqueda"; ?>" placeholder="Buscar componente" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar();" />
+        <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar();" />
 
         <div id="resultadoBusqueda"></div>
 
-        <section class="rdm-lista--porcentaje">            
+        <section class="rdm-lista">
 
         <?php
         while ($fila = $consulta->fetch_assoc()) 
         {
-            $inventario_id = $fila['id'];
-            $fecha = date('d M', strtotime($fila['fecha']));
-            $hora = date('h:i:s a', strtotime($fila['fecha']));
-            $componente_id = $fila['componente_id'];
+            $inventario_id = $fila['inventario_id'];
             $componente = $fila['componente'];
-            $cantidad = $fila['cantidad'];
             $unidad = $fila['unidad'];
-            $minimo = $fila['minimo'];
-            $maximo = $fila['maximo'];
+            $cantidad_actual = $fila['cantidad_actual'];
+            $cantidad_minima = $fila['cantidad_minima'];
+            $cantidad_maxima = $fila['cantidad_maxima'];
+
 
             //si la cantidad es cero o negativa
-            if ($cantidad <= 0)
+            if ($cantidad_actual <= 0)
             {
-                $cantidad = 0;
+                $cantidad_actual = 0;
             }
 
-            //si el minimo es igual a cero se pone el 10% de la cantidad actual como minimo
-            if ($minimo == 0)
+            //si el minimo es igual a cero se pone el 10% de la cantidad_actual actual como minimo
+            if ($cantidad_minima == 0)
             {
-                $minimo = $cantidad * 0.10;
+                $cantidad_minima = $cantidad_actual * 0.10;
             }
 
-            //si el maximo es igual a cero se pone la cantidad + 1
-            if ($maximo == 0)
+            //si el maximo es igual a cero se pone la cantidad_actual + 1
+            if ($cantidad_maxima == 0)
             {
-                $maximo = $cantidad + 1;
+                $cantidad_maxima = $cantidad_actual + 1;
             }
 
-            $porcentaje_inventario = ($cantidad / $maximo) * 100;
+            $porcentaje_inventario = ($cantidad_actual / $cantidad_maxima) * 100;
 
-            if ($cantidad <= $minimo)
+            if ($cantidad_actual <= $cantidad_minima)
             {
                 $porcentaje_color_fondo = "#FFCDD2";
                 $porcentaje_color_relleno = "#F44336";
@@ -164,7 +162,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
                     <div>
                         <div class="rdm-lista--izquierda-porcentaje">
                             <h2 class="rdm-lista--titulo-porcentaje"><?php echo ucfirst("$componente"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($cantidad, 0, ",", "."); ?> <?php echo ucfirst("$unidad"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($cantidad_actual, 0, ",", "."); ?> <?php echo ucfirst("$unidad"); ?></h2>
                         </div>
                         <div class="rdm-lista--derecha-porcentaje">
                             <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($porcentaje_inventario, 1, ".", "."); ?>%</h2>
@@ -178,16 +176,54 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 
             </a>
 
-            <?php
-        }
+            <a href="inventario_novedades.php?inventario_id=<?php echo "$inventario_id"; ?>">
 
+                <article class="rdm-lista--item-porcentaje">
+                    <div>
+                        <div class="rdm-lista--izquierda-porcentaje">
+                            <h2 class="rdm-lista--titulo-porcentaje"><?php echo ucfirst("$componente"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($cantidad_actual, 0, ",", "."); ?> <?php echo ucfirst("$unidad"); ?></h2>
+                        </div>
+                        <div class="rdm-lista--derecha-porcentaje">
+                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($porcentaje_inventario, 1, ".", "."); ?>%</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="rdm-lista--linea-pocentaje-fondo" style="background-color: <?php echo "$porcentaje_color_fondo"; ?>">
+                        <div class="rdm-lista--linea-pocentaje-relleno" style="width: <?php echo "$porcentaje_inventario"; ?>%; background-color: <?php echo "$porcentaje_color_relleno"; ?>;"></div>
+                    </div>
+                </article>
+
+            </a>
+
+            <a href="inventario_novedades.php?inventario_id=<?php echo "$inventario_id"; ?>">
+
+                <article class="rdm-lista--item-porcentaje">
+                    <div>
+                        <div class="rdm-lista--izquierda-porcentaje">
+                            <h2 class="rdm-lista--titulo-porcentaje"><?php echo ucfirst("$componente"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($cantidad_actual, 0, ",", "."); ?> <?php echo ucfirst("$unidad"); ?></h2>
+                        </div>
+                        <div class="rdm-lista--derecha-porcentaje">
+                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($porcentaje_inventario, 1, ".", "."); ?>%</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="rdm-lista--linea-pocentaje-fondo" style="background-color: <?php echo "$porcentaje_color_fondo"; ?>">
+                        <div class="rdm-lista--linea-pocentaje-relleno" style="width: <?php echo "$porcentaje_inventario"; ?>%; background-color: <?php echo "$porcentaje_color_relleno"; ?>;"></div>
+                    </div>
+                </article>
+
+            </a>
+
+        <?php
+        }
         ?>
 
         </section>
 
-        <?php
+    <?php
     }
-
     ?>
 
 </main>
