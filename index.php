@@ -91,21 +91,7 @@ include ("sis/variables_sesion.php");
             </article>
         </a>
 
-        <a class="ancla" name="producciones"></a>
-        <a href="producciones_componentes_producidos_ver.php">
-            <article class="rdm-lista--item-doble">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-view-dashboard zmdi zmdi-hc-2x"></i></div></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Producciones</h2>
-                        <h2 class="rdm-lista--texto-secundario">Hacer o continuar una producción</h2>
-                    </div>
-                </div>
-            </article>
-        </a>        
-
+        
         <a class="ancla" name="compras"></a>
         <a href="compras_ver.php">
             <article class="rdm-lista--item-doble">
@@ -116,6 +102,22 @@ include ("sis/variables_sesion.php");
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Compras</h2>
                         <h2 class="rdm-lista--texto-secundario">Hacer o continuar una compra</h2>
+                    </div>
+                </div>
+            </article>
+        </a>
+
+
+        <a class="ancla" name="producciones"></a>
+        <a href="producciones_componentes_producidos_ver.php">
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-view-dashboard zmdi zmdi-hc-2x"></i></div></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Producciones</h2>
+                        <h2 class="rdm-lista--texto-secundario">Hacer o continuar una producción</h2>
                     </div>
                 </div>
             </article>
