@@ -123,14 +123,7 @@ if ($eliminar == 'si')
         {
             $plantilla_factura_id = $fila['plantilla_factura_id'];
             $titulo = $fila['titulo'];
-            $local_id = $fila['local_id'];
-
-            //color de fondo segun la primer letra
-            $primera_letra = "$titulo";
-            include ("sis/avatar_color.php");
-
-            //consulto el avatar
-            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: '.$avatar_color_fondo.'">'.strtoupper(substr($titulo, 0, 1)).'</div>';
+            $local_id = $fila['local_id'];            
 
             //consulto el local
             $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $local_id");
@@ -143,6 +136,14 @@ if ($eliminar == 'si')
             {
                 $local = "";
             }
+
+            //color de fondo segun la primer letra
+            $avatar_id = $plantilla_factura_id;
+            $avatar_nombre = "$titulo";
+
+            include ("sis/avatar_color.php");
+            
+            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
             ?>
 
             <a href="plantillas_factura_detalle.php?plantilla_factura_id=<?php echo "$plantilla_factura_id"; ?>">

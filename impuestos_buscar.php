@@ -57,11 +57,12 @@ if (isset($busqueda))
             $porcentaje = $fila['porcentaje'];
 
             //color de fondo segun la primer letra
-            $primera_letra = "$impuesto";
-            include ("sis/avatar_color.php");
+            $avatar_id = $impuesto_id;
+            $avatar_nombre = "$impuesto";
 
-            //consulto el avatar
-            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: '.$avatar_color_fondo.'">'.strtoupper(substr($impuesto, 0, 1)).'</div>';
+            include ("sis/avatar_color.php");
+            
+            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
             ?>
 
             <a href="impuestos_detalle.php?impuesto_id=<?php echo "$impuesto_id"; ?>">

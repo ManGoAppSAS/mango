@@ -61,13 +61,15 @@ if (isset($busqueda))
             $total_productos = $consulta_productos->num_rows;
 
             //color de fondo segun la primer letra
-            $primera_letra = "$categoria";
-            include ("sis/avatar_color.php");
+            $avatar_id = $categoria_id;
+            $avatar_nombre = "$categoria";
 
+            include ("sis/avatar_color.php");
+            
             //consulto el avatar
             if ($imagen == "no")
             {
-                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: '.$avatar_color_fondo.'">'.strtoupper(substr($categoria, 0, 1)).'</div>';
+                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
             }
             else
             {

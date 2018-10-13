@@ -83,44 +83,51 @@ if (isset($busqueda))
                 $local = "$tipo";
             }
 
+            //color de fondo segun la primer letra
+            $avatar_id = $ubicacion_id;
+            $avatar_nombre = "$ubicacion";
+
+            include ("sis/avatar_color.php");
+
             //muestro el icono según el tipo de ubicación
             if ($tipo == "barra")
             {
-                $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-cocktail zmdi-hc-2x"></i></div></div>';
+                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-cocktail zmdi-hc-2x"></i></div>';
             }
             else
             {
                 if ($tipo == "caja")
                 {
-                    $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-laptop zmdi-hc-2x"></i></div></div>';
+                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-laptop zmdi-hc-2x"></i></div>';
                 }
                 else
                 {
                     if ($tipo == "habitacion")
                     {
-                        $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-hotel zmdi-hc-2x"></i></div></div>';
+                        $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-hotel zmdi-hc-2x"></i></div>';
                     }
                     else
                     {
                         if ($tipo == "mesa")
                         {
-                            $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-cutlery zmdi-hc-2x"></i></div></div>';
+                            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-cutlery zmdi-hc-2x"></i></div>';
                         }
                         else
                         {
                             if ($tipo == "persona")
                             {
-                                $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-face zmdi-hc-2x"></i></div></div>';
+                                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-face zmdi-hc-2x"></i></div>';
+
                             }
                             else
                             {
                                 if ($tipo == "domicilio")
                                 {
-                                    $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-bike zmdi-hc-2x"></i></div></div>';
+                                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-bike zmdi-hc-2x"></i></div>';
                                 }
                                 else
                                 {
-                                    $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-seat zmdi-hc-2x"></i></div></div>';
+                                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-seat zmdi-hc-2x"></i></div>';
                                 }
                             }
                         }

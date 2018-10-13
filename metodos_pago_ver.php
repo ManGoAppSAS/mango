@@ -124,44 +124,50 @@ if ($eliminar == 'si')
             $metodo = $fila['metodo'];
             $tipo = $fila['tipo'];
 
+            //color de fondo segun la primer letra
+            $avatar_id = $metodo_pago_id;
+            $avatar_nombre = "$metodo";
+
+            include ("sis/avatar_color.php");
+
             //consulto el avatar
             if ($tipo == "bono")
             {
-                $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-card-membership zmdi-hc-2x"></i></div></div>';
+                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-card-membership zmdi-hc-2x"></i></div>';
             }
             else
             {
                 if ($tipo == "canje")
                 {
-                    $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-refresh-alt zmdi-hc-2x"></i></div></div>';
+                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-refresh-alt zmdi-hc-2x"></i></div>';
                 }
                 else
                 {
                     if ($tipo == "cheque")
                     {
-                        $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-square-o zmdi-hc-2x"></i></div></div>';
+                        $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-square-o zmdi-hc-2x"></i></div>';
                     }
                     else
                     {
                         if ($tipo == "efectivo")
                         {
-                            $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-money-box zmdi-hc-2x"></i></div></div>';
+                            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-money-box zmdi-hc-2x"></i></div>';
                         }
                         else
                         {
                             if ($tipo == "consignacion")
                             {
-                                $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-balance zmdi-hc-2x"></i></div></div>';
+                                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-balance zmdi-hc-2x"></i></div>';
                             }
                             else
                             {
                                 if ($tipo == "transferencia")
                                 {
-                                    $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-smartphone-iphone zmdi-hc-2x"></i></div></div>';
+                                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-smartphone-iphone zmdi-hc-2x"></i></div>';
                                 }
                                 else
                                 {
-                                    $imagen = '<div class="rdm-lista--icono"><div class="rdm-lista--icono"><i class="zmdi zmdi-card zmdi-hc-2x"></i></div></div>'; 
+                                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-card zmdi-hc-2x"></i></div>'; 
                                 }
 
                             }

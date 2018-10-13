@@ -57,13 +57,15 @@ if (isset($busqueda))
             $imagen_nombre = $fila['imagen_nombre'];
 
             //color de fondo segun la primer letra
-            $primera_letra = "$productor";
-            include ("sis/avatar_color.php");
+            $avatar_id = $productor_id;
+            $avatar_nombre = "$productor";
 
+            include ("sis/avatar_color.php");
+            
             //consulto el avatar
             if ($imagen == "no")
             {
-                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: '.$avatar_color_fondo.'">'.strtoupper(substr($productor, 0, 1)).'</div>';
+                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
             }
             else
             {
