@@ -127,22 +127,14 @@ label{
     text-align: center;
 }
 
-.rdm-formularios--input-cantidad, .rdm-formularios--input-cantidad:hover, .rdm-formularios--input-cantidad:focus{
+.rdm-formularios--input-mediano{
+    font-size: 1.25em;
     text-align: center;
-    width: 60%;
-    height: 3em;
 }
 
-.rdm-boton--cantidad{
-  height: 3em;
-  width: 3em;
-  margin-left: 0.5em;
-  background-color: #EF6C00;
-  font-weight: bold;
-
-
-  border-radius: 50%;
-  
+.rdm-formularios--input-cantidad{
+    text-align: center;
+    width: 8em;
 }
 
 .rdm-formularios--label

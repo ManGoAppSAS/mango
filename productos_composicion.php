@@ -100,6 +100,9 @@ if ($agregar == 'si')
     //fin información del head
     ?>
 
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
+    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+
     <script>
     $(document).ready(function() {
         $("#resultadoBusqueda").html('');
@@ -153,7 +156,25 @@ if ($agregar == 'si')
 
     <div id="resultadoBusqueda"></div>
 
-    <section class="rdm-lista">    
+    
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+       
 
     <?php
     //consulto y muestros la composición de este producto
@@ -161,10 +182,37 @@ if ($agregar == 'si')
 
     if ($consulta->num_rows == 0)
     {
+        ?>        
+
+        <section class="rdm-lista">
+            
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-info zmdi-hc-2x"></i></div></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Vacio</h2>
+                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un producto o servicio. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado</h2>
+                    </div>
+                </div>
+            </article>
+
+            
+
+        </section>
+
+        <?php
         
     }
     else                 
     {
+        ?>
+
+        <section class="rdm-lista"> 
+
+        <?php
+
         while ($fila = $consulta->fetch_assoc())
         {
             //datos de la composicion
@@ -216,12 +264,17 @@ if ($agregar == 'si')
                 </div>
             </div>
            
-            <?php
-        }        
+        <?php
+        }
+        ?>
+
+        </section>
+
+    <?php        
     }
     ?>
 
-    </section>
+    <h2 class="rdm-lista--titulo-largo">Detalle</h2>
 
     <?php
     //consulto y muestro el producto
@@ -443,6 +496,66 @@ if ($agregar == 'si')
     
 
 </footer>
+
+
+
+<div class="modal" id="dialogo" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+        <div class="rdm-tarjeta--primario-largo">
+            <h1 class="rdm-tarjeta--titulo-largo">
+                Agregar componente
+            </h1>
+        </div>
+
+        <div class="rdm-tarjeta--cuerpo">                
+            
+            ¿Cuantos <b><span class="modal-texto-dato3"></span></b> de <b><span class="modal-texto-dato1"></span></b> deseas agregar a la composición de este producto?
+
+        </div>            
+
+        <div class="rdm-tarjeta--acciones-derecha">
+            <form action="productos_composicion.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" class="modal-input1" name="componente_id" value="">
+                <input type="hidden" name="producto_id" value="<?php echo "$producto_id"; ?>">
+
+                <input type="hidden" class="modal-input2" name="busqueda" value="">
+
+                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required ></p>
+
+
+                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="rdm-boton--plano-resaltado" name="agregar" value="si">Agregar</button>                  
+            </form>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+
+
+
+<script>
+$('#dialogo').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var dato1 = button.data('dato1') 
+  var dato2 = button.data('dato2') 
+  var dato3 = button.data('dato3') 
+  var dato4 = button.data('dato4') 
+  var modal = $(this)
+  modal.find('.modal-texto-dato1').text('' + dato1 + '')
+  modal.find('.modal-texto-dato2').text('' + dato2 + '')
+  modal.find('.modal-texto-dato3').text('' + dato3 + '')
+  modal.find('.modal-input1').val(dato2)
+  modal.find('.modal-input2').val(dato4)
+})
+</script>
+
+
+
+
 
 </body>
 </html>

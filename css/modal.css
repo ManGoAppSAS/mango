@@ -1,0 +1,62 @@
+/*
+CSS para ManGoApp
+MODAL
+Autor: Danny Estrada
+*/
+
+.modal-open {
+    overflow: hidden;
+}
+
+.modal {
+    bottom: 0;
+    display: none;
+    left: 0;
+    outline: 0;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1050;
+}
+
+.modal-dialog {
+    margin: 0.5rem;
+    pointer-events: none;
+    position: relative;
+    width: auto;
+}
+
+.modal-dialog-centered {
+    align-items: center;
+    display: flex;
+    min-height: calc(100% - (0.5rem * 2));
+}
+
+.modal-content {
+    background-clip: padding-box;
+    background-color: #fff;
+    border-radius: 0.3rem;
+    border-radius: 0.4em;
+    box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 500px;
+    outline: 0;     
+    padding: 0.25em 0.25em;
+    pointer-events: auto;
+    position: relative;
+    top: 50%;
+    width: 100%;
+}
+
+.modal-backdrop {
+    background-color: rgba(255,255,255,0.5);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1040;
+}
