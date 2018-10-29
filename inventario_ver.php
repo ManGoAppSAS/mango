@@ -39,17 +39,23 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
         $("#resultadoBusqueda").html('');
     });
 
+    var delayTimer;
     function buscar() {
-        var textoBusqueda = $("input#busqueda").val();
-     
-         if (textoBusqueda != "") {
-            $.post("inventario_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
-                $("#resultadoBusqueda").html(mensaje);
-             }); 
-         } else { 
-            $("#resultadoBusqueda").html('');
-            };
-    };
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(function() {
+            
+            var textoBusqueda = $("input#busqueda").val();
+         
+             if (textoBusqueda != "") {
+                $.post("inventario_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
+                    $("#resultadoBusqueda").html(mensaje);
+                 }); 
+             } else { 
+                $("#resultadoBusqueda").html('');
+                };
+        
+        }, 500); // Will do the ajax stuff after 1000 ms, or 1 s
+    }
     </script>
     
 </head>

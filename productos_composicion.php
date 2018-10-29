@@ -108,24 +108,24 @@ if ($agregar == 'si')
         $("#resultadoBusqueda").html('');
     });
 
+    var delayTimer;
     function buscar() {
-        var textoBusqueda = $("input#busqueda").val();
-     
-         if (textoBusqueda != "") {
-            $.post("productos_composicion_buscar.php?producto_id=<?php echo "$producto_id"; ?>", {busqueda: textoBusqueda}, function(mensaje) {
-                $("#resultadoBusqueda").html(mensaje);
-             }); 
-         } else { 
-            $("#resultadoBusqueda").html('');
-            };
-    };
-    </script>
-
-    <script>
-        $("#oldSchool").on("click", function () {
-           $(this).busquedaselect();
-        });
-    </script>
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(function() {
+            
+            var textoBusqueda = $("input#busqueda").val();
+         
+             if (textoBusqueda != "") {
+                $.post("productos_composicion_buscar.php?producto_id=<?php echo "$producto_id"; ?>", {busqueda: textoBusqueda}, function(mensaje) {
+                    $("#resultadoBusqueda").html(mensaje);
+                 }); 
+             } else { 
+                $("#resultadoBusqueda").html('');
+                };
+        
+        }, 500); // Will do the ajax stuff after 1000 ms, or 1 s
+    }
+    </script>    
 
     <script>
         $(function () {

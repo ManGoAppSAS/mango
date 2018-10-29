@@ -78,17 +78,23 @@ if ($actualizar == "si")
         $("#resultadoBusqueda").html('');
     });
 
+    var delayTimer;
     function buscar() {
-        var textoBusqueda = $("input#busqueda").val();
-     
-         if (textoBusqueda != "") {
-            $.post("despachos_buscar.php", {valorBusqueda: textoBusqueda}, function(mensaje) {
-                $("#resultadoBusqueda").html(mensaje);
-             }); 
-         } else { 
-            $("#resultadoBusqueda").html('');
-            };
-    };
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(function() {
+            
+            var textoBusqueda = $("input#busqueda").val();
+         
+             if (textoBusqueda != "") {
+                $.post("despachos_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
+                    $("#resultadoBusqueda").html(mensaje);
+                 }); 
+             } else { 
+                $("#resultadoBusqueda").html('');
+                };
+        
+        }, 500); // Will do the ajax stuff after 1000 ms, or 1 s
+    }
     </script>
 </head>
 
