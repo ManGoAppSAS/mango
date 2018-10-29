@@ -93,7 +93,7 @@ include ("sis/variables_sesion.php");
                     </div>
                 </div>
                 <div class="rdm-lista--derecha">
-                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador"><?php echo $locales_total; ?>37</h2></div>
+                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador"><?php echo $locales_total; ?></h2></div>
                 </div>
             </article>
         </a>
