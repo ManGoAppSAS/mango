@@ -64,8 +64,10 @@ else
             <a href="proveedores_detalle.php?proveedor_id=<?php echo "$proveedor_id"; ?>"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
             <h2 class="rdm-toolbar--titulo">Proveedor</h2>
         </div>
-        <div class="rdm-toolbar--derecha" id="abrir_modal">
-            <div class="rdm-toolbar--icono-derecha"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></div>
+        <div class="rdm-toolbar--derecha">
+            <div class="rdm-toolbar--icono-derecha">
+                <a href="" data-toggle="modal" data-target="#dialogo" data-dato1="<?php echo ucfirst($proveedor_id) ?>" data-dato2="<?php echo "$proveedor"; ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></div></a>
+            </div>
         </div>
     </div>
 </header>
@@ -134,43 +136,52 @@ else
             
             <button type="submit" class="rdm-boton--fab" name="editar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>
 
-    </section>
+        </section>
 
-    </form>
-
-    <div id="dialogo" class="rdm-tarjeta--modal">     
-        <div class="rdm-tarjeta--modal-contenido">
-            <div class="rdm-tarjeta--primario-largo">
-                <h1 class="rdm-tarjeta--titulo-largo">¿Eliminar proveedor?</h1>
-            </div>
-            <div class="rdm-tarjeta--cuerpo">
-                ¿Deseas eliminar <b><?php echo ($proveedor); ?></b>?
-            </div>
-            <br>
-            <div class="rdm-tarjeta--acciones-derecha">
-                <button class="rdm-boton--plano" id="cerrar_modal">Cancelar</button>
-                <a href="proveedores_ver.php?eliminar=si&proveedor_id=<?php echo "$proveedor_id"; ?>"><button class="rdm-boton--resaltado">Eliminar</button></a>
-            </div>
-        </div>
-    </div>
+    </form>    
 
 <footer></footer>
 
-<script type="text/javascript">
-    var modal = document.getElementById('dialogo');
-    var btn = document.getElementById("abrir_modal");
-    var span = document.getElementById("cerrar_modal");
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+<div class="modal" id="dialogo" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+        <div class="rdm-tarjeta--primario-largo">
+            <h1 class="rdm-tarjeta--titulo-largo">
+                Eliminar proveedor
+            </h1>
+        </div>
+
+        <div class="rdm-tarjeta--cuerpo">            
+            ¿Desea eliminar <b><span class="modal-texto-dato2"></span></b>?
+        </div>            
+
+        <div class="rdm-tarjeta--acciones-derecha">
+            <form action="proveedores_ver.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" class="modal-input1" name="proveedor_id" value="">
+
+                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Eliminar</button>                  
+            </form>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
+<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+
+<script>
+$('#dialogo').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var dato1 = button.data('dato1') 
+  var dato2 = button.data('dato2') 
+  var modal = $(this)
+  modal.find('.modal-texto-dato1').text('' + dato1 + '')
+  modal.find('.modal-texto-dato2').text('' + dato2 + '')
+  modal.find('.modal-input1').val(dato1)
+})
 </script>
 
 </body>

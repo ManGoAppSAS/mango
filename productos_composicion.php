@@ -98,10 +98,7 @@ if ($agregar == 'si')
     //información del head
     include ("partes/head.php");
     //fin información del head
-    ?>
-
-    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
-    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+    ?>  
 
     <script>
     $(document).ready(function() {
@@ -154,27 +151,7 @@ if ($agregar == 'si')
 
     <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar componente" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar(); this.select();" />
 
-    <div id="resultadoBusqueda"></div>
-
-    
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-       
+    <div id="resultadoBusqueda"></div>       
 
     <?php
     //consulto y muestros la composición de este producto
@@ -534,8 +511,8 @@ if ($agregar == 'si')
     </div>
 </div>
 
-
-
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
+<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
 
 <script>
 $('#dialogo').on('show.bs.modal', function (event) {
@@ -552,10 +529,6 @@ $('#dialogo').on('show.bs.modal', function (event) {
   modal.find('.modal-input2').val(dato4)
 })
 </script>
-
-
-
-
 
 </body>
 </html>

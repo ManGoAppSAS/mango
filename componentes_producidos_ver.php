@@ -33,7 +33,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 //elimino el componente
 if ($eliminar == 'si')
 {
-    $borrar = $conexion->query("UPDATE componente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE componente_producido_id = '$componente_producido_id'");
+    $borrar = $conexion->query("UPDATE componente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE componente_id = '$componente_producido_id'");
 
     if ($borrar)
     {
