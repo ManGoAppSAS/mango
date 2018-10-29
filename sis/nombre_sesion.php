@@ -17,7 +17,7 @@ session_start();
 //variables de conexión
 $conexion_host = "localhost";
 $conexion_user = "root";
-$conexion_pass = "";
+$conexion_pass = "root";
 $conexion_bd = $sesion_y_bd;
 
 $conexion = new mysqli($conexion_host, $conexion_user, $conexion_pass, $conexion_bd);
