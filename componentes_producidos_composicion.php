@@ -18,8 +18,9 @@ include ("sis/variables_sesion.php");
 //capturo las variables que pasan por URL o formulario
 if(isset($_POST['agregar'])) $agregar = $_POST['agregar']; elseif(isset($_GET['agregar'])) $agregar = $_GET['agregar']; else $agregar = null;
 
-//variable para eliminar
+//variable para eliminar o editar
 if(isset($_POST['eliminar'])) $eliminar = $_POST['eliminar']; elseif(isset($_GET['eliminar'])) $eliminar = $_GET['eliminar']; else $eliminar = null;
+if(isset($_POST['editar'])) $editar = $_POST['editar']; elseif(isset($_GET['editar'])) $editar = $_GET['editar']; else $editar = null;
 if(isset($_POST['componente_producido_composicion_id'])) $componente_producido_composicion_id = $_POST['componente_producido_composicion_id']; elseif(isset($_GET['componente_producido_composicion_id'])) $componente_producido_composicion_id = $_GET['componente_producido_composicion_id']; else $componente_producido_composicion_id = null;
 
 //variable de consulta
@@ -64,6 +65,21 @@ if ($eliminar == "si")
 ?>
 
 <?php
+//edito el componente de la composición
+if ($editar == "si")
+{
+    $actualizar = $conexion->query("UPDATE componente_producido_composicion SET cantidad = '$cantidad' WHERE componente_producido_composicion_id = '$componente_producido_composicion_id'");
+
+    if ($actualizar)
+    {
+        $mensaje = "Componente editado";
+        $body_snack = 'onLoad="Snackbar()"';
+        $mensaje_tema = "aviso";
+    }
+}
+?>
+
+<?php
 //agrego el componente a la composición
 if ($agregar == 'si')
 {   
@@ -99,24 +115,41 @@ if ($agregar == 'si')
     //información del head
     include ("partes/head.php");
     //fin información del head
-    ?>
+    ?>   
 
     <script>
     $(document).ready(function() {
         $("#resultadoBusqueda").html('');
     });
 
+    var delayTimer;
     function buscar() {
-        var textoBusqueda = $("input#busqueda").val();
-     
-         if (textoBusqueda != "") {
-            $.post("componentes_producidos_composicion_buscar.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>", {busqueda: textoBusqueda}, function(mensaje) {
-                $("#resultadoBusqueda").html(mensaje);
-             }); 
-         } else { 
-            $("#resultadoBusqueda").html('');
-            };
-    };
+        clearTimeout(delayTimer);
+        delayTimer = setTimeout(function() {
+            
+            var textoBusqueda = $("input#busqueda").val();
+         
+             if (textoBusqueda != "") {
+                $.post("componentes_producidos_composicion_buscar.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>", {busqueda: textoBusqueda}, function(mensaje) {
+                    $("#resultadoBusqueda").html(mensaje);
+                 }); 
+             } else { 
+                $("#resultadoBusqueda").html('');
+                };
+        
+        }, 500); // Will do the ajax stuff after 1000 ms, or 1 s
+    }
+    </script>    
+
+    <script>
+        $(function () {
+            var focusedElement;
+            $(document).on('focus', 'input#busqueda', function () {
+                if (focusedElement == this) return; //already focused, return so user can now place cursor at specific point in input.
+                focusedElement = this;
+                setTimeout(function () { focusedElement.select(); }, 50); //select all text in any field on focus for easy re-entry. Delay sightly to allow focus to "stick" before selecting.
+            });
+        });
     </script>
 </head>
 
@@ -137,18 +170,40 @@ if ($agregar == 'si')
 
     <div id="resultadoBusqueda"></div>
 
-    <section class="rdm-lista">    
-
     <?php
     //consulto y muestros la composición de este componente producido
     $consulta = $conexion->query("SELECT * FROM componente_producido_composicion WHERE componente_producido_id = '$componente_producido_id' ORDER BY fecha_alta DESC");
 
     if ($consulta->num_rows == 0)
     {
-        
+        ?>        
+
+        <section class="rdm-lista">
+            
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-info zmdi-hc-2x"></i></div></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Vacio</h2>
+                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un componente producido. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan producciones</h2>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+
+        <?php
     }
     else                 
     {
+        ?>
+
+        <section class="rdm-lista"> 
+
+        <?php
+
         while ($fila = $consulta->fetch_assoc())
         {
             //datos de la composicion
@@ -195,29 +250,24 @@ if ($agregar == 'si')
                         <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($componente_costo, 2, ",", "."); ?></h2>
                     </div>
                 </div>
-                <div class="rdm-lista--derecha-sencillo">
-                    <a href="componentes_producidos_composicion.php?eliminar=si&componente_producido_composicion_id=<?php echo ($componente_producido_composicion_id); ?>&componente_producido_id=<?php echo ($componente_producido_id); ?>&busqueda=<?php echo ($busqueda); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-close zmdi-hc-2x"></i></div></a>
+                <div class="rdm-lista--derecha">
+                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-componente="<?php echo ucfirst($componente) ?>" data-componente_id="<?php echo "$componente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>" data-cantidad="<?php echo ucfirst($cantidad) ?>" data-componente_producido_composicion_id="<?php echo ucfirst($componente_producido_composicion_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+
+                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-componente_producido_composicion_id="<?php echo ($componente_producido_composicion_id) ?>" data-componente="<?php echo ucfirst($componente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </div>
            
             <?php
-        }        
+        }
+        ?>
+
+        </section>
+
+    <?php        
     }
     ?>
 
-    </section>
-
-
-
-
-
-
-
-
-
-
-
-
+    <h2 class="rdm-lista--titulo-largo">Detalle</h2>
 
     <?php
     //consulto y muestro el componente
@@ -341,11 +391,167 @@ if ($agregar == 'si')
     </div>
 </div>
     
-<footer>
-    
-    
+<footer></footer>
 
-</footer>
+<!--dialogo para agregar el componente-->
+
+<div class="modal" id="dialogo_agregar" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+        <div class="rdm-tarjeta--primario-largo">
+            <h1 class="rdm-tarjeta--titulo-largo">
+                Agregar componente
+            </h1>
+        </div>
+
+        <div class="rdm-tarjeta--cuerpo">                
+            
+            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="componente"></span></b> desea agregar a la composición de este componente producido?
+
+        </div>            
+
+        <div class="rdm-tarjeta--acciones-derecha">
+            <form action="componentes_producidos_composicion.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="componente_producido_id" value="<?php echo "$componente_producido_id"; ?>">
+                <input type="hidden" class="componente_id" name="componente_id" value="">
+
+                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+
+                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="rdm-boton--plano-resaltado" name="agregar" value="si">Agregar</button>                  
+            </form>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+<script>
+$('#dialogo_agregar').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var componente = button.data('componente') 
+  var componente_id = button.data('componente_id') 
+  var unidad_minima = button.data('unidad_minima')
+  var modal = $(this)
+  modal.find('.componente').text('' + componente + '')
+  modal.find('.componente_id').val(componente_id)
+  modal.find('.unidad_minima').text('' + unidad_minima + '')
+})
+</script>
+
+
+
+
+
+
+
+<!--dialogo para editar el componente-->
+
+<div class="modal" id="dialogo_editar" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+        <div class="rdm-tarjeta--primario-largo">
+            <h1 class="rdm-tarjeta--titulo-largo">
+                Editar componente
+            </h1>
+        </div>
+
+        <div class="rdm-tarjeta--cuerpo">                
+            
+            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="componente"></span></b> desea agregar a la composición de este componente producido?
+
+        </div>            
+
+        <div class="rdm-tarjeta--acciones-derecha">
+            <form action="componentes_producidos_composicion.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="componente_producido_id" value="<?php echo "$componente_producido_id"; ?>">
+                <input type="hidden" class="componente_id" name="componente_id" value="">
+                <input type="hidden" class="componente_producido_composicion_id" name="componente_producido_composicion_id" value="">
+
+                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+
+
+                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="rdm-boton--plano-resaltado" name="editar" value="si">Hecho</button>                  
+            </form>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+
+<script>
+$('#dialogo_editar').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var componente = button.data('componente') 
+  var componente_id = button.data('componente_id') 
+  var unidad_minima = button.data('unidad_minima')
+  var cantidad = button.data('cantidad')
+  var componente_producido_composicion_id = button.data('componente_producido_composicion_id')
+  var modal = $(this)
+  modal.find('.componente').text('' + componente + '')
+  modal.find('.componente_id').val(componente_id)
+  modal.find('.unidad_minima').text('' + unidad_minima + '')
+  modal.find('.rdm-formularios--input-mediano').val(cantidad)
+  modal.find('.componente_producido_composicion_id').val(componente_producido_composicion_id)
+})
+</script>
+
+
+
+
+
+<!--dialogo para eliminar el componente-->
+
+<div class="modal" id="dialogo_eliminar" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+        <div class="rdm-tarjeta--primario-largo">
+            <h1 class="rdm-tarjeta--titulo-largo">
+                Retirar componente
+            </h1>
+        </div>
+
+        <div class="rdm-tarjeta--cuerpo">                
+            
+            ¿Desea retirar el componente <b><span class="componente"></span></b> de la composición de este componente producido?
+
+        </div>            
+
+        <div class="rdm-tarjeta--acciones-derecha">
+            <form action="componentes_producidos_composicion.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="componente_producido_id" value="<?php echo "$componente_producido_id"; ?>">
+                <input type="hidden" class="componente_producido_composicion_id" name="componente_producido_composicion_id" value="">
+
+
+                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Retirar</button>                  
+            </form>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+
+<script>
+$('#dialogo_eliminar').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var componente_producido_composicion_id = button.data('componente_producido_composicion_id') //producto_composicion_id
+  var componente = button.data('componente') //componente
+  var modal = $(this)    
+  modal.find('.componente_producido_composicion_id').val(componente_producido_composicion_id)
+  modal.find('.componente').text('' + componente + '')
+})
+</script>
+
+
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
+<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
 
 </body>
 </html>

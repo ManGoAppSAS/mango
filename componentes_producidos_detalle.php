@@ -498,7 +498,7 @@ if ($editar == "si")
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un componente_producido o servicio. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado</h2>
+                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un componente producido. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan producciones</h2>
                     </div>
                 </div>
             </article>

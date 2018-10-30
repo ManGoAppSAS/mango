@@ -97,24 +97,22 @@ if (isset($busqueda))
                 $proveedor = "";
             }
             ?>
-
             
-                <article class="rdm-lista--item-doble">
-                    <div class="rdm-lista--izquierda">
-                        <div class="rdm-lista--contenedor">
-                            <?php echo "$imagen"; ?>
-                        </div>
-                        <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($componente)); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario">$<?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", number_format($costo_unidad_minima, 2, ",", ".")); ?> x <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($unidad_minima)); ?> • <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($proveedor)); ?></h2>
-                        </div>
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <?php echo "$imagen"; ?>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($componente)); ?></h2>
+                        <h2 class="rdm-lista--texto-secundario">$<?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", number_format($costo_unidad_minima, 2, ",", ".")); ?> x <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($unidad_minima)); ?> • <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($proveedor)); ?></h2>
+                    </div>
 
-                    </div>
-                    <div class="rdm-lista--derecha-sencillo">
-                        <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-componente="<?php echo ucfirst($componente) ?>" data-componente_id="<?php echo "$componente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
-                    </div>
-                </article>
-                       
+                </div>
+                <div class="rdm-lista--derecha-sencillo">
+                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-componente="<?php echo ucfirst($componente) ?>" data-componente_id="<?php echo "$componente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                </div>
+            </article>                       
 
 
             <?php

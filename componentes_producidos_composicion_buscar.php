@@ -98,8 +98,6 @@ if (isset($busqueda))
             }
             ?>
 
-            <a class="ancla" name="<?php echo $componente_id; ?>"></a>
-                                
             <article class="rdm-lista--item-doble">
                 <div class="rdm-lista--izquierda">
                     <div class="rdm-lista--contenedor">
@@ -107,19 +105,12 @@ if (isset($busqueda))
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($componente)); ?></h2>
-                        <h2 class="rdm-lista--texto-secundario"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($proveedor)); ?></h2>
-                        <h2 class="rdm-lista--texto-secundario">$<?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", number_format($costo_unidad_minima, 2, ",", ".")); ?> x <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($unidad_minima)); ?></h2>
-                            
-                        <form action="componentes_producidos_composicion.php" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="componente_producido_id" value="<?php echo "$componente_producido_id"; ?>">
-                            <input type="hidden" name="componente_id" value="<?php echo "$componente_id"; ?>">
-                            <input type="hidden" name="busqueda" value="<?php echo "$busqueda"; ?>">
-                            <h2 class="rdm-lista--texto-secundario">
-                                <input class="rdm-formularios--input-cantidad" type="number" name="cantidad" placeholder="¿Cuánto?" step="any" value="" required /> 
-                                <button type="submit" class="rdm-boton--cantidad" name="agregar" value="si"><i class="zmdi zmdi-check"></i></button>
-                            </h2>
-                        </form>
+                        <h2 class="rdm-lista--texto-secundario">$<?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", number_format($costo_unidad_minima, 2, ",", ".")); ?> x <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($unidad_minima)); ?> • <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($proveedor)); ?></h2>
                     </div>
+
+                </div>
+                <div class="rdm-lista--derecha-sencillo">
+                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-componente="<?php echo ucfirst($componente) ?>" data-componente_id="<?php echo "$componente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </article>
 

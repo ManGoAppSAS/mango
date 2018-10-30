@@ -757,7 +757,7 @@ if ($eliminar == 'si')
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un producto o servicio. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado</h2>
+                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un producto o servicio. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan ventas</h2>
                     </div>
                 </div>
             </article>
