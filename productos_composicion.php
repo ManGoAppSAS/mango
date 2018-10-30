@@ -18,8 +18,9 @@ include ("sis/variables_sesion.php");
 //capturo las variables que pasan por URL o formulario
 if(isset($_POST['agregar'])) $agregar = $_POST['agregar']; elseif(isset($_GET['agregar'])) $agregar = $_GET['agregar']; else $agregar = null;
 
-//variable para eliminar
+//variable para eliminar o editar
 if(isset($_POST['eliminar'])) $eliminar = $_POST['eliminar']; elseif(isset($_GET['eliminar'])) $eliminar = $_GET['eliminar']; else $eliminar = null;
+if(isset($_POST['editar'])) $editar = $_POST['editar']; elseif(isset($_GET['editar'])) $editar = $_GET['editar']; else $editar = null;
 if(isset($_POST['producto_composicion_id'])) $producto_composicion_id = $_POST['producto_composicion_id']; elseif(isset($_GET['producto_composicion_id'])) $producto_composicion_id = $_GET['producto_composicion_id']; else $producto_composicion_id = null;
 
 //variable de consulta
@@ -56,6 +57,21 @@ if ($eliminar == "si")
     if ($borrar)
     {
         $mensaje = "Componente retirado";
+        $body_snack = 'onLoad="Snackbar()"';
+        $mensaje_tema = "aviso";
+    }
+}
+?>
+
+<?php
+//edito el componente de la composición
+if ($editar == "si")
+{
+    $actualizar = $conexion->query("UPDATE producto_composicion SET cantidad = '$cantidad' WHERE producto_composicion_id = '$producto_composicion_id'");
+
+    if ($actualizar)
+    {
+        $mensaje = "Componente editado";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
@@ -236,8 +252,10 @@ if ($agregar == 'si')
                         <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($componente_costo, 2, ",", "."); ?></h2>
                     </div>
                 </div>
-                <div class="rdm-lista--derecha-sencillo">
-                    <a href="productos_composicion.php?eliminar=si&producto_composicion_id=<?php echo ($producto_composicion_id); ?>&producto_id=<?php echo ($producto_id); ?>&busqueda=<?php echo ($busqueda); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-close zmdi-hc-2x"></i></div></a>
+                <div class="rdm-lista--derecha">
+                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-componente="<?php echo ucfirst($componente) ?>" data-componente_id="<?php echo "$componente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>" data-cantidad="<?php echo ucfirst($cantidad) ?>" data-producto_composicion_id="<?php echo ucfirst($producto_composicion_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+
+                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-producto_composicion_id="<?php echo ($producto_composicion_id) ?>" data-componente="<?php echo ucfirst($componente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </div>
            
@@ -468,15 +486,11 @@ if ($agregar == 'si')
     </div>
 </div>
     
-<footer>
-    
-    
+<footer></footer>
 
-</footer>
+<!--dialogo para agregar el componente-->
 
-
-
-<div class="modal" id="dialogo" tabindex="-1" role="dialog">
+<div class="modal" id="dialogo_agregar" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
         
@@ -488,19 +502,16 @@ if ($agregar == 'si')
 
         <div class="rdm-tarjeta--cuerpo">                
             
-            ¿Cuantos <b><span class="modal-texto-dato3"></span></b> de <b><span class="modal-texto-dato1"></span></b> deseas agregar a la composición de este producto?
+            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="componente"></span></b> desea agregar a la composición de este producto?
 
         </div>            
 
         <div class="rdm-tarjeta--acciones-derecha">
             <form action="productos_composicion.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" class="modal-input1" name="componente_id" value="">
                 <input type="hidden" name="producto_id" value="<?php echo "$producto_id"; ?>">
+                <input type="hidden" class="componente_id" name="componente_id" value="">
 
-                <input type="hidden" class="modal-input2" name="busqueda" value="">
-
-                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required ></p>
-
+                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
 
                 <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="rdm-boton--plano-resaltado" name="agregar" value="si">Agregar</button>                  
@@ -511,24 +522,138 @@ if ($agregar == 'si')
     </div>
 </div>
 
+<script>
+$('#dialogo_agregar').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var componente = button.data('componente') 
+  var componente_id = button.data('componente_id') 
+  var unidad_minima = button.data('unidad_minima')
+  var modal = $(this)
+  modal.find('.componente').text('' + componente + '')
+  modal.find('.componente_id').val(componente_id)
+  modal.find('.unidad_minima').text('' + unidad_minima + '')
+})
+</script>
+
+
+
+
+
+
+
+<!--dialogo para editar el componente-->
+
+<div class="modal" id="dialogo_editar" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+        <div class="rdm-tarjeta--primario-largo">
+            <h1 class="rdm-tarjeta--titulo-largo">
+                Editar componente
+            </h1>
+        </div>
+
+        <div class="rdm-tarjeta--cuerpo">                
+            
+            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="componente"></span></b> desea agregar a la composición de este producto?
+
+        </div>            
+
+        <div class="rdm-tarjeta--acciones-derecha">
+            <form action="productos_composicion.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="producto_id" value="<?php echo "$producto_id"; ?>">
+                <input type="hidden" class="componente_id" name="componente_id" value="">
+                <input type="hidden" class="producto_composicion_id" name="producto_composicion_id" value="">
+
+                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+
+
+                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="rdm-boton--plano-resaltado" name="editar" value="si">Hecho</button>                  
+            </form>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+
+<script>
+$('#dialogo_editar').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var componente = button.data('componente') 
+  var componente_id = button.data('componente_id') 
+  var unidad_minima = button.data('unidad_minima')
+  var cantidad = button.data('cantidad')
+  var producto_composicion_id = button.data('producto_composicion_id')
+  var modal = $(this)
+  modal.find('.componente').text('' + componente + '')
+  modal.find('.componente_id').val(componente_id)
+  modal.find('.unidad_minima').text('' + unidad_minima + '')
+  modal.find('.rdm-formularios--input-mediano').val(cantidad)
+  modal.find('.producto_composicion_id').val(producto_composicion_id)
+})
+</script>
+
+
+
+
+
+<!--dialogo para eliminar el componente-->
+
+<div class="modal" id="dialogo_eliminar" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+        <div class="rdm-tarjeta--primario-largo">
+            <h1 class="rdm-tarjeta--titulo-largo">
+                Retirar componente
+            </h1>
+        </div>
+
+        <div class="rdm-tarjeta--cuerpo">                
+            
+            ¿Desea retirar el componente <b><span class="componente"></span></b> de la composición de este producto?
+
+        </div>            
+
+        <div class="rdm-tarjeta--acciones-derecha">
+            <form action="productos_composicion.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="producto_id" value="<?php echo "$producto_id"; ?>">
+                <input type="hidden" class="producto_composicion_id" name="producto_composicion_id" value="">
+
+
+                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Retirar</button>                  
+            </form>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+
+<script>
+$('#dialogo_eliminar').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var producto_composicion_id = button.data('producto_composicion_id') //producto_composicion_id
+  var componente = button.data('componente') //componente
+  var modal = $(this)    
+  modal.find('.producto_composicion_id').val(producto_composicion_id)
+  modal.find('.componente').text('' + componente + '')
+})
+</script>
+
+
 <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
 <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
 
-<script>
-$('#dialogo').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) 
-  var dato1 = button.data('dato1') 
-  var dato2 = button.data('dato2') 
-  var dato3 = button.data('dato3') 
-  var dato4 = button.data('dato4') 
-  var modal = $(this)
-  modal.find('.modal-texto-dato1').text('' + dato1 + '')
-  modal.find('.modal-texto-dato2').text('' + dato2 + '')
-  modal.find('.modal-texto-dato3').text('' + dato3 + '')
-  modal.find('.modal-input1').val(dato2)
-  modal.find('.modal-input2').val(dato4)
-})
-</script>
+
+
+
+
+
+
 
 </body>
 </html>

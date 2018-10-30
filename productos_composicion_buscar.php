@@ -111,7 +111,7 @@ if (isset($busqueda))
 
                     </div>
                     <div class="rdm-lista--derecha-sencillo">
-                        <a href="" href="" data-toggle="modal" data-target="#dialogo" data-dato1="<?php echo ucfirst($componente) ?>" data-dato2="<?php echo "$componente_id"; ?>" data-dato3="<?php echo ucfirst($unidad_minima) ?>" data-dato4="<?php echo ucfirst($busqueda) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus zmdi-hc-2x"></i></div></a>
+                        <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-componente="<?php echo ucfirst($componente) ?>" data-componente_id="<?php echo "$componente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                     </div>
                 </article>
                        

@@ -52,7 +52,7 @@ else
 //agregar el componente
 if ($agregar == 'si')
 {
-    $consulta = $conexion->query("SELECT * FROM componente WHERE componente = '$componente' and proveedor_id = '$proveedor_id'");
+    $consulta = $conexion->query("SELECT * FROM componente WHERE componente = '$componente' and proveedor_id = '$proveedor_id' and estado = 'activo'");
 
     if ($consulta->num_rows == 0)
     {
