@@ -372,10 +372,10 @@ if ($eliminar == 'si')
                     //datos de la composicion
                     $producto_composicion_id = $fila['producto_composicion_id'];
                     $cantidad = $fila['cantidad'];
-                    $componente_id = $fila['componente_id'];
+                    $ingrediente_id = $fila['ingrediente_id'];
 
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
                     if ($filas2 = $consulta2->fetch_assoc())
                     {            
@@ -388,11 +388,11 @@ if ($eliminar == 'si')
                         $costo_unidad_minima = 0;
                     }
 
-                    //costo del componente
-                    $componente_costo = $costo_unidad_minima * $cantidad;
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_minima * $cantidad;
 
                     //costo de la composicion
-                    $composicion_costo = $composicion_costo + $componente_costo;
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
                 }
 
                 //valor del costo
@@ -757,7 +757,7 @@ if ($eliminar == 'si')
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un producto o servicio. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan ventas</h2>
+                        <h2 class="rdm-lista--texto-secundario">La composición son los ingredientes de los que está hecho un producto o servicio. Estos ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan ventas</h2>
                     </div>
                 </div>
             </article>
@@ -788,20 +788,20 @@ if ($eliminar == 'si')
             //datos de la composicion
             $producto_composicion_id = $fila['producto_composicion_id'];            
             $cantidad = $fila['cantidad'];
-            $componente_id = $fila['componente_id'];
+            $ingrediente_id = $fila['ingrediente_id'];
 
-            //consulto el componente
-            $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+            //consulto el ingrediente
+            $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
             if ($filas2 = $consulta2->fetch_assoc())
             {
-                $componente = $filas2['componente'];
+                $ingrediente = $filas2['ingrediente'];
                 $unidad_minima = $filas2['unidad_minima'];
                 $costo_unidad_minima = $filas2['costo_unidad_minima'];
 
                 //color de fondo segun la primer letra
-                $avatar_id = $componente_id;
-                $avatar_nombre = "$componente";
+                $avatar_id = $ingrediente_id;
+                $avatar_nombre = "$ingrediente";
 
                 include ("sis/avatar_color.php");
                 
@@ -810,7 +810,7 @@ if ($eliminar == 'si')
             }
             else
             {
-                $componente = "No se ha asignado un componente";
+                $ingrediente = "No se ha asignado un ingrediente";
                 $unidad_minima = "";
                 $costo_unidad_minima = 0;
             }
@@ -825,7 +825,7 @@ if ($eliminar == 'si')
                         <?php echo "$imagen"; ?>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad); ?> <?php echo ucfirst($unidad_minima); ?> de <?php echo ucfirst($componente); ?></h2>
+                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad); ?> <?php echo ucfirst($unidad_minima); ?> de <?php echo ucfirst($ingrediente); ?></h2>
                         <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($producto_costo, 2, ",", "."); ?></h2>
                     </div>
                 </div>

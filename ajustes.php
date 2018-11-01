@@ -702,24 +702,24 @@ include ("sis/variables_sesion.php");
         </a>
 
         <?php
-        //consulto el total de compoenentes comprados
-        $consulta = $conexion->query("SELECT * FROM componente WHERE tipo = 'comprado' and estado = 'activo'");
-        $componentes_total = $consulta->num_rows;
+        //consulto el total de ingredientes comprados
+        $consulta = $conexion->query("SELECT * FROM ingrediente WHERE tipo = 'comprado' and estado = 'activo'");
+        $ingredientes_total = $consulta->num_rows;
         ?>        
 
-        <a class="ancla" name="componentes"></a>
-        <a href="componentes_ver.php">
+        <a class="ancla" name="ingredientes"></a>
+        <a href="ingredientes_ver.php">
             <article class="rdm-lista--item-doble">
                 <div class="rdm-lista--izquierda">
                     <div class="rdm-lista--contenedor">
                         <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-widgets zmdi-hc-2x"></i></div></div>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Componentes</h2>
+                        <h2 class="rdm-lista--titulo">Ingredientes</h2>
 
                         <?php
-                        //consulto los componentes        
-                        $consulta = $conexion->query("SELECT componente FROM componente WHERE tipo = 'comprado' and estado = 'activo' ORDER BY fecha_mod DESC LIMIT 3");
+                        //consulto los ingredientes        
+                        $consulta = $conexion->query("SELECT ingrediente FROM ingrediente WHERE tipo = 'comprado' and estado = 'activo' ORDER BY fecha_mod DESC LIMIT 3");
 
                         if ($consulta->num_rows != 0)
                         {
@@ -729,9 +729,9 @@ include ("sis/variables_sesion.php");
                             <?php                            
                             while ($fila = $consulta->fetch_assoc())
                             {
-                                $componente = $fila['componente'];
+                                $ingrediente = $fila['ingrediente'];
 
-                                echo ucfirst(substr($componente, 0, 15)).'... ';
+                                echo ucfirst(substr($ingrediente, 0, 15)).'... ';
                             }
                             ?>
 
@@ -752,7 +752,7 @@ include ("sis/variables_sesion.php");
                     </div>
                 </div>
                 <div class="rdm-lista--derecha">
-                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador"><?php echo $componentes_total; ?></h2></div>
+                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador"><?php echo $ingredientes_total; ?></h2></div>
                 </div>
             </article>
         </a>
@@ -814,24 +814,24 @@ include ("sis/variables_sesion.php");
         </a>
 
         <?php
-        //consulto el total de compoenentes producidos
-        $consulta = $conexion->query("SELECT * FROM componente WHERE tipo = 'producido' and estado = 'activo'");
-        $componentes_total = $consulta->num_rows;
+        //consulto el total de ingredientes producidos
+        $consulta = $conexion->query("SELECT * FROM ingrediente WHERE tipo = 'producido' and estado = 'activo'");
+        $ingredientes_total = $consulta->num_rows;
         ?>        
 
-        <a class="ancla" name="componentes_producidos"></a>
-        <a href="componentes_producidos_ver.php">
+        <a class="ancla" name="ingredientes_producidos"></a>
+        <a href="ingredientes_producidos_ver.php">
             <article class="rdm-lista--item-doble">
                 <div class="rdm-lista--izquierda">
                     <div class="rdm-lista--contenedor">
                         <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-view-dashboard zmdi-hc-2x"></i></div></div>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Componentes producidos</h2>
+                        <h2 class="rdm-lista--titulo">Ingredientes producidos</h2>
 
                         <?php
-                        //consulto los componentes        
-                        $consulta = $conexion->query("SELECT componente FROM componente WHERE tipo = 'producido' and estado = 'activo' ORDER BY fecha_mod DESC LIMIT 3");
+                        //consulto los ingredientes        
+                        $consulta = $conexion->query("SELECT ingrediente FROM ingrediente WHERE tipo = 'producido' and estado = 'activo' ORDER BY fecha_mod DESC LIMIT 3");
 
                         if ($consulta->num_rows != 0)
                         {
@@ -841,9 +841,9 @@ include ("sis/variables_sesion.php");
                             <?php                            
                             while ($fila = $consulta->fetch_assoc())
                             {
-                                $componente = $fila['componente'];
+                                $ingrediente = $fila['ingrediente'];
 
-                                echo ucfirst(substr($componente, 0, 15)).'... ';
+                                echo ucfirst(substr($ingrediente, 0, 15)).'... ';
                             }
                             ?>
 
@@ -864,7 +864,7 @@ include ("sis/variables_sesion.php");
                     </div>
                 </div>
                 <div class="rdm-lista--derecha">
-                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador"><?php echo $componentes_total; ?></h2></div>
+                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador"><?php echo $ingredientes_total; ?></h2></div>
                 </div>
             </article>
         </a>  

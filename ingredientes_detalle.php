@@ -19,8 +19,8 @@ include ("sis/variables_sesion.php");
 if(isset($_POST['editar'])) $editar = $_POST['editar']; elseif(isset($_GET['editar'])) $editar = $_GET['editar']; else $editar = null;
 
 //variables del formulario
-if(isset($_POST['componente_id'])) $componente_id = $_POST['componente_id']; elseif(isset($_GET['componente_id'])) $componente_id = $_GET['componente_id']; else $componente_id = null;
-if(isset($_POST['componente'])) $componente = $_POST['componente']; elseif(isset($_GET['componente'])) $componente = $_GET['componente']; else $componente = null;
+if(isset($_POST['ingrediente_id'])) $ingrediente_id = $_POST['ingrediente_id']; elseif(isset($_GET['ingrediente_id'])) $ingrediente_id = $_GET['ingrediente_id']; else $ingrediente_id = null;
+if(isset($_POST['ingrediente'])) $ingrediente = $_POST['ingrediente']; elseif(isset($_GET['ingrediente'])) $ingrediente = $_GET['ingrediente']; else $ingrediente = null;
 if(isset($_POST['unidad_minima'])) $unidad_minima = $_POST['unidad_minima']; elseif(isset($_GET['unidad_minima'])) $unidad_minima = $_GET['unidad_minima']; else $unidad_minima = null;
 if(isset($_POST['unidad_compra'])) $unidad_compra = $_POST['unidad_compra']; elseif(isset($_GET['unidad_compra'])) $unidad_compra = $_GET['unidad_compra']; else $unidad_compra = null;
 if(isset($_POST['costo_unidad_minima'])) $costo_unidad_minima = $_POST['costo_unidad_minima']; elseif(isset($_GET['costo_unidad_minima'])) $costo_unidad_minima = $_GET['costo_unidad_minima']; else $costo_unidad_minima = null;
@@ -211,7 +211,7 @@ if ($editar == "si")
         }
     }
         
-    $actualizar = $conexion->query("UPDATE componente SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', componente = '$componente', unidad_minima = '$unidad_minima', unidad_compra = '$unidad_compra', costo_unidad_minima = '$costo_unidad_minima', costo_unidad_compra = '$costo_unidad_compra', proveedor_id = '$proveedor_id' WHERE componente_id = '$componente_id'");
+    $actualizar = $conexion->query("UPDATE ingrediente SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', ingrediente = '$ingrediente', unidad_minima = '$unidad_minima', unidad_compra = '$unidad_compra', costo_unidad_minima = '$costo_unidad_minima', costo_unidad_compra = '$costo_unidad_compra', proveedor_id = '$proveedor_id' WHERE ingrediente_id = '$ingrediente_id'");
 
     if ($actualizar)
     {
@@ -225,7 +225,7 @@ if ($editar == "si")
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Componente - ManGo!</title>    
+    <title>Ingrediente - ManGo!</title>    
     <?php
     //información del head
     include ("partes/head.php");
@@ -237,8 +237,8 @@ if ($editar == "si")
 <header class="rdm-toolbar--contenedor">
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
-            <a href="componentes_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
-            <h2 class="rdm-toolbar--titulo">Componente</h2>
+            <a href="ingredientes_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
+            <h2 class="rdm-toolbar--titulo">Ingrediente</h2>
         </div>
     </div>
 </header>
@@ -246,8 +246,8 @@ if ($editar == "si")
 <main class="rdm--contenedor-toolbar">
 
     <?php
-    //consulto y muestro el componente
-    $consulta = $conexion->query("SELECT * FROM componente WHERE componente_id = '$componente_id'");
+    //consulto y muestro el ingrediente
+    $consulta = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = '$ingrediente_id'");
 
     if ($consulta->num_rows == 0)
     {
@@ -255,7 +255,7 @@ if ($editar == "si")
 
         <div class="rdm-vacio--caja">
             <i class="zmdi zmdi-alert-circle-o zmdi-hc-4x"></i>
-            <p class="rdm-tipografia--subtitulo1">Este componente ya no existe</p>
+            <p class="rdm-tipografia--subtitulo1">Este ingrediente ya no existe</p>
         </div>
 
         <?php
@@ -264,7 +264,7 @@ if ($editar == "si")
     {
         while ($fila = $consulta->fetch_assoc())
         {
-            $componente_id = $fila['componente_id'];
+            $ingrediente_id = $fila['ingrediente_id'];
             
             $fecha_alta = date('d/m/Y', strtotime($fila['fecha_alta']));
             $hora_alta = date('h:i a', strtotime($fila['fecha_alta']));
@@ -281,7 +281,7 @@ if ($editar == "si")
 
             $estado = $fila['estado'];
 
-            $componente = $fila['componente'];
+            $ingrediente = $fila['ingrediente'];
             $tipo = $fila['tipo'];
             $unidad_minima = $fila['unidad_minima'];
             $unidad_compra = $fila['unidad_compra'];
@@ -344,7 +344,7 @@ if ($editar == "si")
             <section class="rdm-tarjeta">
 
                 <div class="rdm-tarjeta--primario-largo">
-                    <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucfirst($componente) ?></h1>
+                    <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucfirst($ingrediente) ?></h1>
                     <h2 class="rdm-tarjeta--subtitulo-largo">$<?php echo number_format($costo_unidad_compra, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></h2>
                 </div>
 
@@ -415,7 +415,7 @@ if ($editar == "si")
 
 <footer>
     
-    <a href="componentes_editar.php?componente_id=<?php echo "$componente_id"; ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-edit zmdi-hc-2x"></i></button></a>
+    <a href="ingredientes_editar.php?ingrediente_id=<?php echo "$ingrediente_id"; ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-edit zmdi-hc-2x"></i></button></a>
 
 </footer>
 

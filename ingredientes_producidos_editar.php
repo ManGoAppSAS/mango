@@ -16,18 +16,18 @@ include ("sis/variables_sesion.php");
 
 <?php
 //capturo las variables que pasan por URL o formulario
-if(isset($_POST['componente_producido_id'])) $componente_producido_id = $_POST['componente_producido_id']; elseif(isset($_GET['componente_producido_id'])) $componente_producido_id = $_GET['componente_producido_id']; else $componente_producido_id = null;
+if(isset($_POST['ingrediente_producido_id'])) $ingrediente_producido_id = $_POST['ingrediente_producido_id']; elseif(isset($_GET['ingrediente_producido_id'])) $ingrediente_producido_id = $_GET['ingrediente_producido_id']; else $ingrediente_producido_id = null;
 ?>
 
 <?php
-//consulto la información del componente
-$consulta = $conexion->query("SELECT * FROM componente WHERE componente_id = '$componente_producido_id'");
+//consulto la información del ingrediente
+$consulta = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = '$ingrediente_producido_id'");
 
 if ($fila = $consulta->fetch_assoc()) 
 {
-    $componente_producido_id = $fila['componente_id'];
+    $ingrediente_producido_id = $fila['ingrediente_id'];
     
-    $componente = $fila['componente'];
+    $ingrediente = $fila['ingrediente'];
     $unidad_minima = $fila['unidad_minima'];
     $unidad_compra = $fila['unidad_compra'];
     $costo_unidad_minima = $fila['costo_unidad_minima'];
@@ -54,14 +54,14 @@ if ($fila = $consulta->fetch_assoc())
 }
 else
 {
-    header("location:componentes_producidos_ver.php");
+    header("location:ingredientes_producidos_ver.php");
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Componente producido - ManGo!</title>
+    <title>Ingrediente producido - ManGo!</title>
     <?php
     //información del head
     include ("partes/head.php");
@@ -73,12 +73,12 @@ else
 <header class="rdm-toolbar--contenedor">
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
-            <a href="componentes_producidos_detalle.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
-            <h2 class="rdm-toolbar--titulo">Componente producido</h2>
+            <a href="ingredientes_producidos_detalle.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
+            <h2 class="rdm-toolbar--titulo">Ingrediente producido</h2>
         </div>
         <div class="rdm-toolbar--derecha">
             <div class="rdm-toolbar--icono-derecha">
-                <a href="" data-toggle="modal" data-target="#dialogo" data-dato1="<?php echo ucfirst($componente_producido_id) ?>" data-dato2="<?php echo "$componente"; ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></div></a>
+                <a href="" data-toggle="modal" data-target="#dialogo" data-dato1="<?php echo ucfirst($ingrediente_producido_id) ?>" data-dato2="<?php echo "$ingrediente"; ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></div></a>
             </div>
         </div>
     </div>
@@ -88,11 +88,11 @@ else
 
     <h2 class="rdm-lista--titulo-largo">Editar</h2>
 
-    <form action="componentes_producidos_detalle.php" method="post" enctype="multipart/form-data">
+    <form action="ingredientes_producidos_detalle.php" method="post" enctype="multipart/form-data">
 
         <section class="rdm-formulario">
 
-            <input type="hidden" name="componente_producido_id" value="<?php echo "$componente_producido_id"; ?>" />
+            <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>" />
 
             <?php
             //consulto y muestro los productores
@@ -153,16 +153,16 @@ else
                     ?>
 
                     </select></p>
-                    <p class="rdm-formularios--ayuda">Productor que produce el componente producido/p>
+                    <p class="rdm-formularios--ayuda">Productor que produce el ingrediente producido/p>
                     
                     <?php
                 }
             }
             ?>
             
-            <p class="rdm-formularios--label"><label for="componente">Nombre*</label></p>
-            <p><input type="text" id="componente" name="componente" value="<?php echo "$componente"; ?>" required autofocus /></p>
-            <p class="rdm-formularios--ayuda">Nombre del componente producido</p>
+            <p class="rdm-formularios--label"><label for="ingrediente">Nombre*</label></p>
+            <p><input type="text" id="ingrediente" name="ingrediente" value="<?php echo "$ingrediente"; ?>" required autofocus /></p>
+            <p class="rdm-formularios--ayuda">Nombre del ingrediente producido</p>
 
             <p class="rdm-formularios--label"><label for="cantidad_unidad_compra">Cantidad básica*</label></p>
             <p><input type="number" id="cantidad_unidad_compra" name="cantidad_unidad_compra" value="<?php echo "$cantidad_unidad_compra"; ?>" step="any" required autofocus /></p>
@@ -182,11 +182,11 @@ else
                 <option value="">---------</option>
                 <option value="unid">unid</option>
             </select></p>
-            <p class="rdm-formularios--ayuda">Unidad de producción del componente</p>
+            <p class="rdm-formularios--ayuda">Unidad de producción del ingrediente</p>
 
             <p class="rdm-formularios--label"><label for="preparacion">Preparación</label></p>
             <p><textarea id="preparacion" name="preparacion"><?php echo "$preparacion"; ?></textarea></p>
-            <p class="rdm-formularios--ayuda">Escribe el proceso de preparación o producción de este componente</p>  
+            <p class="rdm-formularios--ayuda">Escribe el proceso de preparación o producción de este ingrediente</p>  
             
             <button type="submit" class="rdm-boton--fab" name="editar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>
 
@@ -202,7 +202,7 @@ else
         
         <div class="rdm-tarjeta--primario-largo">
             <h1 class="rdm-tarjeta--titulo-largo">
-                Eliminar componente producido
+                Eliminar ingrediente producido
             </h1>
         </div>
 
@@ -211,8 +211,8 @@ else
         </div>            
 
         <div class="rdm-tarjeta--acciones-derecha">
-            <form action="componentes_producidos_ver.php" method="post" enctype="multipart/form-data">
-                <input type="text" class="modal-input1" name="componente_producido_id" value="">
+            <form action="ingredientes_producidos_ver.php" method="post" enctype="multipart/form-data">
+                <input type="text" class="modal-input1" name="ingrediente_producido_id" value="">
 
                 <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Eliminar</button>                  

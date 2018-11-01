@@ -28,7 +28,7 @@ if(isset($_POST['busqueda'])) $busqueda = $_POST['busqueda']; elseif(isset($_GET
 
 //capturo las variables que pasan por URL o formulario
 if(isset($_POST['producto_id'])) $producto_id = $_POST['producto_id']; elseif(isset($_GET['producto_id'])) $producto_id = $_GET['producto_id']; else $producto_id = null;
-if(isset($_POST['componente_id'])) $componente_id = $_POST['componente_id']; elseif(isset($_GET['componente_id'])) $componente_id = $_GET['componente_id']; else $componente_id = null;
+if(isset($_POST['ingrediente_id'])) $ingrediente_id = $_POST['ingrediente_id']; elseif(isset($_GET['ingrediente_id'])) $ingrediente_id = $_GET['ingrediente_id']; else $ingrediente_id = null;
 if(isset($_POST['cantidad'])) $cantidad = $_POST['cantidad']; elseif(isset($_GET['cantidad'])) $cantidad = $_GET['cantidad']; else $cantidad = null;
 
 //variables del mensaje
@@ -38,25 +38,25 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 ?>
 
 <?php
-//consulto el componente
-$consulta_componente = $conexion->query("SELECT * FROM componente WHERE componente_id = '$componente_id'");
+//consulto el ingrediente
+$consulta_ingrediente = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = '$ingrediente_id'");
 
-if ($fila_componente = $consulta_componente->fetch_assoc())
+if ($fila_ingrediente = $consulta_ingrediente->fetch_assoc())
 {
-    $componente_id = $fila_componente['componente_id'];
-    $componente = $fila_componente['componente'];
+    $ingrediente_id = $fila_ingrediente['ingrediente_id'];
+    $ingrediente = $fila_ingrediente['ingrediente'];
 }
 ?>
 
 <?php
-//elimino el componente de la composición
+//elimino el ingrediente de la composición
 if ($eliminar == "si")
 {
     $borrar = $conexion->query("DELETE FROM producto_composicion WHERE producto_composicion_id = '$producto_composicion_id'");
 
     if ($borrar)
     {
-        $mensaje = "Componente retirado";
+        $mensaje = "Ingrediente retirado";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
@@ -64,14 +64,14 @@ if ($eliminar == "si")
 ?>
 
 <?php
-//edito el componente de la composición
+//edito el ingrediente de la composición
 if ($editar == "si")
 {
     $actualizar = $conexion->query("UPDATE producto_composicion SET cantidad = '$cantidad' WHERE producto_composicion_id = '$producto_composicion_id'");
 
     if ($actualizar)
     {
-        $mensaje = "Componente editado";
+        $mensaje = "Ingrediente editado";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
@@ -79,7 +79,7 @@ if ($editar == "si")
 ?>
 
 <?php
-//agrego el componente a la composición
+//agrego el ingrediente a la composición
 if ($agregar == 'si')
 {   
     if ($cantidad == 0)
@@ -87,19 +87,19 @@ if ($agregar == 'si')
         $cantidad = 1;
     }
 
-    $consulta = $conexion->query("SELECT * FROM producto_composicion WHERE producto_id = '$producto_id' and componente_id = '$componente_id'");
+    $consulta = $conexion->query("SELECT * FROM producto_composicion WHERE producto_id = '$producto_id' and ingrediente_id = '$ingrediente_id'");
 
     if ($consulta->num_rows == 0)
     {
-        $insercion = $conexion->query("INSERT INTO producto_composicion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$cantidad', '$producto_id', '$componente_id')");
+        $insercion = $conexion->query("INSERT INTO producto_composicion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$cantidad', '$producto_id', '$ingrediente_id')");
         
-        $mensaje = "Componente <b>".($componente)."</b> agregado a la composición</b>";
+        $mensaje = "Ingrediente <b>".($ingrediente)."</b> agregado a la composición</b>";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
     else
     {
-        $mensaje = "El componente <b>".($componente)."</b> ya fue agregado</b>";
+        $mensaje = "El ingrediente <b>".($ingrediente)."</b> ya fue agregado</b>";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "error";
     }
@@ -165,7 +165,7 @@ if ($agregar == 'si')
 
 <main class="rdm--contenedor-toolbar">    
 
-    <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar componente" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar(); this.select();" />
+    <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar ingrediente" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar(); this.select();" />
 
     <div id="resultadoBusqueda"></div>       
 
@@ -186,7 +186,7 @@ if ($agregar == 'si')
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un producto o servicio. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan ventas</h2>
+                        <h2 class="rdm-lista--texto-secundario">La composición son los ingredientes de los que está hecho un producto o servicio. Estos ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan ventas</h2>
                     </div>
                 </div>
             </article>
@@ -209,20 +209,20 @@ if ($agregar == 'si')
             //datos de la composicion
             $producto_composicion_id = $fila['producto_composicion_id'];            
             $cantidad = $fila['cantidad'];
-            $componente_id = $fila['componente_id'];
+            $ingrediente_id = $fila['ingrediente_id'];
 
-            //consulto el componente
-            $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+            //consulto el ingrediente
+            $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
             if ($filas2 = $consulta2->fetch_assoc())
             {
-                $componente = $filas2['componente'];
+                $ingrediente = $filas2['ingrediente'];
                 $unidad_minima = $filas2['unidad_minima'];
                 $costo_unidad_minima = $filas2['costo_unidad_minima'];
 
                 //color de fondo segun la primer letra
-                $avatar_id = $componente_id;
-                $avatar_nombre = "$componente";
+                $avatar_id = $ingrediente_id;
+                $avatar_nombre = "$ingrediente";
 
                 include ("sis/avatar_color.php");
                 
@@ -231,13 +231,13 @@ if ($agregar == 'si')
             }
             else
             {
-                $componente = "No se ha asignado un componente";
+                $ingrediente = "No se ha asignado un ingrediente";
                 $unidad_minima = "";
                 $costo_unidad_minima = 0;
             }
 
-            //calculo el costo del componente
-            $componente_costo = $costo_unidad_minima * $cantidad;
+            //calculo el costo del ingrediente
+            $ingrediente_costo = $costo_unidad_minima * $cantidad;
             ?>
 
             <div class="rdm-lista--item-doble">
@@ -246,14 +246,14 @@ if ($agregar == 'si')
                         <?php echo "$imagen"; ?>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad); ?> <?php echo ucfirst($unidad_minima); ?> de <?php echo ucfirst($componente); ?></h2>
-                        <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($componente_costo, 2, ",", "."); ?></h2>
+                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad); ?> <?php echo ucfirst($unidad_minima); ?> de <?php echo ucfirst($ingrediente); ?></h2>
+                        <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($ingrediente_costo, 2, ",", "."); ?></h2>
                     </div>
                 </div>
                 <div class="rdm-lista--derecha">
-                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-componente="<?php echo ucfirst($componente) ?>" data-componente_id="<?php echo "$componente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>" data-cantidad="<?php echo ucfirst($cantidad) ?>" data-producto_composicion_id="<?php echo ucfirst($producto_composicion_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>" data-cantidad="<?php echo ucfirst($cantidad) ?>" data-producto_composicion_id="<?php echo ucfirst($producto_composicion_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
 
-                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-producto_composicion_id="<?php echo ($producto_composicion_id) ?>" data-componente="<?php echo ucfirst($componente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-producto_composicion_id="<?php echo ($producto_composicion_id) ?>" data-ingrediente="<?php echo ucfirst($ingrediente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </div>
            
@@ -384,10 +384,10 @@ if ($agregar == 'si')
                     //datos de la composicion
                     $producto_composicion_id = $fila['producto_composicion_id'];
                     $cantidad = $fila['cantidad'];
-                    $componente_id = $fila['componente_id'];
+                    $ingrediente_id = $fila['ingrediente_id'];
 
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
                     if ($filas2 = $consulta2->fetch_assoc())
                     {            
@@ -400,11 +400,11 @@ if ($agregar == 'si')
                         $costo_unidad_minima = 0;
                     }
 
-                    //costo del componente
-                    $componente_costo = $costo_unidad_minima * $cantidad;
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_minima * $cantidad;
 
                     //costo de la composicion
-                    $composicion_costo = $composicion_costo + $componente_costo;
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
                 }
 
                 //valor del costo
@@ -486,7 +486,7 @@ if ($agregar == 'si')
     
 <footer></footer>
 
-<!--dialogo para agregar el componente-->
+<!--dialogo para agregar el ingrediente-->
 
 <div class="modal" id="dialogo_agregar" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -494,20 +494,20 @@ if ($agregar == 'si')
         
         <div class="rdm-tarjeta--primario-largo">
             <h1 class="rdm-tarjeta--titulo-largo">
-                Agregar componente
+                Agregar ingrediente
             </h1>
         </div>
 
         <div class="rdm-tarjeta--cuerpo">                
             
-            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="componente"></span></b> desea agregar a la composición de este producto?
+            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="ingrediente"></span></b> desea agregar a la composición de este producto?
 
         </div>            
 
         <div class="rdm-tarjeta--acciones-derecha">
             <form action="productos_composicion.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="producto_id" value="<?php echo "$producto_id"; ?>">
-                <input type="hidden" class="componente_id" name="componente_id" value="">
+                <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
 
                 <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
 
@@ -523,12 +523,12 @@ if ($agregar == 'si')
 <script>
 $('#dialogo_agregar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
-  var componente = button.data('componente') 
-  var componente_id = button.data('componente_id') 
+  var ingrediente = button.data('ingrediente') 
+  var ingrediente_id = button.data('ingrediente_id') 
   var unidad_minima = button.data('unidad_minima')
   var modal = $(this)
-  modal.find('.componente').text('' + componente + '')
-  modal.find('.componente_id').val(componente_id)
+  modal.find('.ingrediente').text('' + ingrediente + '')
+  modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_minima').text('' + unidad_minima + '')
 })
 </script>
@@ -539,7 +539,7 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
 
 
 
-<!--dialogo para editar el componente-->
+<!--dialogo para editar el ingrediente-->
 
 <div class="modal" id="dialogo_editar" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -547,20 +547,20 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
         
         <div class="rdm-tarjeta--primario-largo">
             <h1 class="rdm-tarjeta--titulo-largo">
-                Editar componente
+                Editar ingrediente
             </h1>
         </div>
 
         <div class="rdm-tarjeta--cuerpo">                
             
-            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="componente"></span></b> desea agregar a la composición de este producto?
+            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="ingrediente"></span></b> desea agregar a la composición de este producto?
 
         </div>            
 
         <div class="rdm-tarjeta--acciones-derecha">
             <form action="productos_composicion.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="producto_id" value="<?php echo "$producto_id"; ?>">
-                <input type="hidden" class="componente_id" name="componente_id" value="">
+                <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
                 <input type="hidden" class="producto_composicion_id" name="producto_composicion_id" value="">
 
                 <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
@@ -579,14 +579,14 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
 <script>
 $('#dialogo_editar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
-  var componente = button.data('componente') 
-  var componente_id = button.data('componente_id') 
+  var ingrediente = button.data('ingrediente') 
+  var ingrediente_id = button.data('ingrediente_id') 
   var unidad_minima = button.data('unidad_minima')
   var cantidad = button.data('cantidad')
   var producto_composicion_id = button.data('producto_composicion_id')
   var modal = $(this)
-  modal.find('.componente').text('' + componente + '')
-  modal.find('.componente_id').val(componente_id)
+  modal.find('.ingrediente').text('' + ingrediente + '')
+  modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_minima').text('' + unidad_minima + '')
   modal.find('.rdm-formularios--input-mediano').val(cantidad)
   modal.find('.producto_composicion_id').val(producto_composicion_id)
@@ -597,7 +597,7 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
 
 
 
-<!--dialogo para eliminar el componente-->
+<!--dialogo para eliminar el ingrediente-->
 
 <div class="modal" id="dialogo_eliminar" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -605,13 +605,13 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
         
         <div class="rdm-tarjeta--primario-largo">
             <h1 class="rdm-tarjeta--titulo-largo">
-                Retirar componente
+                Retirar ingrediente
             </h1>
         </div>
 
         <div class="rdm-tarjeta--cuerpo">                
             
-            ¿Desea retirar el componente <b><span class="componente"></span></b> de la composición de este producto?
+            ¿Desea retirar el ingrediente <b><span class="ingrediente"></span></b> de la composición de este producto?
 
         </div>            
 
@@ -635,10 +635,10 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
 $('#dialogo_eliminar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
   var producto_composicion_id = button.data('producto_composicion_id') //producto_composicion_id
-  var componente = button.data('componente') //componente
+  var ingrediente = button.data('ingrediente') //ingrediente
   var modal = $(this)    
   modal.find('.producto_composicion_id').val(producto_composicion_id)
-  modal.find('.componente').text('' + componente + '')
+  modal.find('.ingrediente').text('' + ingrediente + '')
 })
 </script>
 

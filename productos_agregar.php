@@ -41,7 +41,8 @@ if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET
 if(isset($_POST['precio'])) $precio = $_POST['precio']; elseif(isset($_GET['precio'])) $precio = $_GET['precio']; else $precio = null;
 if(isset($_POST['impuesto_incluido'])) $impuesto_incluido = $_POST['impuesto_incluido']; elseif(isset($_GET['impuesto_incluido'])) $impuesto_incluido = $_GET['impuesto_incluido']; else $impuesto_incluido = "no";
 
-//variables que van al componente
+//variables que van al ingrediente
+if(isset($_POST['crear_ingrediente'])) $crear_ingrediente = $_POST['crear_ingrediente']; elseif(isset($_GET['crear_ingrediente'])) $crear_ingrediente = $_GET['crear_ingrediente']; else $crear_ingrediente = "no";
 if(isset($_POST['costo'])) $costo = $_POST['costo']; elseif(isset($_GET['costo'])) $costo = $_GET['costo']; else $costo = 0;
 
 //variables del mensaje
@@ -141,21 +142,21 @@ if ($agregar == 'si')
             $insercion_precio = $conexion->query("INSERT INTO producto_precio values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', 'precio normal', 'principal', '$precio', '$impuesto_incluido', '$producto_id', '$impuesto_id')");
         }
 
-        //agregar el componente
-        if ($tipo == 'simple')
+        //agregar el ingrediente
+        if ($crear_ingrediente == 'si')
         {
             $costo = str_replace('.','',$costo);
 
-            $consulta = $conexion->query("SELECT * FROM componente WHERE componente = '$producto' and costo_unidad_compra = '$costo'");
+            $consulta = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente = '$producto' and costo_unidad_compra = '$costo'");
 
             if ($consulta->num_rows == 0)
             {
-                $insercion = $conexion->query("INSERT INTO componente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$producto', 'comprado', 'unid', 'unid', '$costo', '$costo', '', '0', '1', '0')");
+                $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$producto', 'comprado', 'unid', 'unid', '$costo', '$costo', '', '0', '1', '0')");
 
-                $componente_id = $conexion->insert_id;
+                $ingrediente_id = $conexion->insert_id;
 
                 //agrego la composición
-                $insercion = $conexion->query("INSERT INTO producto_composicion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '1', '$producto_id', '$componente_id')");
+                $insercion = $conexion->query("INSERT INTO producto_composicion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '1', '$producto_id', '$ingrediente_id')");
             }
             else
             {
@@ -373,6 +374,8 @@ if ($agregar_producto_local == 'si')
                     //si hay mas de un registro los muestro todos menos el impuesto acabe de guardar
                     $consulta = $conexion->query("SELECT * FROM impuesto WHERE impuesto_id != $impuesto_id and estado = 'activo' ORDER BY impuesto");
 
+                    //muestro el checkbox de impuesto incluido
+                    $mostrar_impuesto_incluido = "si";
                     ?>
                         
                     <?php echo "$impuesto_g"; ?>
@@ -424,28 +427,42 @@ if ($agregar_producto_local == 'si')
             <p class="rdm-formularios--ayuda">¿El impuesto está incluido en el precio?</p>
 
             <?php } ?>
-
-
-
-
-
-
-
-
             
             <p class="rdm-formularios--label"><label for="tipo">Tipo de inventario*</label></p>
             <p><select id="tipo" name="tipo" onchange="mostrar_costo(this)" required>
                 <option value="<?php echo "$tipo"; ?>"><?php echo ucfirst($tipo) ?></option>
-                <option value="compuesto">Compuesto</option>
-                <option value="simple">Simple</option>
+                <option value="compuesto">Compuesto (Lleva varios ingredientes)</option>
+                <option value="simple">Simple (Lleva un solo ingrediente)</option>
             </select></p>
-            <p class="rdm-formularios--ayuda">Al crear un producto <b>simple</b> tambien se crea el componente</p>
+            <p class="rdm-formularios--ayuda">¿El producto está compuesto de uno o varios ingredientes?</p>
 
             <div id="costo_div" >
                 <p class="rdm-formularios--label"><label for="costo">Costo</label></p>
                 <p><input type="tel" id="costo" name="costo" value="<?php echo "$costo"; ?>" /></p>
-                <p class="rdm-formularios--ayuda">Si es inventario de tipo simple agrega el costo</p>
+                <p class="rdm-formularios--ayuda">Costo del producto</p>
             </div>
+
+            <?php
+            //impuesto incluido checked
+            if ($crear_ingrediente == "si")
+            {
+                $crear_ingrediente_checked = "checked";
+            }
+            else
+            {
+                $crear_ingrediente_checked = "";
+            }
+            ?>
+            
+            <p class="rdm-formularios--label"><label for="mostrar_local">Crear ingrediente*</label></p>
+            <p class="rdm-formularios--checkbox">
+                <input type="checkbox" id="crear_ingrediente" name="crear_ingrediente" class="rdm-formularios--switch" value="si" <?php echo "$crear_ingrediente_checked"; ?>>
+                <label for="crear_ingrediente" class="rdm-formularios--switch-label">
+                    <span class="rdm-formularios--switch-encendido">Si</span>
+                    <span class="rdm-formularios--switch-apagado">No</span>
+                </label>
+            </p>
+            <p class="rdm-formularios--ayuda">Crea el ingrediente y se relaciona a la composición del producto</p>
 
 
 

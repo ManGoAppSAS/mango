@@ -116,7 +116,7 @@ else
             
             <p class="rdm-formularios--label"><label for="contacto">Contacto</label></p>
             <p><input type="text" id="contacto" name="contacto" value="<?php echo "$contacto"; ?>" /></p>
-            <p class="rdm-formularios--ayuda">Nombre de la persona encargada de facturación o pedidos</p>
+            <p class="rdm-formularios--ayuda">Nombre de la persona encargada de producción</p>
 
             <p class="rdm-formularios--label"><label for="telefono">Teléfono</label></p>
             <p><input type="number" id="telefono" name="telefono" value="<?php echo "$telefono"; ?>" /></p>

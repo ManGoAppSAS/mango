@@ -19,7 +19,7 @@ include ("sis/variables_sesion.php");
 if(isset($_POST['agregar'])) $agregar = $_POST['agregar']; elseif(isset($_GET['agregar'])) $agregar = $_GET['agregar']; else $agregar = null;
 
 //variables del formulario
-if(isset($_POST['componente'])) $componente = $_POST['componente']; elseif(isset($_GET['componente'])) $componente = $_GET['componente']; else $componente = null;
+if(isset($_POST['ingrediente'])) $ingrediente = $_POST['ingrediente']; elseif(isset($_GET['ingrediente'])) $ingrediente = $_GET['ingrediente']; else $ingrediente = null;
 if(isset($_POST['unidad_minima'])) $unidad_minima = $_POST['unidad_minima']; elseif(isset($_GET['unidad_minima'])) $unidad_minima = $_GET['unidad_minima']; else $unidad_minima = null;
 if(isset($_POST['unidad_compra'])) $unidad_compra = $_POST['unidad_compra']; elseif(isset($_GET['unidad_compra'])) $unidad_compra = $_GET['unidad_compra']; else $unidad_compra = null;
 if(isset($_POST['costo_unidad_minima'])) $costo_unidad_minima = $_POST['costo_unidad_minima']; elseif(isset($_GET['costo_unidad_minima'])) $costo_unidad_minima = $_GET['costo_unidad_minima']; else $costo_unidad_minima = 0;
@@ -51,10 +51,10 @@ else
 ?>
 
 <?php
-//agregar el componente
+//agregar el ingrediente
 if ($agregar == 'si')
 {
-    $consulta = $conexion->query("SELECT * FROM componente WHERE componente = '$componente' and productor_id = '$productor_id'");
+    $consulta = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente = '$ingrediente' and productor_id = '$productor_id'");
 
     if ($consulta->num_rows == 0)
     {
@@ -232,15 +232,15 @@ if ($agregar == 'si')
             }
         }
 
-        $insercion = $conexion->query("INSERT INTO componente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$componente', 'producido', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '$preparacion', '$cantidad_unidad_compra', '0', '$productor_id')");        
+        $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ingrediente', 'producido', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '$preparacion', '$cantidad_unidad_compra', '0', '$productor_id')");        
 
-        $mensaje = "Componente <b>" . ucfirst($componente) . "</b> agregado";
+        $mensaje = "ingrediente <b>" . ucfirst($ingrediente) . "</b> agregado";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
     else
     {
-        $mensaje = "El componente <b>" . ucfirst($componente) . "</b> ya existe, no es posible agregarlo de nuevo";
+        $mensaje = "El ingrediente <b>" . ucfirst($ingrediente) . "</b> ya existe, no es posible agregarlo de nuevo";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "error";
     }
@@ -250,7 +250,7 @@ if ($agregar == 'si')
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Componentes producidos - ManGo!</title>    
+    <title>ingredientes producidos - ManGo!</title>    
     <?php
     //información del head
     include ("partes/head.php");
@@ -262,8 +262,8 @@ if ($agregar == 'si')
 <header class="rdm-toolbar--contenedor">
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
-            <a href="componentes_producidos_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
-            <h2 class="rdm-toolbar--titulo">Componentes producidos</h2>
+            <a href="ingredientes_producidos_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
+            <h2 class="rdm-toolbar--titulo">ingredientes producidos</h2>
         </div>
     </div>
 </header>
@@ -335,16 +335,16 @@ if ($agregar == 'si')
                     ?>
 
                     </select></p>
-                    <p class="rdm-formularios--ayuda">Productor que produce el componente producido/p>
+                    <p class="rdm-formularios--ayuda">Productor que produce el ingrediente producido/p>
                     
                     <?php
                 }
             }
             ?>
         
-            <p class="rdm-formularios--label"><label for="componente">Nombre*</label></p>
-            <p><input type="text" id="componente" name="componente" value="<?php echo "$componente"; ?>" required autofocus /></p>
-            <p class="rdm-formularios--ayuda">Nombre del componente producido</p>
+            <p class="rdm-formularios--label"><label for="ingrediente">Nombre*</label></p>
+            <p><input type="text" id="ingrediente" name="ingrediente" value="<?php echo "$ingrediente"; ?>" required autofocus /></p>
+            <p class="rdm-formularios--ayuda">Nombre del ingrediente producido</p>
 
             <p class="rdm-formularios--label"><label for="cantidad_unidad_compra">Cantidad básica*</label></p>
             <p><input type="number" id="cantidad_unidad_compra" name="cantidad_unidad_compra" value="<?php echo "$cantidad_unidad_compra"; ?>" required autofocus /></p>
@@ -364,11 +364,11 @@ if ($agregar == 'si')
                 <option value="">---------</option>
                 <option value="unid">unid</option>
             </select></p>
-            <p class="rdm-formularios--ayuda">Unidad de producción del componente</p>
+            <p class="rdm-formularios--ayuda">Unidad de producción del ingrediente</p>
 
             <p class="rdm-formularios--label"><label for="preparacion">Preparación</label></p>
             <p><textarea id="preparacion" name="preparacion"><?php echo "$preparacion"; ?></textarea></p>
-            <p class="rdm-formularios--ayuda">Escribe el proceso de preparación o producción de este componente</p>
+            <p class="rdm-formularios--ayuda">Escribe el proceso de preparación o producción de este ingrediente</p>
 
             
             

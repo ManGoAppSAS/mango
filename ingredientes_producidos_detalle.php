@@ -20,8 +20,8 @@ if(isset($_POST['editar'])) $editar = $_POST['editar']; elseif(isset($_GET['edit
 if(isset($_POST['eliminar'])) $eliminar = $_POST['eliminar']; elseif(isset($_GET['eliminar'])) $eliminar = $_GET['eliminar']; else $eliminar = null;
 
 //variables del formulario
-if(isset($_POST['componente_producido_id'])) $componente_producido_id = $_POST['componente_producido_id']; elseif(isset($_GET['componente_producido_id'])) $componente_producido_id = $_GET['componente_producido_id']; else $componente_producido_id = null;
-if(isset($_POST['componente'])) $componente = $_POST['componente']; elseif(isset($_GET['componente'])) $componente = $_GET['componente']; else $componente = null;
+if(isset($_POST['ingrediente_producido_id'])) $ingrediente_producido_id = $_POST['ingrediente_producido_id']; elseif(isset($_GET['ingrediente_producido_id'])) $ingrediente_producido_id = $_GET['ingrediente_producido_id']; else $ingrediente_producido_id = null;
+if(isset($_POST['ingrediente'])) $ingrediente = $_POST['ingrediente']; elseif(isset($_GET['ingrediente'])) $ingrediente = $_GET['ingrediente']; else $ingrediente = null;
 if(isset($_POST['unidad_minima'])) $unidad_minima = $_POST['unidad_minima']; elseif(isset($_GET['unidad_minima'])) $unidad_minima = $_GET['unidad_minima']; else $unidad_minima = null;
 if(isset($_POST['unidad_compra'])) $unidad_compra = $_POST['unidad_compra']; elseif(isset($_GET['unidad_compra'])) $unidad_compra = $_GET['unidad_compra']; else $unidad_compra = null;
 if(isset($_POST['costo_unidad_minima'])) $costo_unidad_minima = $_POST['costo_unidad_minima']; elseif(isset($_GET['costo_unidad_minima'])) $costo_unidad_minima = $_GET['costo_unidad_minima']; else $costo_unidad_minima = 0;
@@ -37,7 +37,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 ?>
 
 <?php
-//actualizo la información del componente producido
+//actualizo la información del ingrediente producido
 if ($editar == "si")
 {
     //calculo la unidad minima con base a la unidad de compra
@@ -214,7 +214,7 @@ if ($editar == "si")
         }
     }
         
-    $actualizar = $conexion->query("UPDATE componente SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', componente = '$componente', unidad_minima = '$unidad_minima', unidad_compra = '$unidad_compra', costo_unidad_minima = '$costo_unidad_minima', costo_unidad_compra = '$costo_unidad_compra', preparacion = '$preparacion', cantidad_unidad_compra = '$cantidad_unidad_compra', productor_id = '$productor_id' WHERE componente_id = '$componente_producido_id'");
+    $actualizar = $conexion->query("UPDATE ingrediente SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', ingrediente = '$ingrediente', unidad_minima = '$unidad_minima', unidad_compra = '$unidad_compra', costo_unidad_minima = '$costo_unidad_minima', costo_unidad_compra = '$costo_unidad_compra', preparacion = '$preparacion', cantidad_unidad_compra = '$cantidad_unidad_compra', productor_id = '$productor_id' WHERE ingrediente_id = '$ingrediente_producido_id'");
 
     if ($actualizar)
     {
@@ -228,7 +228,7 @@ if ($editar == "si")
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Componente producido - ManGo!</title>    
+    <title>Ingrediente producido - ManGo!</title>    
     <?php
     //información del head
     include ("partes/head.php");
@@ -240,8 +240,8 @@ if ($editar == "si")
 <header class="rdm-toolbar--contenedor">
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
-            <a href="componentes_producidos_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
-            <h2 class="rdm-toolbar--titulo">Componente producido</h2>
+            <a href="ingredientes_producidos_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
+            <h2 class="rdm-toolbar--titulo">Ingrediente producido</h2>
         </div>
     </div>
 </header>
@@ -249,8 +249,8 @@ if ($editar == "si")
 <main class="rdm--contenedor-toolbar">
 
     <?php
-    //consulto y muestro el componente
-    $consulta = $conexion->query("SELECT * FROM componente WHERE componente_id = '$componente_producido_id'");
+    //consulto y muestro el ingrediente
+    $consulta = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = '$ingrediente_producido_id'");
 
     if ($consulta->num_rows == 0)
     {
@@ -258,7 +258,7 @@ if ($editar == "si")
 
         <div class="rdm-vacio--caja">
             <i class="zmdi zmdi-alert-circle-o zmdi-hc-4x"></i>
-            <p class="rdm-tipografia--subtitulo1">Este componente ya no existe</p>
+            <p class="rdm-tipografia--subtitulo1">Este ingrediente ya no existe</p>
         </div>
 
         <?php
@@ -267,7 +267,7 @@ if ($editar == "si")
     {
         while ($fila = $consulta->fetch_assoc())
         {
-            $componente_producido_id = $fila['componente_id'];
+            $ingrediente_producido_id = $fila['ingrediente_id'];
             
             $fecha_alta = date('d/m/Y', strtotime($fila['fecha_alta']));
             $hora_alta = date('h:i a', strtotime($fila['fecha_alta']));
@@ -284,7 +284,7 @@ if ($editar == "si")
 
             $estado = $fila['estado'];
 
-            $componente = $fila['componente'];
+            $ingrediente = $fila['ingrediente'];
             $tipo = $fila['tipo'];
             $unidad_minima = $fila['unidad_minima'];
             $unidad_compra = $fila['unidad_compra'];
@@ -346,7 +346,7 @@ if ($editar == "si")
             }
 
             //consulto el costo
-            $consulta_costo = $conexion->query("SELECT * FROM componente_producido_composicion WHERE componente_producido_id = '$componente_producido_id' ORDER BY fecha_alta DESC");
+            $consulta_costo = $conexion->query("SELECT * FROM ingrediente_producido_composicion WHERE ingrediente_producido_id = '$ingrediente_producido_id' ORDER BY fecha_alta DESC");
 
             if ($consulta_costo->num_rows != 0)
             {
@@ -355,12 +355,12 @@ if ($editar == "si")
                 while ($fila = $consulta_costo->fetch_assoc())
                 {
                     //datos de la composicion
-                    $componente_producido_composicion_id = $fila['componente_producido_composicion_id'];
+                    $ingrediente_producido_composicion_id = $fila['ingrediente_producido_composicion_id'];
                     $cantidad = $fila['cantidad'];
-                    $componente_id = $fila['componente_id'];
+                    $ingrediente_id = $fila['ingrediente_id'];
 
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
                     if ($filas2 = $consulta2->fetch_assoc())
                     {            
@@ -373,11 +373,11 @@ if ($editar == "si")
                         $costo_unidad_minima_c = 0;
                     }
 
-                    //costo del componente
-                    $componente_costo = $costo_unidad_minima_c * $cantidad;
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_minima_c * $cantidad;
 
                     //costo de la composicion
-                    $composicion_costo = $composicion_costo + $componente_costo;
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
                 }
 
                 //valor del costo
@@ -393,7 +393,7 @@ if ($editar == "si")
             <section class="rdm-tarjeta">
 
                 <div class="rdm-tarjeta--primario-largo">
-                    <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucfirst($componente) ?></h1>
+                    <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucfirst($ingrediente) ?></h1>
                     <h2 class="rdm-tarjeta--subtitulo-largo">$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ($cantidad_unidad_compra); ?> <?php echo ucfirst($unidad_compra); ?></h2>
                 </div>
 
@@ -480,8 +480,8 @@ if ($editar == "si")
 
 
     <?php
-    //consulto la composicion de este componente producido
-    $consulta = $conexion->query("SELECT * FROM componente_producido_composicion WHERE componente_producido_id = '$componente_producido_id' and estado = 'activo' ORDER BY fecha_alta DESC");
+    //consulto la composicion de este ingrediente producido
+    $consulta = $conexion->query("SELECT * FROM ingrediente_producido_composicion WHERE ingrediente_producido_id = '$ingrediente_producido_id' and estado = 'activo' ORDER BY fecha_alta DESC");
 
     if ($consulta->num_rows == 0)
     {
@@ -498,7 +498,7 @@ if ($editar == "si")
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los componentes o ingredientes de los cuales está hecho un componente producido. Estos componentes o ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan producciones</h2>
+                        <h2 class="rdm-lista--texto-secundario">La composición son los ingredientes de los que está hecho un ingrediente producido. Estos ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan produccciones</h2>
                     </div>
                 </div>
             </article>
@@ -506,7 +506,7 @@ if ($editar == "si")
             <div class="rdm-tarjeta--separador"></div>
 
             <div class="rdm-tarjeta--acciones-izquierda">
-                <a href="componentes_producidos_composicion.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+                <a href="ingredientes_producidos_composicion.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
             </div>
 
         </section>
@@ -527,22 +527,22 @@ if ($editar == "si")
         while ($fila = $consulta->fetch_assoc())
         {
             //datos de la composicion
-            $componente_producido_composicion_id = $fila['componente_producido_composicion_id'];            
+            $ingrediente_producido_composicion_id = $fila['ingrediente_producido_composicion_id'];            
             $cantidad = $fila['cantidad'];
-            $componente_id = $fila['componente_id'];
+            $ingrediente_id = $fila['ingrediente_id'];
 
-            //consulto el componente
-            $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+            //consulto el ingrediente
+            $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
             if ($filas2 = $consulta2->fetch_assoc())
             {
-                $componente = $filas2['componente'];
+                $ingrediente = $filas2['ingrediente'];
                 $unidad_minima = $filas2['unidad_minima'];
                 $costo_unidad_minima = $filas2['costo_unidad_minima'];
 
                 //color de fondo segun la primer letra
-                $avatar_id = $componente_id;
-                $avatar_nombre = "$componente";
+                $avatar_id = $ingrediente_id;
+                $avatar_nombre = "$ingrediente";
 
                 include ("sis/avatar_color.php");
                 
@@ -551,7 +551,7 @@ if ($editar == "si")
             }
             else
             {
-                $componente = "No se ha asignado un componente";
+                $ingrediente = "No se ha asignado un ingrediente";
                 $unidad_minima = "";
                 $costo_unidad_minima = 0;
             }
@@ -566,7 +566,7 @@ if ($editar == "si")
                         <?php echo "$imagen"; ?>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad); ?> <?php echo ucfirst($unidad_minima); ?> de <?php echo ucfirst($componente); ?></h2>
+                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad); ?> <?php echo ucfirst($unidad_minima); ?> de <?php echo ucfirst($ingrediente); ?></h2>
                         <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($producto_costo, 2, ",", "."); ?></h2>
                     </div>
                 </div>
@@ -582,7 +582,7 @@ if ($editar == "si")
         <div class="rdm-tarjeta--separador"></div>
 
         <div class="rdm-tarjeta--acciones-izquierda">
-            <a href="componentes_producidos_composicion.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+            <a href="ingredientes_producidos_composicion.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
         </div>
 
         </section>
@@ -604,7 +604,7 @@ if ($editar == "si")
 
 <footer>
     
-    <a href="componentes_producidos_editar.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-edit zmdi-hc-2x"></i></button></a>
+    <a href="ingredientes_producidos_editar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-edit zmdi-hc-2x"></i></button></a>
 
 </footer>
 

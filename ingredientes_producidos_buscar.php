@@ -35,7 +35,7 @@ if (isset($busqueda))
         $productor_id = null;
     }
 
-	$consulta = mysqli_query($conexion, "SELECT * FROM componente WHERE (componente LIKE '%$busqueda%' or unidad_compra LIKE '%$busqueda%' or costo_unidad_compra LIKE '%$busqueda%' or productor_id LIKE '$productor_id') and tipo = 'producido' and estado = 'activo' ORDER BY componente");
+	$consulta = mysqli_query($conexion, "SELECT * FROM ingrediente WHERE (ingrediente LIKE '%$busqueda%' or unidad_compra LIKE '%$busqueda%' or costo_unidad_compra LIKE '%$busqueda%' or productor_id LIKE '$productor_id') and tipo = 'producido' and estado = 'activo' ORDER BY ingrediente");
 
 	if ($consulta->num_rows == 0)
     {       
@@ -64,8 +64,8 @@ if (isset($busqueda))
 		//La variable $resultado contiene el array que se genera en la consulta, así que obtenemos los datos y los mostramos en un bucle
 		while($fila = mysqli_fetch_array($consulta))
 		{
-		  	$componente_producido_id = $fila['componente_id'];
-            $componente = $fila['componente'];
+		  	$ingrediente_producido_id = $fila['ingrediente_id'];
+            $ingrediente = $fila['ingrediente'];
             $unidad_minima = $fila['unidad_minima'];
             $unidad_compra = $fila['unidad_compra'];
             $costo_unidad_minima = $fila['costo_unidad_minima'];
@@ -75,8 +75,8 @@ if (isset($busqueda))
             $productor_id = $fila['productor_id'];
 
             //color de fondo segun la primer letra
-            $avatar_id = $componente_producido_id;
-            $avatar_nombre = "$componente";
+            $avatar_id = $ingrediente_producido_id;
+            $avatar_nombre = "$ingrediente";
 
             include ("sis/avatar_color.php");
             
@@ -97,7 +97,7 @@ if (isset($busqueda))
 
 
             //consulto el costo
-            $consulta_costo = $conexion->query("SELECT * FROM componente_producido_composicion WHERE componente_producido_id = '$componente_producido_id' ORDER BY fecha_alta DESC");
+            $consulta_costo = $conexion->query("SELECT * FROM ingrediente_producido_composicion WHERE ingrediente_producido_id = '$ingrediente_producido_id' ORDER BY fecha_alta DESC");
 
             if ($consulta_costo->num_rows != 0)
             {
@@ -106,12 +106,12 @@ if (isset($busqueda))
                 while ($fila = $consulta_costo->fetch_assoc())
                 {
                     //datos de la composicion
-                    $componente_producido_composicion_id = $fila['componente_producido_composicion_id'];
+                    $ingrediente_producido_composicion_id = $fila['ingrediente_producido_composicion_id'];
                     $cantidad = $fila['cantidad'];
-                    $componente_id = $fila['componente_id'];
+                    $ingrediente_id = $fila['ingrediente_id'];
 
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
                     if ($filas2 = $consulta2->fetch_assoc())
                     {            
@@ -124,11 +124,11 @@ if (isset($busqueda))
                         $costo_unidad_minima_c = 0;
                     }
 
-                    //costo del componente
-                    $componente_costo = $costo_unidad_minima_c * $cantidad;
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_minima_c * $cantidad;
 
                     //costo de la composicion
-                    $composicion_costo = $composicion_costo + $componente_costo;
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
                 }
 
                 //valor del costo
@@ -141,14 +141,14 @@ if (isset($busqueda))
             }
             ?>
 
-            <a href="componentes_producidos_detalle.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>">
+            <a href="ingredientes_producidos_detalle.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>">
                 <article class="rdm-lista--item-doble">
                     <div class="rdm-lista--izquierda">
                         <div class="rdm-lista--contenedor">
                             <?php echo "$imagen"; ?>
                         </div>
                         <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($componente)); ?></h2>
+                            <h2 class="rdm-lista--titulo"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($ingrediente)); ?></h2>
                             <h2 class="rdm-lista--texto-secundario"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($productor)); ?></h2>
                             <h2 class="rdm-lista--texto-secundario">$<?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", number_format($costo_valor, 2, ",", ".")); ?> x <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($cantidad_unidad_compra)); ?> <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($unidad_compra)); ?></h2>
                         </div>

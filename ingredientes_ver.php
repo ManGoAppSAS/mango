@@ -21,8 +21,8 @@ if(isset($_POST['eliminar'])) $eliminar = $_POST['eliminar']; elseif(isset($_GET
 //variable de consulta
 if(isset($_POST['busqueda'])) $busqueda = $_POST['busqueda']; elseif(isset($_GET['busqueda'])) $busqueda = $_GET['busqueda']; else $busqueda = null;
 
-if(isset($_POST['componente_id'])) $componente_id = $_POST['componente_id']; elseif(isset($_GET['componente_id'])) $componente_id = $_GET['componente_id']; else $componente_id = null;
-if(isset($_POST['componente'])) $componente = $_POST['componente']; elseif(isset($_GET['componente'])) $componente = $_GET['componente']; else $componente = null;
+if(isset($_POST['ingrediente_id'])) $ingrediente_id = $_POST['ingrediente_id']; elseif(isset($_GET['ingrediente_id'])) $ingrediente_id = $_GET['ingrediente_id']; else $ingrediente_id = null;
+if(isset($_POST['ingrediente'])) $ingrediente = $_POST['ingrediente']; elseif(isset($_GET['ingrediente'])) $ingrediente = $_GET['ingrediente']; else $ingrediente = null;
 
 if(isset($_POST['mensaje'])) $mensaje = $_POST['mensaje']; elseif(isset($_GET['mensaje'])) $mensaje = $_GET['mensaje']; else $mensaje = null;
 if(isset($_POST['body_snack'])) $body_snack = $_POST['body_snack']; elseif(isset($_GET['body_snack'])) $body_snack = $_GET['body_snack']; else $body_snack = null;
@@ -30,20 +30,20 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 ?>
 
 <?php
-//elimino el componente
+//elimino el ingrediente
 if ($eliminar == 'si')
 {
-    $borrar = $conexion->query("UPDATE componente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE componente_id = '$componente_id'");
+    $borrar = $conexion->query("UPDATE ingrediente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE ingrediente_id = '$ingrediente_id'");
 
     if ($borrar)
     {
-        $mensaje = "Componente eliminado";
+        $mensaje = "Ingrediente eliminado";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
     else
     {
-        $mensaje = "No es posible eliminar el componente";
+        $mensaje = "No es posible eliminar el ingrediente";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "error";
     }
@@ -53,7 +53,7 @@ if ($eliminar == 'si')
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Componentes - ManGo!</title>
+    <title>Ingredientes - ManGo!</title>
     <?php
     //información del head
     include ("partes/head.php");
@@ -73,7 +73,7 @@ if ($eliminar == 'si')
             var textoBusqueda = $("input#busqueda").val();
          
              if (textoBusqueda != "") {
-                $.post("componentes_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
+                $.post("ingredientes_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
                     $("#resultadoBusqueda").html(mensaje);
                  }); 
              } else { 
@@ -91,8 +91,8 @@ if ($eliminar == 'si')
 <header class="rdm-toolbar--contenedor">
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
-            <a href="ajustes.php#componentes"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
-            <h2 class="rdm-toolbar--titulo">Componentes</h2>
+            <a href="ajustes.php#ingredientes"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
+            <h2 class="rdm-toolbar--titulo">Ingredientes</h2>
         </div>
     </div>
 </header>
@@ -100,8 +100,8 @@ if ($eliminar == 'si')
 <main class="rdm--contenedor-toolbar">
 
     <?php
-    //consulto los componentes
-    $consulta = $conexion->query("SELECT * FROM componente WHERE tipo = 'comprado' and estado = 'activo' ORDER BY componente");
+    //consulto los ingredientes
+    $consulta = $conexion->query("SELECT * FROM ingrediente WHERE tipo = 'comprado' and estado = 'activo' ORDER BY ingrediente");
 
     if ($consulta->num_rows == 0)
     {
@@ -109,8 +109,8 @@ if ($eliminar == 'si')
 
         <div class="rdm-vacio--caja">
             <i class="zmdi zmdi-alert-circle-o zmdi-hc-4x"></i>
-            <p class="rdm-tipografia--subtitulo1">No se han agregado componentes</p>
-            <p class="rdm-tipografia--cuerpo1--margen-ajustada">Los componentes son todos los elementos de los que están hechos los productos o servicios que vendes, por ejemplo: una hamburguesa está hecha de pan, carne y lechuga, etc.</p>
+            <p class="rdm-tipografia--subtitulo1">No se han agregado ingredientes</p>
+            <p class="rdm-tipografia--cuerpo1--margen-ajustada">Los ingredientes son todos los elementos de los que están hechos los productos o servicios que vendes, por ejemplo: una hamburguesa está hecha de pan, carne y lechuga, etc.</p>
         </div>
 
         <?php
@@ -127,8 +127,8 @@ if ($eliminar == 'si')
         <?php
         while ($fila = $consulta->fetch_assoc())
         {
-            $componente_id = $fila['componente_id'];
-            $componente = $fila['componente'];
+            $ingrediente_id = $fila['ingrediente_id'];
+            $ingrediente = $fila['ingrediente'];
             $unidad_minima = $fila['unidad_minima'];
             $unidad_compra = $fila['unidad_compra'];
             $costo_unidad_minima = $fila['costo_unidad_minima'];
@@ -137,8 +137,8 @@ if ($eliminar == 'si')
             $proveedor_id = $fila['proveedor_id'];
 
             //color de fondo segun la primer letra
-            $avatar_id = $componente_id;
-            $avatar_nombre = "$componente";
+            $avatar_id = $ingrediente_id;
+            $avatar_nombre = "$ingrediente";
 
             include ("sis/avatar_color.php");
             
@@ -158,14 +158,14 @@ if ($eliminar == 'si')
             }
             ?>
 
-            <a href="componentes_detalle.php?componente_id=<?php echo "$componente_id"; ?>">
+            <a href="ingredientes_detalle.php?ingrediente_id=<?php echo "$ingrediente_id"; ?>">
                 <article class="rdm-lista--item-doble">
                     <div class="rdm-lista--izquierda">
                         <div class="rdm-lista--contenedor">
                             <?php echo "$imagen"; ?>
                         </div>
                         <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo ucfirst($componente); ?></h2>
+                            <h2 class="rdm-lista--titulo"><?php echo ucfirst($ingrediente); ?></h2>
                             <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst($proveedor); ?></h2>
                             <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($costo_unidad_compra, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></h2>
                         </div>
@@ -195,7 +195,7 @@ if ($eliminar == 'si')
     
 <footer>
     
-    <a href="componentes_agregar.php"><button class="rdm-boton--fab" ><i class="zmdi zmdi-plus zmdi-hc-2x"></i></button></a>
+    <a href="ingredientes_agregar.php"><button class="rdm-boton--fab" ><i class="zmdi zmdi-plus zmdi-hc-2x"></i></button></a>
 
 </footer>
 

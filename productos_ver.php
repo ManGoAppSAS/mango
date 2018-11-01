@@ -108,7 +108,7 @@ if ($eliminar == 'si')
 
     <?php
     //consulto los productos
-    $consulta = $conexion->query("SELECT * FROM producto WHERE estado = 'activo' ORDER BY producto");
+    $consulta = $conexion->query("SELECT * FROM producto WHERE estado = 'activo'  ORDER BY producto");
 
     if ($consulta->num_rows == 0)
     {

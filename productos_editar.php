@@ -18,7 +18,7 @@ include ("sis/variables_sesion.php");
 //capturo las variables que pasan por URL o formulario
 if(isset($_POST['producto_id'])) $producto_id = $_POST['producto_id']; elseif(isset($_GET['producto_id'])) $producto_id = $_GET['producto_id']; else $producto_id = null;
 
-//variables que van al componente
+//variables que van al ingrediente
 if(isset($_POST['costo'])) $costo = $_POST['costo']; elseif(isset($_GET['costo'])) $costo = $_GET['costo']; else $costo = null;
 ?>
 
@@ -355,10 +355,10 @@ else
             <p class="rdm-formularios--label"><label for="tipo">Tipo de inventario*</label></p>
             <p><select id="tipo" name="tipo" onchange="mostrar_costo(this)" required>
                 <option value="<?php echo "$tipo"; ?>"><?php echo ucfirst($tipo) ?></option>
-                <option value="compuesto">Compuesto</option>
-                <option value="simple">Simple</option>
+                <option value="compuesto">Compuesto (Lleva varios ingredientes)</option>
+                <option value="simple">Simple (Lleva un solo ingrediente)</option>
             </select></p>
-            <p class="rdm-formularios--ayuda">Al crear un producto <b>simple</b> tambien se crea el componente</p>
+            <p class="rdm-formularios--ayuda">¿El producto está compuesto de uno o varios ingredientes?</p>
 
             <?php
             //consulto y muestro los locales
