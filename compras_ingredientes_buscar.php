@@ -17,7 +17,7 @@ include ("sis/variables_sesion.php");
 <?php
 //variable de búsqueda
 if(isset($_POST['busqueda'])) $busqueda = $_POST['busqueda']; elseif(isset($_GET['busqueda'])) $busqueda = $_GET['busqueda']; else $busqueda = null;
-if(isset($_POST['producto_id'])) $producto_id = $_POST['producto_id']; elseif(isset($_GET['producto_id'])) $producto_id = $_GET['producto_id']; else $producto_id = null;
+if(isset($_POST['compra_id'])) $compra_id = $_POST['compra_id']; elseif(isset($_GET['compra_id'])) $compra_id = $_GET['compra_id']; else $compra_id = null;
 ?>
 
 <?php
@@ -69,9 +69,7 @@ if (isset($busqueda))
         {
             $ingrediente_id = $fila['ingrediente_id'];
             $ingrediente = $fila['ingrediente'];
-            $unidad_minima = $fila['unidad_minima'];
             $unidad_compra = $fila['unidad_compra'];
-            $costo_unidad_minima = $fila['costo_unidad_minima'];
             $costo_unidad_compra = $fila['costo_unidad_compra'];
 
             $proveedor_id = $fila['proveedor_id'];
@@ -105,12 +103,12 @@ if (isset($busqueda))
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo"><?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($ingrediente)); ?></h2>
-                        <h2 class="rdm-lista--texto-secundario">$<?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", number_format($costo_unidad_minima, 2, ",", ".")); ?> x <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($unidad_minima)); ?> • <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($proveedor)); ?></h2>
+                        <h2 class="rdm-lista--texto-secundario">$<?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", number_format($costo_unidad_compra, 2, ",", ".")); ?> x <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($unidad_compra)); ?> • <?php echo preg_replace("/$busqueda/i", "<span class='rdm-resaltado'>\$0</span>", ucfirst($proveedor)); ?></h2>
                     </div>
 
                 </div>
                 <div class="rdm-lista--derecha-sencillo">
-                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus-circle-o zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_compra="<?php echo ucfirst($unidad_compra) ?>" data-proveedor="<?php echo ucfirst($proveedor) ?>" data-compra_id="<?php echo ucfirst($compra_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus-circle-o zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </article>                       
 

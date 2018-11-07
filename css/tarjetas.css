@@ -136,7 +136,7 @@ Autor: Danny Estrada
     border-radius: 50%;
 }
 
-.rdm-tarjeta--cuerpo, .rdm-tarjeta--dashboard-cuerpo{
+.rdm-tarjeta--cuerpo, .rdm-tarjeta--dashboard-cuerpo, .rdm-tarjeta--modal-cuerpo{
     box-sizing: border-box;
     color: rgba(0, 0, 0, 0.8);
     font-size: 0.9em;
@@ -150,6 +150,10 @@ Autor: Danny Estrada
 
 .rdm-tarjeta--dashboard-cuerpo{
     padding: 0em 1.2em;
+}
+
+.rdm-tarjeta--modal-cuerpo {
+    font-size: 1em;
 }
 
 .rdm-tarjeta--separador{

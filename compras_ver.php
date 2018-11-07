@@ -15,50 +15,62 @@ include ("sis/variables_sesion.php");
 ?>
 
 <?php
-//capturo las variables que pasan por URL o formulario
-if(isset($_POST['eliminar'])) $eliminar = $_POST['eliminar']; elseif(isset($_GET['eliminar'])) $eliminar = $_GET['eliminar']; else $eliminar = null;
-if(isset($_POST['actualizar'])) $actualizar = $_POST['actualizar']; elseif(isset($_GET['actualizar'])) $actualizar = $_GET['actualizar']; else $actualizar = null;
-if(isset($_POST['consultaBusqueda'])) $consultaBusqueda = $_POST['consultaBusqueda']; elseif(isset($_GET['consultaBusqueda'])) $consultaBusqueda = $_GET['consultaBusqueda']; else $consultaBusqueda = null;
+//variable para eliminar
+if(isset($_POST['eliminar_compra'])) $eliminar_compra = $_POST['eliminar_compra']; elseif(isset($_GET['eliminar_compra'])) $eliminar_compra = $_GET['eliminar_compra']; else $eliminar_compra = null;
 
-if(isset($_POST['id'])) $id = $_POST['id']; elseif(isset($_GET['id'])) $id = $_GET['id']; else $id = null;
-if(isset($_POST['despacho_id'])) $despacho_id = $_POST['despacho_id']; elseif(isset($_GET['despacho_id'])) $despacho_id = $_GET['despacho_id']; else $despacho_id = null;
+//variable de consulta
+if(isset($_POST['busqueda'])) $busqueda = $_POST['busqueda']; elseif(isset($_GET['busqueda'])) $busqueda = $_GET['busqueda']; else $busqueda = null;
+
+//variables de envio de inventario
+if(isset($_POST['enviar'])) $enviar = $_POST['enviar']; elseif(isset($_GET['enviar'])) $enviar = $_GET['enviar']; else $enviar = null;
+if(isset($_POST['compra_id'])) $compra_id = $_POST['compra_id']; elseif(isset($_GET['compra_id'])) $compra_id = $_GET['compra_id']; else $compra_id = null;
+if(isset($_POST['observacion_envio'])) $observacion_envio = $_POST['observacion_envio']; elseif(isset($_GET['observacion_envio'])) $observacion_envio = $_GET['observacion_envio']; else $observacion_envio = null;
 
 if(isset($_POST['mensaje'])) $mensaje = $_POST['mensaje']; elseif(isset($_GET['mensaje'])) $mensaje = $_GET['mensaje']; else $mensaje = null;
 if(isset($_POST['body_snack'])) $body_snack = $_POST['body_snack']; elseif(isset($_GET['body_snack'])) $body_snack = $_GET['body_snack']; else $body_snack = null;
 if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif(isset($_GET['mensaje_tema'])) $mensaje_tema = $_GET['mensaje_tema']; else $mensaje_tema = null;
 ?>
 
+
 <?php
-//elimino el despacho
-if ($eliminar == 'si')
+//envio los ingredientes al inventario
+if ($enviar == 'si')
 {
-    //actualizo el estado a eliminado
-    $eliminar_despacho = $conexion->query("UPDATE despachos SET estado = 'eliminado' WHERE id = '$despacho_id'");
+    $actualizar_compra = $conexion->query("UPDATE compra SET estado = 'enviado', observacion_envio = '$observacion_envio' WHERE compra_id = '$compra_id'");
 
-    $eliminar_componentes = $conexion->query("UPDATE despachos_componentes SET estado = 'eliminado' WHERE despacho_id = '$despacho_id'");
-
-    if ($eliminar_componentes)
+    if ($actualizar_compra)
     {
-        $mensaje = "Despacho <b>No ".ucfirst($despacho_id)."</b> eliminado";
+        $actualizar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET estado = 'enviado' WHERE compra_id = '$compra_id'");
+
+        $mensaje = "Compra terminada y enviada";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
 }
 ?>
 
+
+
+
 <?php
-//envio el despacho
-if ($actualizar == "si")
+//elimino la compra
+if ($eliminar_compra == 'si')
 {
-    $enviar_despacho = $conexion->query("UPDATE despachos SET fecha_envio = '$ahora', estado = 'enviado' WHERE id = '$despacho_id'");
+    $borrar_compra = $conexion->query("UPDATE compra SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
 
-    $enviar_componentes = $conexion->query("UPDATE despachos_componentes SET estado = 'enviado' WHERE despacho_id = '$despacho_id'");
-
-    if ($enviar_componentes)
+    if ($borrar_compra)
     {
-        $mensaje = "Compra <b>No ".ucfirst($despacho_id)."</b> enviada";
+        $borrar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
+
+        $mensaje = "Compra eliminada";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
+    }
+    else
+    {
+        $mensaje = "No es posible eliminar la compra";
+        $body_snack = 'onLoad="Snackbar()"';
+        $mensaje_tema = "error";
     }
 }
 ?>
@@ -66,7 +78,7 @@ if ($actualizar == "si")
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>ManGo!</title>    
+    <title>Compras - ManGo!</title>
     <?php
     //información del head
     include ("partes/head.php");
@@ -86,7 +98,7 @@ if ($actualizar == "si")
             var textoBusqueda = $("input#busqueda").val();
          
              if (textoBusqueda != "") {
-                $.post("despachos_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
+                $$.post("zonas_entrega_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
                     $("#resultadoBusqueda").html(mensaje);
                  }); 
              } else { 
@@ -97,13 +109,12 @@ if ($actualizar == "si")
     }
     </script>
 </head>
-
 <body <?php echo $body_snack; ?>>
 
 <header class="rdm-toolbar--contenedor">
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
-            <a href="index.php#despachos"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
+            <a href="index.php#compras"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
             <h2 class="rdm-toolbar--titulo">Compras</h2>
         </div>
     </div>
@@ -112,390 +123,283 @@ if ($actualizar == "si")
 <main class="rdm--contenedor-toolbar">
 
     <?php
-    //consulto y muestro los despachos hechos
-    $consulta = $conexion->query("SELECT * FROM despachos");
+    //consulto las compras            
+    $consulta = $conexion->query("SELECT * FROM compra WHERE estado = 'creado' ORDER BY fecha_alta");
 
     if ($consulta->num_rows == 0)
     {
         ?>
 
-        <section class="rdm-lista">
-
-            <article class="rdm-lista--item-sencillo">
-                <div class="rdm-lista--izquierda-sencillo">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-truck zmdi-hc-2x"></i></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">No hay compras</h2>
-                    </div>
-                </div>
-            </article>
-
-        </section>
-
-        <?php
-    }
-    ?>
-
-    <?php
-    //consulto y muestro los despachos hechos
-    $consulta = $conexion->query("SELECT * FROM despachos WHERE estado = 'creado' ORDER BY fecha DESC");
-
-    if ($consulta->num_rows == 0)
-    {
-        
-    }
-    else
-    {
-        ?>
-        
-        <h2 class="rdm-lista--titulo-largo">Creados</h2>
+        <h2 class="rdm-lista--titulo-largo">En proceso</h2>
 
         <section class="rdm-lista">
-
-        <?php
-        while ($fila = $consulta->fetch_assoc())
-        {
-            $despacho_id = $fila['id'];
-            $origen = $fila['origen'];
-            $destino = $fila['destino'];
-            $estado = $fila['estado'];
-            $usuario_recibe = $fila['usuario_recibe'];
-
-            //calculo el tiempo transcurrido
-            $fecha = date('Y-m-d H:i:s', strtotime($fila['fecha']));
-            include ("sis/tiempo_transcurrido.php");
-
-            //consulto el destino
-            $consulta_destino = $conexion->query("SELECT * FROM locales WHERE id = $destino");
-
-            if ($filas_destino = $consulta_destino->fetch_assoc())
-            {
-                $local_destino = ucfirst($filas_destino['local']);
-            }
-            else
-            {
-                $local_destino = "No se ha asignado un local";
-            }
-
-            //cantidad de componentes en este despachos
-            $costo_despacho = 0;
-
-            $consulta_cantidad = $conexion->query("SELECT * FROM despachos_componentes WHERE despacho_id = '$despacho_id'");
-
-            if ($consulta_cantidad->num_rows == 0)
-            {
-                $cantidad_componentes = $consulta_cantidad->num_rows;
-                $cantidad_componentes = "$cantidad_componentes componentes";
-            }
-            else
-            {
-                $cantidad_componentes = $consulta_cantidad->num_rows;
-                $cantidad_componentes = "$cantidad_componentes componentes";                
-
-                while ($fila_cantidad = $consulta_cantidad->fetch_assoc())
-                {
-                    $componente_id = $fila_cantidad['componente_id'];
-                    $cantidad = $fila_cantidad['cantidad'];
-
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componentes WHERE id = $componente_id");
-
-                    if ($filas2 = $consulta2->fetch_assoc())
-                    {
-                        $unidad = $filas2['unidad'];
-                        $componente = $filas2['componente'];
-                        $costo_unidad = $filas2['costo_unidad'];
-                    }
-                    else
-                    {
-                        $componente = "No se ha asignado un componente";
-                        $costo_unidad = "0";
-                    }
-
-                    $subtotal_costo_unidad = $costo_unidad * $cantidad;
-
-                    $costo_despacho = $costo_despacho + $subtotal_costo_unidad;
-                }
-
-
-            }
-            ?>
-
-            <a href="despachos_detalle.php?despacho_id=<?php echo "$despacho_id"; ?>&destino=<?php echo "$destino"; ?>">
-
-                <article class="rdm-lista--item-doble">
-                    <div class="rdm-lista--izquierda">
-                        <div class="rdm-lista--contenedor">
-                            <div class="rdm-lista--icono"><span class="rdm-lista--texto-negativo"><i class="zmdi zmdi-truck zmdi-hc-2x"></i></span></div>
-                        </div>
-                        <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$local_destino"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst("$cantidad_componentes"); ?></h2>
-                            <h2 class="rdm-lista--texto-valor">No <?php echo "$despacho_id"; ?> - $ <?php echo number_format($costo_despacho, 2, ",", "."); ?></h2>
-                        </div>
-                    </div>
-                    <div class="rdm-lista--derecha">
-                        <span class="rdm-lista--texto-tiempo"><?php echo "$tiempo_transcurrido"; ?></span>
-                    </div>
-                </article>
-
-            </a>
             
-            <?php
-        }
-
-        ?>
-
-        </section>
-
-        <?php
-    }
-    ?>
-
-    
-
-    <?php
-    //consulto y muestro los despachos hechos
-    $consulta = $conexion->query("SELECT * FROM despachos WHERE estado = 'enviado' ORDER BY fecha DESC");
-
-    if ($consulta->num_rows == 0)
-    {
-        
-    }
-    else
-    {
-        ?>        
-        
-        <h2 class="rdm-lista--titulo-largo">Enviados</h2>
-        
-        <section class="rdm-lista">
-
-        <?php
-        while ($fila = $consulta->fetch_assoc())
-        {
-            $despacho_id = $fila['id'];
-            $origen = $fila['origen'];
-            $destino = $fila['destino'];
-            $estado = $fila['estado'];
-            $usuario_recibe = $fila['usuario_recibe'];
-
-            //calculo el tiempo transcurrido
-            $fecha = date('Y-m-d H:i:s', strtotime($fila['fecha_envio']));
-            include ("sis/tiempo_transcurrido.php");
-
-            //consulto el destino
-            $consulta_destino = $conexion->query("SELECT * FROM locales WHERE id = $destino");
-
-            if ($filas_destino = $consulta_destino->fetch_assoc())
-            {
-                $local_destino = ucfirst($filas_destino['local']);
-            }
-            else
-            {
-                $local_destino = "No se ha asignado un local";
-            }
-
-            //cantidad de componentes en este despachos                     
-            $consulta_cantidad = $conexion->query("SELECT * FROM despachos_componentes WHERE despacho_id = '$despacho_id'");
-
-            if ($consulta_cantidad->num_rows == 0)
-            {
-                $cantidad_componentes = $consulta_cantidad->num_rows;
-                $cantidad_componentes = "$cantidad_componentes componentes";
-            }
-            else
-            {
-                $cantidad_componentes = $consulta_cantidad->num_rows;
-                $cantidad_componentes = "$cantidad_componentes componentes";
-
-                $costo_despacho = 0;
-
-                while ($fila_cantidad = $consulta_cantidad->fetch_assoc())
-                {
-                    $componente_id = $fila_cantidad['componente_id'];
-                    $cantidad = $fila_cantidad['cantidad'];
-
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componentes WHERE id = $componente_id");
-
-                    if ($filas2 = $consulta2->fetch_assoc())
-                    {
-                        $unidad = $filas2['unidad'];
-                        $componente = $filas2['componente'];
-                        $costo_unidad = $filas2['costo_unidad'];
-                    }
-                    else
-                    {
-                        $componente = "No se ha asignado un componente";
-                    }
-
-                    $subtotal_costo_unidad = $costo_unidad * $cantidad;
-
-                    $costo_despacho = $costo_despacho + $subtotal_costo_unidad;
-                }
-
-
-            }
-            ?>
-
-            <a href="despachos_detalle.php?despacho_id=<?php echo "$despacho_id"; ?>&destino=<?php echo "$destino"; ?>">
-
-                <article class="rdm-lista--item-doble">
-                    <div class="rdm-lista--izquierda">
-                        <div class="rdm-lista--contenedor">
-                            <div class="rdm-lista--icono"><span class="rdm-lista--texto-positivo"><i class="zmdi zmdi-truck zmdi-hc-2x"></i></span></div>
-                        </div>
-                        <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$local_destino"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst("$cantidad_componentes"); ?></h2>
-                            <h2 class="rdm-lista--texto-valor">No <?php echo "$despacho_id"; ?> - $ <?php echo number_format($costo_despacho, 2, ",", "."); ?></h2>
-                        </div>
-                    </div>
-                    <div class="rdm-lista--derecha">
-                        <span class="rdm-lista--texto-tiempo"><?php echo "$tiempo_transcurrido"; ?></span>
-                    </div>
-                </article>
-
-            </a>
-            
-            <?php
-        }
-
-        ?>
-
-        </section>
-
-        <?php
-    }
-    ?>
-
-
-    <?php
-    //consulto y muestro los despachos hechos
-    $consulta = $conexion->query("SELECT * FROM despachos WHERE estado = 'recibido' ORDER BY fecha DESC LIMIT 10");
-
-    if ($consulta->num_rows == 0)
-    {
-        
-    }
-    else
-    {
-        ?>        
-        
-        <h2 class="rdm-lista--titulo-largo">Recibidos</h2>
-        
-        <section class="rdm-lista">
-
-        <?php
-        while ($fila = $consulta->fetch_assoc())
-        {
-            $despacho_id = $fila['id'];
-            $origen = $fila['origen'];
-            $destino = $fila['destino'];
-            $estado = $fila['estado'];
-            $usuario_recibe = $fila['usuario_recibe'];            
-
-            //calculo el tiempo transcurrido
-            $fecha = date('Y-m-d H:i:s', strtotime($fila['fecha_recibe']));
-            include ("sis/tiempo_transcurrido.php");
-
-            //consulto el destino
-            $consulta_destino = $conexion->query("SELECT * FROM locales WHERE id = $destino");
-
-            if ($filas_destino = $consulta_destino->fetch_assoc())
-            {
-                $local_destino = ucfirst($filas_destino['local']);
-            }
-            else
-            {
-                $local_destino = "No se ha asignado un local";
-            }
-
-            //consulto el usuario que recibe el despacho
-            $consulta_usuario = $conexion->query("SELECT * FROM usuarios WHERE id = '$usuario_recibe'");           
-
-            if ($fila = $consulta_usuario->fetch_assoc()) 
-            {
-                $nombres = ucwords($fila['nombres']);
-                $apellidos = ucwords($fila['apellidos']);
-
-                //tomo la primer palabra de las cadenas
-                $nombres = strtok($nombres, " ");
-                $apellidos = strtok($apellidos, " ");
-
-                $usuario_recibe = "Recibido por $nombres $apellidos";
-            }
-
-            //cantidad de componentes en este despachos                     
-            $consulta_cantidad = $conexion->query("SELECT * FROM despachos_componentes WHERE despacho_id = '$despacho_id'");
-
-            if ($consulta_cantidad->num_rows == 0)
-            {
-                $cantidad_componentes = $consulta_cantidad->num_rows;
-                $cantidad_componentes = "$cantidad_componentes componentes";
-            }
-            else
-            {
-                $cantidad_componentes = $consulta_cantidad->num_rows;
-                $cantidad_componentes = "$cantidad_componentes componentes";
-
-                $costo_despacho = 0;
-
-                while ($fila_cantidad = $consulta_cantidad->fetch_assoc())
-                {
-                    $componente_id = $fila_cantidad['componente_id'];
-                    $cantidad = $fila_cantidad['cantidad'];
-
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componentes WHERE id = $componente_id");
-
-                    if ($filas2 = $consulta2->fetch_assoc())
-                    {
-                        $unidad = $filas2['unidad'];
-                        $componente = $filas2['componente'];
-                        $costo_unidad = $filas2['costo_unidad'];
-                    }
-                    else
-                    {
-                        $componente = "No se ha asignado un componente";
-                        $costo_unidad = "0";
-                    }
-
-                    $subtotal_costo_unidad = $costo_unidad * $cantidad;
-
-                    $costo_despacho = $costo_despacho + $subtotal_costo_unidad;
-                }
-
-
-            }
-            ?>            
-
             <article class="rdm-lista--item-doble">
                 <div class="rdm-lista--izquierda">
                     <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-truck zmdi-hc-2x"></i></div>
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-info zmdi-hc-2x"></i></div></div>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo"><?php echo ucfirst("$local_destino"); ?></h2>
-                        <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst("$usuario_recibe"); ?></h2>
-                        <h2 class="rdm-lista--texto-valor">No <?php echo "$despacho_id"; ?> - $ <?php echo number_format($costo_despacho, 2, ",", "."); ?></h2>
+                        <h2 class="rdm-lista--titulo">Vacio</h2>
+                        <h2 class="rdm-lista--texto-secundario">No hay compras en proceso.</h2>
                     </div>
                 </div>
-                <div class="rdm-lista--derecha">
-                    <span class="rdm-lista--texto-tiempo"><?php echo "$tiempo_transcurrido"; ?></span>
-                </div>
+                
             </article>
-            
-            <?php
-        }
 
+        </section>
+
+        
+
+        <?php
+    }
+    else
+    {
+        ?>        
+            
+        <h2 class="rdm-lista--titulo-largo">En proceso</h2>
+
+        <section class="rdm-lista">
+
+        <?php
+        while ($fila = $consulta->fetch_assoc()) 
+        {
+            $compra_id = $fila['compra_id'];
+            $estado = $fila['estado'];
+            $destino = $fila['destino'];
+
+            //consulto el destino
+            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
+
+            if ($filas2 = $consulta2->fetch_assoc())
+            {
+                $local = $filas2['local'];
+
+            }
+            else
+            {
+                $local = "";
+            }
+
+            //consulto la cantidad_enviada de ingredientes en la compra
+            $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
+            $total_ingredientes = $consulta_ingredientes->num_rows;
+
+            //consulto el costo
+            $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
+
+            if ($consulta_costo->num_rows != 0)
+            {
+                $composicion_costo = 0;
+
+                while ($fila = $consulta_costo->fetch_assoc())
+                {
+                    //datos de la composicion
+                    $compra_ingrediente_id = $fila['compra_ingrediente_id'];
+                    $cantidad_enviada = $fila['cantidad_enviada'];
+                    $ingrediente_id = $fila['ingrediente_id'];
+
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
+
+                    if ($filas2 = $consulta2->fetch_assoc())
+                    {            
+                        $unidad_compra_c = $filas2['unidad_compra'];
+                        $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
+                    }
+                    else
+                    {            
+                        $unidad_compra_c = "unid";
+                        $costo_unidad_compra_c = 0;
+                    }
+
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
+
+                    //costo de la composicion
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
+                }
+
+                //valor del costo
+                $costo_valor = $composicion_costo;       
+            }
+            else                 
+            {
+                //valor del costo
+                $costo_valor = 0;
+            }
+
+            //color de fondo segun la primer letra
+            $avatar_id = $compra_id;
+            $avatar_nombre = "$local";
+
+            include ("sis/avatar_color.php");
+            
+            //consulto el avatar
+            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
+            ?>
+
+            <a href="compras_ingredientes.php?local_id=<?php echo "$destino"; ?>&crear_compra=si">
+                <article class="rdm-lista--item-doble">
+                    <div class="rdm-lista--izquierda">
+                        <div class="rdm-lista--contenedor">
+                            <?php echo "$imagen"; ?>
+                        </div>
+                        <div class="rdm-lista--contenedor">
+                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$local"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario"><?php echo ($total_ingredientes); ?> Ingredientes  •  Costo: $<?php echo number_format($costo_valor, 2, ",", "."); ?></h2>
+                        </div>
+                    </div>
+                </article>
+            </a>
+            
+        <?php
+        }
         ?>
 
         </section>
 
+    <?php
+    }
+    ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <?php
+    //consulto las compras enviadas           
+    $consulta = $conexion->query("SELECT * FROM compra WHERE estado = 'enviado' ORDER BY fecha_alta");
+
+    if ($consulta->num_rows == 0)
+    {
+        ?>       
+
+        
+
         <?php
+    }
+    else
+    {
+        ?>        
+            
+        <h2 class="rdm-lista--titulo-largo">Enviadas</h2>
+
+        <section class="rdm-lista">
+
+        <?php
+        while ($fila = $consulta->fetch_assoc()) 
+        {
+            $compra_id = $fila['compra_id'];
+            $estado = $fila['estado'];
+            $destino = $fila['destino'];
+
+            //consulto el destino
+            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
+
+            if ($filas2 = $consulta2->fetch_assoc())
+            {
+                $local = $filas2['local'];
+
+            }
+            else
+            {
+                $local = "";
+            }
+
+            //consulto la cantidad_enviada de ingredientes en la compra
+            $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
+            $total_ingredientes = $consulta_ingredientes->num_rows;
+
+            //consulto el costo
+            $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
+
+            if ($consulta_costo->num_rows != 0)
+            {
+                $composicion_costo = 0;
+
+                while ($fila = $consulta_costo->fetch_assoc())
+                {
+                    //datos de la composicion
+                    $compra_ingrediente_id = $fila['compra_ingrediente_id'];
+                    $cantidad_enviada = $fila['cantidad_enviada'];
+                    $ingrediente_id = $fila['ingrediente_id'];
+
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
+
+                    if ($filas2 = $consulta2->fetch_assoc())
+                    {            
+                        $unidad_compra_c = $filas2['unidad_compra'];
+                        $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
+                    }
+                    else
+                    {            
+                        $unidad_compra_c = "unid";
+                        $costo_unidad_compra_c = 0;
+                    }
+
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
+
+                    //costo de la composicion
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
+                }
+
+                //valor del costo
+                $costo_valor = $composicion_costo;       
+            }
+            else                 
+            {
+                //valor del costo
+                $costo_valor = 0;
+            }
+
+            //color de fondo segun la primer letra
+            $avatar_id = $compra_id;
+            $avatar_nombre = "$local";
+
+            include ("sis/avatar_color.php");
+            
+            //consulto el avatar
+            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
+            ?>
+
+            
+                <article class="rdm-lista--item-doble">
+                    <div class="rdm-lista--izquierda">
+                        <div class="rdm-lista--contenedor">
+                            <?php echo "$imagen"; ?>
+                        </div>
+                        <div class="rdm-lista--contenedor">
+                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$local"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario"><?php echo ($total_ingredientes); ?> Ingredientes  •  Costo: $<?php echo number_format($costo_valor, 2, ",", "."); ?></h2>
+                        </div>
+                    </div>                    
+                </article>
+            
+            
+        <?php
+        }
+        ?>
+
+        </section>
+
+    <?php
     }
     ?>
 
@@ -511,7 +415,7 @@ if ($actualizar == "si")
     
 <footer>
     
-    <a href="despachos_agregar.php"><button class="rdm-boton--fab" ><i class="zmdi zmdi-plus zmdi-hc-2x"></i></button></a>
+    <a href="compras_destino.php"><button class="rdm-boton--fab" ><i class="zmdi zmdi-plus zmdi-hc-2x"></i></button></a>
 
 </footer>
 

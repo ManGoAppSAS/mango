@@ -413,7 +413,7 @@ if ($editar == "si")
                     <?php } ?>
 
                     <?php if (!empty($unidad_compra)) { ?>
-                        <p><b>Unidad de producción</b> <br>$<?php echo number_format($costo_unidad_compra, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></p>
+                        <p><b>Unidad de producción</b> <br>$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></p>
                     <?php } ?>
 
 

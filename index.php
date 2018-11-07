@@ -76,20 +76,18 @@ include ("sis/variables_sesion.php");
 
     <section class="rdm-lista-sencillo">
 
-        <?php echo "$ventas"; ?>
+        <a class="ancla" name="inventario"></a>
 
-        <a class="ancla" name="ventas"></a>
-        
-        <a href="">
+        <a href="inventario_ver.php">          
 
             <article class="rdm-lista--item-sencillo">
                 <div class="rdm-lista--izquierda">
                     <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-inbox zmdi-hc-2x"></i></div>
+                        <div class="rdm-lista--icono"><i class="zmdi zmdi-storage zmdi-hc-2x"></i></div>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Ventas</h2>
-                        <h2 class="rdm-lista--texto-secundario">Hacer o continuar una venta</h2>
+                        <h2 class="rdm-lista--titulo">Inventario</h2>
+                        <h2 class="rdm-lista--texto-secundario">Ver inventario y recibir despachos</h2>
                     </div>
                 </div>
                 
@@ -97,54 +95,9 @@ include ("sis/variables_sesion.php");
 
         </a>
 
-        
-        <?php echo "$cuentas_cobrar"; ?>        
+        <a class="ancla" name="compras"></a>
 
-        <a class="ancla" name="cuentas_cobrar"></a>
-        
-        <a href="">
-
-            <article class="rdm-lista--item-sencillo">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-long-arrow-down zmdi-hc-2x"></i></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Cuentas por cobrar</h2>
-                        <h2 class="rdm-lista--texto-secundario">Gestionar las cuentas por cobrar</h2>
-                    </div>
-                </div>
-                
-            </article>
-
-        </a>
-
-        <?php echo "$zonas_entregas"; ?>
-
-        <a class="ancla" name="zonas"></a>
-
-        <a href="">         
-
-            <article class="rdm-lista--item-sencillo">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-assignment-o zmdi-hc-2x"></i></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Zonas de entregas</h2>
-                        <h2 class="rdm-lista--texto-secundario">Mostrar zonas de entrega</h2>
-                    </div>
-                </div>
-                
-            </article>
-
-        </a>          
-
-        <?php echo "$compras"; ?>
-
-        <a class="ancla" name="despachos"></a>
-
-        <a href="">
+        <a href="compras_ver.php">
 
         <article class="rdm-lista--item-sencillo">
             <div class="rdm-lista--izquierda">
@@ -161,7 +114,7 @@ include ("sis/variables_sesion.php");
 
         </a>
 
-         <?php echo "$produccion"; ?>
+
 
         <a class="ancla" name="producciones"></a>
 
@@ -180,93 +133,9 @@ include ("sis/variables_sesion.php");
             
         </article>
 
-        </a>
+        </a>        
 
         
-
-        <a class="ancla" name="inventario"></a>
-
-        <a href="">          
-
-            <article class="rdm-lista--item-sencillo">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-storage zmdi-hc-2x"></i></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Inventario</h2>
-                        <h2 class="rdm-lista--texto-secundario">Ver inventario y recibir despachos</h2>
-                    </div>
-                </div>
-                
-            </article>
-
-        </a>
-
-        
-
-        <a class="ancla" name="gastos"></a>
-
-        <a href="">
-
-            <article class="rdm-lista--item-sencillo">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-balance-wallet zmdi-hc-2x"></i></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Gastos</h2>
-                        <h2 class="rdm-lista--texto-secundario">Agregar y consultar gastos</h2>
-                    </div>
-                </div>
-                
-            </article>
-
-        </a>
-
-              
-
-        <a class="ancla" name="clientes"></a>
-
-        <a href="">            
-
-            <article class="rdm-lista--item-sencillo">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-favorite zmdi-hc-2x"></i></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Clientes</h2>
-                        <h2 class="rdm-lista--texto-secundario">Ver clientes</h2>
-                    </div>
-                </div>
-                
-            </article>
-
-        </a>
-
-        
-
-        <a class="ancla" name="reportes"></a>
-
-        <a href="">
-
-            <article class="rdm-lista--item-sencillo">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--icono"><i class="zmdi zmdi-chart-donut zmdi-hc-2x"></i></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Reportes</h2>
-                        <h2 class="rdm-lista--texto-secundario">Consultar los datos de mi negocio</h2>
-                    </div>
-                </div>
-                
-            </article>
-
-        </a>
-
-       
 
     </section>
 

@@ -270,14 +270,14 @@ if ($editar == "si")
 
 
     <?php
-    //consulto los componentes relacionados a este proveedor
-    $consulta = $conexion->query("SELECT * FROM componente WHERE estado = 'activo' and proveedor_id = '$proveedor_id' ORDER BY componente");
+    //consulto los ingredientes relacionados a este proveedor
+    $consulta = $conexion->query("SELECT * FROM ingrediente WHERE estado = 'activo' and proveedor_id = '$proveedor_id' ORDER BY ingrediente");
 
     if ($consulta->num_rows == 0)
     {
         ?>
 
-        <h2 class="rdm-lista--titulo-largo">Componentes relacionados</h2>
+        <h2 class="rdm-lista--titulo-largo">ingredientes relacionados</h2>
 
         <section class="rdm-lista">
             <article class="rdm-lista--item-sencillo">
@@ -298,15 +298,15 @@ if ($editar == "si")
     {
         ?>
 
-        <h2 class="rdm-lista--titulo-largo">Componentes relacionados</h2>
+        <h2 class="rdm-lista--titulo-largo">ingredientes relacionados</h2>
 
         <section class="rdm-lista">
 
         <?php
         while ($fila = $consulta->fetch_assoc())
         {
-            $componente_id = $fila['componente_id'];
-            $componente = $fila['componente'];
+            $ingrediente_id = $fila['ingrediente_id'];
+            $ingrediente = $fila['ingrediente'];
             $unidad_minima = $fila['unidad_minima'];
             $unidad_compra = $fila['unidad_compra'];
             $costo_unidad_minima = $fila['costo_unidad_minima'];
@@ -315,8 +315,8 @@ if ($editar == "si")
             $proveedor_id = $fila['proveedor_id'];
 
             //color de fondo segun la primer letra
-            $avatar_id = $componente_id;
-            $avatar_nombre = "$componente";
+            $avatar_id = $ingrediente_id;
+            $avatar_nombre = "$ingrediente";
 
             include ("sis/avatar_color.php");
             
@@ -329,7 +329,7 @@ if ($editar == "si")
                         <?php echo "$imagen"; ?>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo"><?php echo ucfirst($componente); ?></h2>
+                        <h2 class="rdm-lista--titulo"><?php echo ucfirst($ingrediente); ?></h2>
                         <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($costo_unidad_compra, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></h2>
                     </div>
                 </div>

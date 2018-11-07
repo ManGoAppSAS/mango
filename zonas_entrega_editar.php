@@ -83,30 +83,37 @@ else
 
 <footer></footer>
 
+<!--dialogo para eliminar-->
+
 <div class="modal" id="dialogo" tabindex="-1" role="dialog">
+
     <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        
-        <div class="rdm-tarjeta--primario-largo">
-            <h1 class="rdm-tarjeta--titulo-largo">
-                Eliminar zona de entrega
-            </h1>
-        </div>
 
-        <div class="rdm-tarjeta--cuerpo">            
-            ¿Desea eliminar <b><span class="modal-texto-dato2"></span></b>?
-        </div>            
+        <div class="modal-content">
+            <div class="rdm-tarjeta--primario-largo">
+                <h1 class="rdm-tarjeta--titulo-largo">
+                    Eliminar zona de entrega
+                </h1>
+            </div>
 
-        <div class="rdm-tarjeta--acciones-derecha">
-            <form action="zonas_entrega_ver.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" class="modal-input1" name="zona_entrega_id" value="">
+            <form action="zonas_entregas_ver.php" method="post" enctype="multipart/form-data">
 
-                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Eliminar</button>                  
+                <div class="rdm-tarjeta--cuerpo">
+                    ¿Desea eliminar <b><span class="modal-texto-dato2"></span></b>?
+                </div>
+
+                <div class="rdm-tarjeta--modal-cuerpo">
+                    <input type="hidden" class="modal-input1" name="zona_entrega_id" value="">
+                </div>            
+
+                <div class="rdm-tarjeta--acciones-derecha">
+                    <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Eliminar</button>                    
+                </div>
+
             </form>
+          
         </div>
-      
-    </div>
     </div>
 </div>
 

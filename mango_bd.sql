@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-11-2018 a las 02:31:38
+-- Tiempo de generación: 07-11-2018 a las 01:33:05
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -49,7 +49,7 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`categoria_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `categoria`, `tipo`, `adicion`, `imagen`, `imagen_nombre`) VALUES
-(1, '2018-09-27 21:40:21', '2018-09-28 00:40:19', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'bebidas', 'productos', 'no', 'no', '20180927214021'),
+(1, '2018-09-27 21:40:21', '2018-11-06 11:15:33', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'bebidas', 'productos', 'si', 'no', '20180927214021'),
 (2, '2018-09-27 21:40:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'fuertes', 'productos', 'no', 'no', '20180927214038'),
 (3, '2018-09-27 21:40:42', '0000-00-00 00:00:00', '2018-10-29 18:30:36', 1, 0, 1, 'eliminado', 'postres', 'productos', 'no', 'no', '20180927214042');
 
@@ -78,6 +78,66 @@ CREATE TABLE `cliente_pago` (
   `pago_valor_total` text NOT NULL,
   `cuenta_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compra`
+--
+
+CREATE TABLE `compra` (
+  `compra_id` int(11) NOT NULL,
+  `fecha_alta` datetime NOT NULL,
+  `fecha_mod` datetime NOT NULL,
+  `fecha_baja` datetime NOT NULL,
+  `usuario_alta` int(11) NOT NULL,
+  `usuario_mod` int(11) NOT NULL,
+  `usuario_baja` int(11) NOT NULL,
+  `estado` text NOT NULL,
+  `valor` text NOT NULL,
+  `observacion_envio` text NOT NULL,
+  `observacion_recepcion` text NOT NULL,
+  `destino` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `compra`
+--
+
+INSERT INTO `compra` (`compra_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `valor`, `observacion_envio`, `observacion_recepcion`, `destino`) VALUES
+(1, '2018-11-06 17:56:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '0', '', '', 1),
+(2, '2018-11-06 18:03:37', '0000-00-00 00:00:00', '2018-11-06 18:03:47', 1, 0, 1, 'eliminado', '0', '', '', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compra_ingrediente`
+--
+
+CREATE TABLE `compra_ingrediente` (
+  `compra_ingrediente_id` int(11) NOT NULL,
+  `fecha_alta` datetime NOT NULL,
+  `fecha_mod` datetime NOT NULL,
+  `fecha_baja` datetime NOT NULL,
+  `usuario_alta` int(11) NOT NULL,
+  `usuario_mod` int(11) NOT NULL,
+  `usuario_baja` int(11) NOT NULL,
+  `estado` text NOT NULL,
+  `cantidad_enviada` text NOT NULL,
+  `cantidad_recibida` text NOT NULL,
+  `cantidad_devuelta` text NOT NULL,
+  `compra_id` int(11) NOT NULL,
+  `ingrediente_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `compra_ingrediente`
+--
+
+INSERT INTO `compra_ingrediente` (`compra_ingrediente_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `cantidad_enviada`, `cantidad_recibida`, `cantidad_devuelta`, `compra_id`, `ingrediente_id`) VALUES
+(1, '2018-11-06 17:57:20', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '100', '0', '0', 1, 11),
+(2, '2018-11-06 17:57:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '50', '0', '0', 1, 17),
+(3, '2018-11-06 17:59:56', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '10', '0', '0', 1, 26);
 
 -- --------------------------------------------------------
 
@@ -193,7 +253,10 @@ INSERT INTO `ingrediente` (`ingrediente_id`, `fecha_alta`, `fecha_mod`, `fecha_b
 (22, '2018-10-31 19:02:25', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'agua manantial ', 'comprado', 'ml', 'botella 375 ml', '3.2', '1200', '', '0', 1, '0'),
 (23, '2018-10-31 19:02:33', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'agua manantial gas', 'comprado', 'ml', 'botella 375 ml', '3.2', '1200', '', '0', 1, '0'),
 (24, '2018-10-31 20:18:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cobertura de vainilla', 'producido', 'ml', 'l', '0', '0', 'Te recomendamos hacer para 8 personas (colocar en martita.cl opciÃ³n que te indica mano derecha de la pÃ¡gina)Tiempo de PreparaciÃ³n : 15 minutosImportante : Mantequilla debe estar a temperatura ambiente.1.- Batir mantequilla sin sal en un bowl con batidora elÃ©ctrica hasta que estÃ© pÃ¡lida y cremosa, 2 a 3 minutos.2.- Incorporar azÃºcar flor de a poco, la mitad primero y batir , luego el resto. Si no lo haces asÃ­, corres el riesgo que Ã©sta salte para todos lados fuera de tu bowl de trabajo. Batir hasta que la cobertura estÃ© cremosa, unos 5 minutos.3.- Incorporar esencia de vainilla y un par de gotas de colorante para alimentos ( opcional), batir por 1 minuto mÃ¡s.Puedes usar una manga de reposterÃ­a con la boquilla que mÃ¡s te guste para decorar tu cupcake. Finalmente, queda muy bien colocar mostacillas o decoraciones de azÃºcar sobre la cobertura. Estas las puedes encontrar en cualquier tienda de reposterÃ­a o supermercado.La cobertura puede ser refrigerada por una semana. Al volver a utilizarla traela a temperatura ambiente y vuelve a batir por algunos minutos.', '1', 0, '2'),
-(25, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'club colombia', 'comprado', 'unid', 'unid', '1500', '1500', '', '0', 1, '0');
+(25, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'club colombia', 'comprado', 'unid', 'unid', '1500', '1500', '', '0', 1, '0'),
+(26, '2018-11-05 20:56:41', '2018-11-05 21:05:51', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'ron', 'comprado', 'ml', 'botella 750 ml', '26.666666666667', '20000', '', '0', 3, '0'),
+(27, '2018-11-05 20:56:59', '2018-11-05 21:05:38', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'Ginebra', 'comprado', 'ml', 'botella 1500 ml', '20', '30000', '', '0', 3, '0'),
+(28, '2018-11-05 20:57:33', '2018-11-05 21:06:02', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'whiskey', 'comprado', 'ml', 'botella 750 ml', '80', '60000', '', '0', 3, '0');
 
 -- --------------------------------------------------------
 
@@ -221,10 +284,32 @@ CREATE TABLE `ingrediente_producido_composicion` (
 
 INSERT INTO `ingrediente_producido_composicion` (`ingrediente_producido_composicion_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `cantidad`, `ingrediente_producido_id`, `ingrediente_id`) VALUES
 (7, '2018-10-31 20:16:27', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '10', 3, 9),
-(8, '2018-10-31 20:16:43', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '70', 3, 11),
+(13, '2018-11-06 12:45:59', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '100', 3, 11),
 (6, '2018-10-29 23:49:30', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '666', 10, 6),
-(10, '2018-10-31 20:18:44', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '90', 24, 13),
-(11, '2018-10-31 20:18:54', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '200', 24, 9);
+(11, '2018-10-31 20:18:54', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '200', 24, 9),
+(12, '2018-11-06 12:13:40', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '100', 24, 11);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario`
+--
+
+CREATE TABLE `inventario` (
+  `inventario_id` int(11) NOT NULL,
+  `fecha_alta` datetime NOT NULL,
+  `fecha_mod` datetime NOT NULL,
+  `fecha_baja` datetime NOT NULL,
+  `usuario_alta` int(11) NOT NULL,
+  `usuario_mod` int(11) NOT NULL,
+  `usuario_baja` int(11) NOT NULL,
+  `estado` text NOT NULL,
+  `cantidad_actual` text NOT NULL,
+  `cantidad_minima` text NOT NULL,
+  `cantidad_maxima` text NOT NULL,
+  `ingrediente_id` int(11) NOT NULL,
+  `local_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -260,7 +345,7 @@ INSERT INTO `local` (`local_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuar
 (1, '2018-09-27 21:11:27', '2018-09-30 00:31:04', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'rionegro', 'punto de venta', 'calle 10', '3123434', '09:00:00', '17:00:00', 0, 'si', '20180930003104'),
 (2, '2018-09-27 21:17:48', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'laureles', 'punto de venta', 'calle 45', '6788778', '09:00:00', '17:00:00', 0, 'no', '20180927211748'),
 (3, '2018-09-30 00:26:19', '0000-00-00 00:00:00', '2018-10-29 17:43:12', 1, 0, 1, 'eliminado', 'Bello', 'punto de venta', 'Calle 23 no 67-99', '2585452', '09:00:00', '17:00:00', 0, 'no', '20180930002619'),
-(4, '2018-10-01 14:49:17', '2018-10-30 18:33:32', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'envigado', 'punto de venta', 'calle 45 # 18  - 23', '5676767', '09:00:00', '17:00:00', 10, 'si', '20181030183332'),
+(4, '2018-10-01 14:49:17', '2018-10-30 18:33:32', '2018-11-06 10:43:20', 1, 1, 1, 'activo', 'envigado', 'punto de venta', 'calle 45 # 18  - 23', '5676767', '09:00:00', '17:00:00', 10, 'si', '20181030183332'),
 (5, '2018-10-30 18:28:50', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'mercado del rio', 'punto de venta', 'centro comercial mercados del rio local 1223', '7898989', '09:00:00', '17:00:00', 0, 'no', '20181030182850');
 
 -- --------------------------------------------------------
@@ -352,9 +437,9 @@ CREATE TABLE `plantilla_factura` (
 --
 
 INSERT INTO `plantilla_factura` (`plantilla_factura_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `titulo`, `prefijo`, `numero_inicio`, `numero_fin`, `sufijo`, `encabezado`, `mostrar_local`, `mostrar_atendido`, `mostrar_impuesto`, `pie`, `imagen`, `imagen_nombre`, `local_id`) VALUES
-(1, '2018-09-06 18:26:16', '2018-09-06 18:42:37', '2018-09-17 23:13:30', 1, 1, 1, 'eliminado', 'factura de venta', 'POB', '1', '1000', 'REST', 'Somos rÃ©gimen... \r\nNIT... \r\nResoluciÃ³n de facturaciÃ³n No...', 'no', 'no', 'no', 'gracias por su compra', 'si', '20180906182616', 2),
-(2, '2018-09-14 16:30:37', '2018-09-18 21:42:15', '2018-09-18 22:03:03', 1, 1, 1, 'eliminado', 'recibo de venta', 'ARG ', '1', '10000', ' XC', 'Somos rÃ©gimen... NIT... ResoluciÃ³n de facturaciÃ³n No...', 'si', 'si', 'si', 'gracias x su compra', 'si', '20180914163037', 1),
-(3, '2018-09-18 22:04:29', '2018-09-26 13:34:20', '2018-10-29 18:17:05', 1, 1, 1, 'eliminado', 'factura de venta', '', '1', '10000', '', 'Somos rÃ©gimen... \r\nNIT... \r\nResoluciÃ³n de facturaciÃ³n No...', 'si', 'si', 'si', 'Gracias por su compra\r\nVuelva pronto', 'si', '20180918220657', 1);
+(1, '2018-09-06 18:26:16', '2018-09-06 18:42:37', '2018-09-17 23:13:30', 1, 1, 1, 'activo', 'factura de venta', 'POB', '1', '1000', 'REST', 'Somos rÃ©gimen... \r\nNIT... \r\nResoluciÃ³n de facturaciÃ³n No...', 'no', 'no', 'no', 'gracias por su compra', 'si', '20180906182616', 2),
+(2, '2018-09-14 16:30:37', '2018-09-18 21:42:15', '2018-09-18 22:03:03', 1, 1, 1, 'activo', 'recibo de venta', 'ARG ', '1', '10000', ' XC', 'Somos rÃ©gimen... NIT... ResoluciÃ³n de facturaciÃ³n No...', 'si', 'si', 'si', 'gracias x su compra', 'si', '20180914163037', 1),
+(3, '2018-09-18 22:04:29', '2018-09-26 13:34:20', '2018-10-29 18:17:05', 1, 1, 1, 'activo', 'factura de venta', '', '1', '10000', '', 'Somos rÃ©gimen... \r\nNIT... \r\nResoluciÃ³n de facturaciÃ³n No...', 'si', 'si', 'si', 'Gracias por su compra\r\nVuelva pronto', 'si', '20180918220657', 1);
 
 -- --------------------------------------------------------
 
@@ -389,7 +474,7 @@ INSERT INTO `producto` (`producto_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, 
 (1, '2018-10-08 17:27:41', '0000-00-00 00:00:00', '2018-10-29 17:52:30', 1, 0, 1, 'eliminado', 'coca cola 350ml', 'simple', '', '', 'no', '20181008172741', 1, 1),
 (2, '2018-10-08 17:31:10', '2018-10-08 17:32:42', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'seven up 350ml', 'simple', '', '', 'no', '20181008173110', 1, 1),
 (3, '2018-10-29 19:30:25', '2018-10-30 19:28:42', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'hamburguesa', 'compuesto', '', '', 'no', '20181029193025', 2, 1),
-(4, '2018-10-30 19:30:44', '2018-10-31 20:28:08', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'paella negra', 'compuesto', 'la paella es un rico plato para maricones', '', 'si', '20181031202808', 2, 1),
+(4, '2018-10-30 19:30:44', '2018-11-06 11:19:26', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'paella negra', 'compuesto', 'la paella es un rico plato para maricones', '', 'si', '20181031202808', 2, 1),
 (5, '2018-10-30 19:46:52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'pan', 'compuesto', 'es un deliciosso pan de trigo hecho en nuestro horno de leÃ±a acompaÃ±ado de tomate y aceite de oliva', '', 'no', '20181030194652', 2, 1),
 (6, '2018-10-30 19:47:58', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'pan de frutos secos', 'compuesto', 'es un delicioso pan de trigo y frutos secos silvestres como la chia y el ajonjoli  hecho en nuestro horno de leÃ±a acompaÃ±ado de tomate y aceite de oliva', '', 'no', '20181030194758', 2, 1),
 (7, '2018-10-30 19:55:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cocacola', 'simple', 'jugo de coca negra', '', 'no', '20181030195528', 1, 2),
@@ -462,13 +547,13 @@ CREATE TABLE `producto_composicion` (
 INSERT INTO `producto_composicion` (`producto_composicion_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `cantidad`, `producto_id`, `ingrediente_id`) VALUES
 (1, '2018-10-08 17:27:41', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 1, 1),
 (28, '2018-10-30 19:55:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 7, 19),
-(27, '2018-10-30 19:36:11', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '20', 4, 9),
+(27, '2018-10-30 19:36:11', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '21', 4, 9),
 (25, '2018-10-30 00:38:46', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 2, 2),
-(26, '2018-10-30 19:35:42', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '20', 4, 6),
 (29, '2018-10-31 16:50:51', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 8, 20),
 (30, '2018-10-31 17:22:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 10, 21),
-(32, '2018-10-31 19:04:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '10', 4, 15),
-(33, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 12, 25);
+(32, '2018-10-31 19:04:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '100', 4, 15),
+(33, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 12, 25),
+(34, '2018-11-06 11:24:14', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '250', 4, 18);
 
 -- --------------------------------------------------------
 
@@ -498,7 +583,7 @@ INSERT INTO `producto_local` (`producto_local_id`, `fecha_alta`, `fecha_mod`, `f
 (2, '2018-10-08 17:27:41', '0000-00-00 00:00:00', '2018-10-29 17:52:30', 1, 0, 1, 'eliminado', 1, 2),
 (3, '2018-10-08 17:27:41', '0000-00-00 00:00:00', '2018-10-29 17:52:30', 1, 0, 1, 'eliminado', 1, 1),
 (7, '2018-10-30 19:28:42', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 3, 2),
-(33, '2018-10-31 20:28:08', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 4, 4),
+(36, '2018-11-06 11:19:26', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 4, 4),
 (11, '2018-10-30 19:46:52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 5, 4),
 (12, '2018-10-30 19:46:52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 5, 2),
 (13, '2018-10-30 19:46:52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 5, 5),
@@ -554,8 +639,8 @@ INSERT INTO `producto_precio` (`producto_precio_id`, `fecha_alta`, `fecha_mod`, 
 (2, '2018-10-08 17:31:10', '2018-10-08 17:32:42', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'precio normal', 'principal', '1000', 'no', 2, 1),
 (3, '2018-10-29 18:12:06', '0000-00-00 00:00:00', '2018-10-29 18:12:31', 1, 0, 1, 'eliminado', 'distribuidor', 'secundario', '2000', 'si', 2, 1),
 (4, '2018-10-29 19:30:25', '2018-10-30 19:28:42', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'precio normal', 'principal', '10000', 'si', 3, 1),
-(5, '2018-10-30 19:30:44', '2018-10-31 20:28:08', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'precio normal', 'principal', '30000', 'no', 4, 3),
-(6, '2018-10-30 19:33:16', '2018-10-30 19:35:18', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'eventos', 'secundario', '25000', 'si', 4, 3),
+(5, '2018-10-30 19:30:44', '2018-11-06 11:19:26', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'precio normal', 'principal', '30000', 'si', 4, 3),
+(6, '2018-10-30 19:33:16', '2018-10-30 19:35:18', '2018-11-06 11:19:10', 1, 1, 1, 'eliminado', 'eventos', 'secundario', '25000', 'si', 4, 3),
 (7, '2018-10-30 19:46:52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '8000', 'no', 5, 3),
 (8, '2018-10-30 19:47:58', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '8000', 'no', 6, 3),
 (9, '2018-10-30 19:55:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '5000', 'no', 7, 3),
@@ -599,7 +684,8 @@ CREATE TABLE `proveedor` (
 
 INSERT INTO `proveedor` (`proveedor_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `proveedor`, `documento_tipo`, `documento_numero`, `tipo`, `correo`, `contacto`, `telefono`, `direccion`, `cuenta_bancaria`, `imagen`, `imagen_nombre`) VALUES
 (1, '2018-09-27 22:35:03', '2018-09-27 22:40:34', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'juan de hoyos', 'NIT', '900976432', 'abarrotes', 'ventas@juandehoyos.com', 'camilo perez', '5667788', 'calle 45 No 55-90', '98967544532 ahorros bancolombia', 'no', '20180927223503'),
-(2, '2018-10-02 18:23:25', '0000-00-00 00:00:00', '2018-10-29 18:00:15', 1, 0, 1, 'eliminado', 'prospier', 'NIT', '986968968', 'lupulos', 'ventas@prospiera.com', 'marco a;sfdkja;sdklfja;dskjl', '3124458989', 'calle 56 78 89', '9009898787', 'no', '20181002182325');
+(2, '2018-10-02 18:23:25', '0000-00-00 00:00:00', '2018-10-29 18:00:15', 1, 0, 1, 'eliminado', 'prospier', 'NIT', '986968968', 'lupulos', 'ventas@prospiera.com', 'marco a;sfdkja;sdklfja;dskjl', '3124458989', 'calle 56 78 89', '9009898787', 'no', '20181002182325'),
+(3, '2018-11-05 20:56:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'la careta', 'NIT', '8796879', 'licores', '', '', '', '', '', 'no', '20181105205605');
 
 -- --------------------------------------------------------
 
@@ -629,7 +715,7 @@ CREATE TABLE `ubicacion` (
 --
 
 INSERT INTO `ubicacion` (`ubicacion_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `ubicacion`, `ubicada`, `tipo`, `impuestos`, `porcentaje_comision`, `local_id`) VALUES
-(1, '2018-09-06 12:55:28', '2018-09-18 17:32:24', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'mesa 1', 'terraza', 'mesa', 'si', '20', 1),
+(1, '2018-09-06 12:55:28', '2018-09-18 17:32:24', '2018-11-06 10:54:13', 1, 1, 1, 'eliminado', 'mesa 1', 'terraza', 'mesa', 'si', '20', 1),
 (2, '2018-09-06 13:10:57', '2018-09-26 12:36:10', '2018-10-29 17:58:48', 1, 1, 1, 'eliminado', 'mesa 2', 'terraza', 'mesa', 'si', '20', 1);
 
 -- --------------------------------------------------------
@@ -668,7 +754,7 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`usuario_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `nombres`, `apellidos`, `documento_tipo`, `documento_numero`, `tipo`, `correo`, `contrasena`, `telefono`, `direccion`, `fecha_nacimiento`, `imagen`, `imagen_nombre`, `local_id`) VALUES
 (1, '2018-09-03 10:34:07', '2018-09-17 17:45:32', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'danny', 'estrada', 'CC', '8359856', 'soporte tÃ©cnico', 'demo@demo.com', 'demo', '3124450363', 'calle 23 #55 - 77', '1985-02-15', 'si', '20180906125313', 1),
-(2, '2018-09-17 16:51:43', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'jhon', 'doe', 'CC', '889988', 'vendedor', 'pepito@gmail.com', '12233', '3454545', 'calle 10 # 67 - 90', '2002-01-01', 'no', '20180917165143', 1),
+(2, '2018-09-17 16:51:43', '0000-00-00 00:00:00', '2018-11-06 10:53:10', 1, 0, 1, 'eliminado', 'jhon', 'doe', 'CC', '889988', 'vendedor', 'pepito@gmail.com', '12233', '3454545', 'calle 10 # 67 - 90', '2002-01-01', 'no', '20180917165143', 1),
 (3, '2018-09-17 16:53:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'jay', 'melanie', 'CC', '8899887', 'vendedor', 'jay@gmail.com', '12233', '3454545', 'calle 10 # 67 - 90', '2002-01-01', 'no', '20180917165305', 1),
 (4, '2018-09-17 16:54:19', '2018-09-26 12:32:55', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'andrea', 'guzman', 'CC', '098098', 'administradora', 'andrea@gmail.com', '123123', '3124450363', 'calle 23 No 55 - 77', '1985-02-15', 'si', '20180918004306', 1),
 (5, '2018-09-17 16:55:26', '2018-09-17 17:36:42', '2018-10-29 17:56:50', 1, 1, 1, 'eliminado', 'manuela', 'perez', 'CC', '988788', 'cajera', 'manuela@gmail.com', '878787', '', '', '0000-00-00', 'no', '20180917165526', 1);
@@ -718,6 +804,21 @@ ALTER TABLE `cliente_pago`
   ADD KEY `cuenta_id` (`cuenta_id`);
 
 --
+-- Indices de la tabla `compra`
+--
+ALTER TABLE `compra`
+  ADD PRIMARY KEY (`compra_id`),
+  ADD KEY `destino` (`destino`);
+
+--
+-- Indices de la tabla `compra_ingrediente`
+--
+ALTER TABLE `compra_ingrediente`
+  ADD PRIMARY KEY (`compra_ingrediente_id`),
+  ADD KEY `compra_id` (`compra_id`),
+  ADD KEY `ingrediente_id` (`ingrediente_id`);
+
+--
 -- Indices de la tabla `descuento`
 --
 ALTER TABLE `descuento`
@@ -743,6 +844,14 @@ ALTER TABLE `ingrediente_producido_composicion`
   ADD PRIMARY KEY (`ingrediente_producido_composicion_id`),
   ADD KEY `componente_producido_id` (`ingrediente_producido_id`),
   ADD KEY `componente_id` (`ingrediente_id`);
+
+--
+-- Indices de la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  ADD PRIMARY KEY (`inventario_id`),
+  ADD KEY `ingrediente_id` (`ingrediente_id`),
+  ADD KEY `local_id` (`local_id`);
 
 --
 -- Indices de la tabla `local`
@@ -850,6 +959,18 @@ ALTER TABLE `cliente_pago`
   MODIFY `cliente_pago_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `compra`
+--
+ALTER TABLE `compra`
+  MODIFY `compra_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `compra_ingrediente`
+--
+ALTER TABLE `compra_ingrediente`
+  MODIFY `compra_ingrediente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `descuento`
 --
 ALTER TABLE `descuento`
@@ -865,13 +986,19 @@ ALTER TABLE `impuesto`
 -- AUTO_INCREMENT de la tabla `ingrediente`
 --
 ALTER TABLE `ingrediente`
-  MODIFY `ingrediente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `ingrediente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `ingrediente_producido_composicion`
 --
 ALTER TABLE `ingrediente_producido_composicion`
-  MODIFY `ingrediente_producido_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ingrediente_producido_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  MODIFY `inventario_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `local`
@@ -913,13 +1040,13 @@ ALTER TABLE `productor`
 -- AUTO_INCREMENT de la tabla `producto_composicion`
 --
 ALTER TABLE `producto_composicion`
-  MODIFY `producto_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `producto_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `producto_local`
 --
 ALTER TABLE `producto_local`
-  MODIFY `producto_local_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `producto_local_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `producto_precio`
@@ -931,7 +1058,7 @@ ALTER TABLE `producto_precio`
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `proveedor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `proveedor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `ubicacion`

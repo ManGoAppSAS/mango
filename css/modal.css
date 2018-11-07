@@ -25,6 +25,7 @@ Autor: Danny Estrada
     pointer-events: none;
     position: relative;
     width: auto;
+
 }
 
 .modal-dialog-centered {
@@ -41,6 +42,7 @@ Autor: Danny Estrada
     box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
     display: flex;
     flex-direction: column;
+    font-size: 1em;
     margin: 0 auto;
     max-width: 500px;
     outline: 0;     

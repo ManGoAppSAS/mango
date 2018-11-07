@@ -110,7 +110,7 @@ if (isset($busqueda))
 
                 </div>
                 <div class="rdm-lista--derecha-sencillo">
-                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus-circle-o zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </article>
 

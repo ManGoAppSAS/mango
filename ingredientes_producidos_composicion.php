@@ -253,7 +253,7 @@ if ($agregar == 'si')
                 <div class="rdm-lista--derecha">
                     <a href="" data-toggle="modal" data-target="#dialogo_editar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>" data-cantidad="<?php echo ucfirst($cantidad) ?>" data-ingrediente_producido_composicion_id="<?php echo ucfirst($ingrediente_producido_composicion_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
 
-                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-ingrediente_producido_composicion_id="<?php echo ($ingrediente_producido_composicion_id) ?>" data-ingrediente="<?php echo ucfirst($ingrediente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-delete zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-ingrediente_producido_composicion_id="<?php echo ($ingrediente_producido_composicion_id) ?>" data-ingrediente="<?php echo ucfirst($ingrediente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-minus-circle-outline zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </div>
            
@@ -369,7 +369,7 @@ if ($agregar == 'si')
                     <?php } ?>
 
                     <?php if (!empty($unidad_compra)) { ?>
-                        <p><b>Unidad de producción</b> <br>$<?php echo number_format($costo_unidad_compra, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></p>
+                        <p><b>Unidad de producción</b> <br>$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></p>
                     <?php } ?>
 
                 </div>
@@ -396,34 +396,37 @@ if ($agregar == 'si')
 <!--dialogo para agregar el ingrediente-->
 
 <div class="modal" id="dialogo_agregar" tabindex="-1" role="dialog">
+
     <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        
-        <div class="rdm-tarjeta--primario-largo">
-            <h1 class="rdm-tarjeta--titulo-largo">
-                Agregar ingrediente
-            </h1>
-        </div>
 
-        <div class="rdm-tarjeta--cuerpo">                
-            
-            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="ingrediente"></span></b> desea agregar a la composición de este ingrediente producido?
+        <div class="modal-content">
+            <div class="rdm-tarjeta--primario-largo">
+                <h1 class="rdm-tarjeta--titulo-largo">
+                    Agregar ingrediente
+                </h1>
+            </div>
 
-        </div>            
-
-        <div class="rdm-tarjeta--acciones-derecha">
             <form action="ingredientes_producidos_composicion.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
-                <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
 
-                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+                <div class="rdm-tarjeta--cuerpo">
+                    ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="ingrediente"></span></b> desea agregar a la composición de este ingrediente producido?
+                </div>
 
-                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="rdm-boton--plano-resaltado" name="agregar" value="si">Agregar</button>                  
+                <div class="rdm-tarjeta--modal-cuerpo">
+                    <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
+                    <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
+
+                    <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+                </div>            
+
+                <div class="rdm-tarjeta--acciones-derecha">
+                    <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="rdm-boton--plano-resaltado" name="agregar" value="si">Agregar</button> 
+                </div>
+
             </form>
+          
         </div>
-      
-    </div>
     </div>
 </div>
 
@@ -449,36 +452,38 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
 <!--dialogo para editar el ingrediente-->
 
 <div class="modal" id="dialogo_editar" tabindex="-1" role="dialog">
+
     <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        
-        <div class="rdm-tarjeta--primario-largo">
-            <h1 class="rdm-tarjeta--titulo-largo">
-                Editar ingrediente
-            </h1>
-        </div>
 
-        <div class="rdm-tarjeta--cuerpo">                
-            
-            ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="ingrediente"></span></b> desea agregar a la composición de este ingrediente producido?
+        <div class="modal-content">
+            <div class="rdm-tarjeta--primario-largo">
+                <h1 class="rdm-tarjeta--titulo-largo">
+                    Actualizar ingrediente
+                </h1>
+            </div>
 
-        </div>            
-
-        <div class="rdm-tarjeta--acciones-derecha">
             <form action="ingredientes_producidos_composicion.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
-                <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
-                <input type="hidden" class="ingrediente_producido_composicion_id" name="ingrediente_producido_composicion_id" value="">
 
-                <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+                <div class="rdm-tarjeta--cuerpo">
+                    ¿Cuantos <b><span class="unidad_minima"></span></b> de <b><span class="ingrediente"></span></b> lleva la composición de este ingrediente producido?
+                </div>
 
+                <div class="rdm-tarjeta--modal-cuerpo">
+                    <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
+                    <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
+                    <input type="hidden" class="ingrediente_producido_composicion_id" name="ingrediente_producido_composicion_id" value="">
 
-                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="rdm-boton--plano-resaltado" name="editar" value="si">Hecho</button>                  
+                    <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+                </div>
+
+                <div class="rdm-tarjeta--acciones-derecha">
+                    <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="rdm-boton--plano-resaltado" name="editar" value="si">Actualizar</button>     
+                </div>
+
             </form>
+          
         </div>
-      
-    </div>
     </div>
 </div>
 
@@ -507,33 +512,35 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
 <!--dialogo para eliminar el ingrediente-->
 
 <div class="modal" id="dialogo_eliminar" tabindex="-1" role="dialog">
+
     <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        
-        <div class="rdm-tarjeta--primario-largo">
-            <h1 class="rdm-tarjeta--titulo-largo">
-                Retirar ingrediente
-            </h1>
-        </div>
 
-        <div class="rdm-tarjeta--cuerpo">                
-            
-            ¿Desea retirar el ingrediente <b><span class="ingrediente"></span></b> de la composición de este ingrediente producido?
+        <div class="modal-content">
+            <div class="rdm-tarjeta--primario-largo">
+                <h1 class="rdm-tarjeta--titulo-largo">
+                    Retirar ingrediente
+                </h1>
+            </div>
 
-        </div>            
-
-        <div class="rdm-tarjeta--acciones-derecha">
             <form action="ingredientes_producidos_composicion.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
-                <input type="hidden" class="ingrediente_producido_composicion_id" name="ingrediente_producido_composicion_id" value="">
 
+                <div class="rdm-tarjeta--cuerpo">
+                    ¿Desea retirar el ingrediente <b><span class="ingrediente"></span></b> de la composición de este ingrediente producido?
+                </div>
 
-                <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Retirar</button>                  
+                <div class="rdm-tarjeta--modal-cuerpo">
+                    <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
+                    <input type="hidden" class="ingrediente_producido_composicion_id" name="ingrediente_producido_composicion_id" value="">
+                </div>            
+
+                <div class="rdm-tarjeta--acciones-derecha">
+                    <button class="rdm-boton--plano" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="rdm-boton--plano-resaltado" name="eliminar" value="si">Retirar</button>  
+                </div>
+
             </form>
+          
         </div>
-      
-    </div>
     </div>
 </div>
 

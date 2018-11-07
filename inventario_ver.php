@@ -15,19 +15,69 @@ include ("sis/variables_sesion.php");
 ?>
 
 <?php
+//variable para eliminar
+if(isset($_POST['eliminar_compra'])) $eliminar_compra = $_POST['eliminar_compra']; elseif(isset($_GET['eliminar_compra'])) $eliminar_compra = $_GET['eliminar_compra']; else $eliminar_compra = null;
+
 //variable de consulta
 if(isset($_POST['busqueda'])) $busqueda = $_POST['busqueda']; elseif(isset($_GET['busqueda'])) $busqueda = $_GET['busqueda']; else $busqueda = null;
 
-//variables de mensaje
+//variables de envio de inventario
+if(isset($_POST['enviar'])) $enviar = $_POST['enviar']; elseif(isset($_GET['enviar'])) $enviar = $_GET['enviar']; else $enviar = null;
+if(isset($_POST['compra_id'])) $compra_id = $_POST['compra_id']; elseif(isset($_GET['compra_id'])) $compra_id = $_GET['compra_id']; else $compra_id = null;
+
 if(isset($_POST['mensaje'])) $mensaje = $_POST['mensaje']; elseif(isset($_GET['mensaje'])) $mensaje = $_GET['mensaje']; else $mensaje = null;
 if(isset($_POST['body_snack'])) $body_snack = $_POST['body_snack']; elseif(isset($_GET['body_snack'])) $body_snack = $_GET['body_snack']; else $body_snack = null;
 if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif(isset($_GET['mensaje_tema'])) $mensaje_tema = $_GET['mensaje_tema']; else $mensaje_tema = null;
 ?>
 
+
+<?php
+//envio los ingredientes al inventario
+if ($enviar == 'si')
+{
+    $actualizar_compra = $conexion->query("UPDATE compra SET estado = 'enviado' WHERE compra_id = '$compra_id'");
+
+    if ($actualizar_compra)
+    {
+        $actualizar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET estado = 'enviado' WHERE compra_id = '$compra_id'");
+
+        $mensaje = "Compra terminada y enviada";
+        $body_snack = 'onLoad="Snackbar()"';
+        $mensaje_tema = "aviso";
+    }
+}
+?>
+
+
+
+
+<?php
+//elimino la compra
+if ($eliminar_compra == 'si')
+{
+    $borrar_compra = $conexion->query("UPDATE compra SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
+
+    if ($borrar_compra)
+    {
+        $borrar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
+
+        $mensaje = "Compra eliminada";
+        $body_snack = 'onLoad="Snackbar()"';
+        $mensaje_tema = "aviso";
+    }
+    else
+    {
+        $mensaje = "No es posible eliminar la compra";
+        $body_snack = 'onLoad="Snackbar()"';
+        $mensaje_tema = "error";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Inventario - ManGo!</title>
+    <title>Iventario - ManGo!</title>
     <?php
     //información del head
     include ("partes/head.php");
@@ -47,7 +97,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
             var textoBusqueda = $("input#busqueda").val();
          
              if (textoBusqueda != "") {
-                $.post("inventario_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
+                $$.post("zonas_entrega_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
                     $("#resultadoBusqueda").html(mensaje);
                  }); 
              } else { 
@@ -57,15 +107,13 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
         }, 500); // Will do the ajax stuff after 1000 ms, or 1 s
     }
     </script>
-    
 </head>
-
 <body <?php echo $body_snack; ?>>
 
 <header class="rdm-toolbar--contenedor">
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
-            <a href="index.php#inventario"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
+            <a href="index.php#compras"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
             <h2 class="rdm-toolbar--titulo">Inventario</h2>
         </div>
     </div>
@@ -74,14 +122,171 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 <main class="rdm--contenedor-toolbar">
 
     <?php
-    //consulto el componente en el inventario
-    $consulta = $conexion->query("SELECT * FROM inventario WHERE local_id = '$sesion_local_id' ORDER BY (cantidad_actual - cantidad_minima)");
+    //consulto las compras enviadas
+    $consulta = $conexion->query("SELECT * FROM compra WHERE estado = 'enviado' and destino = '$sesion_local_id' ORDER BY fecha_alta");
 
     if ($consulta->num_rows == 0)
     {
+        ?>        
+
+        
+
+        <?php
+    }
+    else
+    {
+        ?>        
+            
+        <h2 class="rdm-lista--titulo-largo">Compras enviadas</h2>
+
+        <section class="rdm-lista">
+
+        <?php
+        while ($fila = $consulta->fetch_assoc()) 
+        {
+            $compra_id = $fila['compra_id'];
+            $usuario_alta = $fila['usuario_alta'];
+            $estado = $fila['estado'];
+            $destino = $fila['destino'];
+
+            //consulto el usuario alta
+            $consulta_usuario = $conexion->query("SELECT * FROM usuario WHERE usuario_id = '$usuario_alta'");           
+
+            if ($fila = $consulta_usuario->fetch_assoc()) 
+            {
+                $nombres = $fila['nombres'];
+                $apellidos = $fila['apellidos'];
+                $enviado_por = "$nombres $apellidos";
+
+            }
+            else
+            {
+                $enviado_por = "";
+            }
+
+
+            //consulto el destino
+            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
+
+            if ($filas2 = $consulta2->fetch_assoc())
+            {
+                $local = $filas2['local'];
+
+            }
+            else
+            {
+                $local = "";
+            }
+
+            //consulto la cantidad_enviada de ingredientes en la compra
+            $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
+            $total_ingredientes = $consulta_ingredientes->num_rows;
+
+            //consulto el costo
+            $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
+
+            if ($consulta_costo->num_rows != 0)
+            {
+                $composicion_costo = 0;
+
+                while ($fila = $consulta_costo->fetch_assoc())
+                {
+                    //datos de la composicion
+                    $compra_ingrediente_id = $fila['compra_ingrediente_id'];
+                    $cantidad_enviada = $fila['cantidad_enviada'];
+                    $ingrediente_id = $fila['ingrediente_id'];
+
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
+
+                    if ($filas2 = $consulta2->fetch_assoc())
+                    {            
+                        $unidad_compra_c = $filas2['unidad_compra'];
+                        $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
+                    }
+                    else
+                    {            
+                        $unidad_compra_c = "unid";
+                        $costo_unidad_compra_c = 0;
+                    }
+
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
+
+                    //costo de la composicion
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
+                }
+
+                //valor del costo
+                $costo_valor = $composicion_costo;       
+            }
+            else                 
+            {
+                //valor del costo
+                $costo_valor = 0;
+            }
+
+            //color de fondo segun la primer letra
+            $avatar_id = $compra_id;
+            $avatar_nombre = "$enviado_por";
+
+            include ("sis/avatar_color.php");
+            
+            //consulto el avatar
+            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
+            ?>
+
+            <a href="inventario_recibir.php?compra_id=<?php echo($compra_id) ?>">
+                <article class="rdm-lista--item-doble">
+                    <div class="rdm-lista--izquierda">
+                        <div class="rdm-lista--contenedor">
+                            <?php echo "$imagen"; ?>
+                        </div>
+                        <div class="rdm-lista--contenedor">
+                            <h2 class="rdm-lista--titulo"><?php echo ucwords("$enviado_por"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario"><?php echo ($total_ingredientes); ?> Ingredientes  •  Costo: $<?php echo number_format($costo_valor, 2, ",", "."); ?></h2>
+                        </div>
+                    </div>                    
+                </article>
+            </a>
+            
+        <?php
+        }
         ?>
 
-        <h2 class="rdm-lista--titulo-largo">Inventario</h2>
+        </section>
+
+    <?php
+    }
+    ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <?php
+    //consulto el inventario del local          
+    $consulta = $conexion->query("SELECT * FROM inventario WHERE local_id = '$sesion_local_id'");
+
+    if ($consulta->num_rows == 0)
+    {
+        ?>        
+
+        <h2 class="rdm-lista--titulo-largo">Ingredientes</h2>
 
         <section class="rdm-lista">
             
@@ -92,136 +297,116 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">Acá podrás ver la cantidad de componentes recibidos que hayan sido comprados o producidos</h2>
+                        <h2 class="rdm-lista--texto-secundario">No hay ingredientes en tu inventario</h2>
                     </div>
                 </div>
+                
             </article>
-
-            <div class="rdm-tarjeta--separador"></div>
-
-            <div class="rdm-tarjeta--acciones-izquierda">
-                <a href="productos_composicion.php?producto_id=<?php echo "$producto_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
-            </div>
 
         </section>
 
         <?php
     }
-
     else
-    {   
-        ?>   
-
-        <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar();" />
-
-        <div id="resultadoBusqueda"></div>
+    {
+        ?>        
+            
+        <h2 class="rdm-lista--titulo-largo">Enviadas</h2>
 
         <section class="rdm-lista">
 
         <?php
         while ($fila = $consulta->fetch_assoc()) 
         {
-            $inventario_id = $fila['inventario_id'];
-            $componente = $fila['componente'];
-            $unidad = $fila['unidad'];
-            $cantidad_actual = $fila['cantidad_actual'];
-            $cantidad_minima = $fila['cantidad_minima'];
-            $cantidad_maxima = $fila['cantidad_maxima'];
+            $compra_id = $fila['compra_id'];
+            $estado = $fila['estado'];
+            $destino = $fila['destino'];
 
+            //consulto el destino
+            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
 
-            //si la cantidad es cero o negativa
-            if ($cantidad_actual <= 0)
+            if ($filas2 = $consulta2->fetch_assoc())
             {
-                $cantidad_actual = 0;
-            }
+                $local = $filas2['local'];
 
-            //si el minimo es igual a cero se pone el 10% de la cantidad_actual actual como minimo
-            if ($cantidad_minima == 0)
-            {
-                $cantidad_minima = $cantidad_actual * 0.10;
-            }
-
-            //si el maximo es igual a cero se pone la cantidad_actual + 1
-            if ($cantidad_maxima == 0)
-            {
-                $cantidad_maxima = $cantidad_actual + 1;
-            }
-
-            $porcentaje_inventario = ($cantidad_actual / $cantidad_maxima) * 100;
-
-            if ($cantidad_actual <= $cantidad_minima)
-            {
-                $porcentaje_color_fondo = "#FFCDD2";
-                $porcentaje_color_relleno = "#F44336";
             }
             else
             {
-                $porcentaje_color_fondo = "#B2DFDB";
-                $porcentaje_color_relleno = "#009688";
+                $local = "";
             }
 
+            //consulto la cantidad_enviada de ingredientes en la compra
+            $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
+            $total_ingredientes = $consulta_ingredientes->num_rows;
+
+            //consulto el costo
+            $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
+
+            if ($consulta_costo->num_rows != 0)
+            {
+                $composicion_costo = 0;
+
+                while ($fila = $consulta_costo->fetch_assoc())
+                {
+                    //datos de la composicion
+                    $compra_ingrediente_id = $fila['compra_ingrediente_id'];
+                    $cantidad_enviada = $fila['cantidad_enviada'];
+                    $ingrediente_id = $fila['ingrediente_id'];
+
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
+
+                    if ($filas2 = $consulta2->fetch_assoc())
+                    {            
+                        $unidad_compra_c = $filas2['unidad_compra'];
+                        $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
+                    }
+                    else
+                    {            
+                        $unidad_compra_c = "unid";
+                        $costo_unidad_compra_c = 0;
+                    }
+
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
+
+                    //costo de la composicion
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
+                }
+
+                //valor del costo
+                $costo_valor = $composicion_costo;       
+            }
+            else                 
+            {
+                //valor del costo
+                $costo_valor = 0;
+            }
+
+            //color de fondo segun la primer letra
+            $avatar_id = $compra_id;
+            $avatar_nombre = "$local";
+
+            include ("sis/avatar_color.php");
+            
+            //consulto el avatar
+            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
             ?>
 
-            <a href="inventario_novedades.php?inventario_id=<?php echo "$inventario_id"; ?>">
-
-                <article class="rdm-lista--item-porcentaje">
-                    <div>
-                        <div class="rdm-lista--izquierda-porcentaje">
-                            <h2 class="rdm-lista--titulo-porcentaje"><?php echo ucfirst("$componente"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($cantidad_actual, 0, ",", "."); ?> <?php echo ucfirst("$unidad"); ?></h2>
+            
+                <article class="rdm-lista--item-doble">
+                    <div class="rdm-lista--izquierda">
+                        <div class="rdm-lista--contenedor">
+                            <?php echo "$imagen"; ?>
                         </div>
-                        <div class="rdm-lista--derecha-porcentaje">
-                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($porcentaje_inventario, 1, ".", "."); ?>%</h2>
+                        <div class="rdm-lista--contenedor">
+                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$local"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario"><?php echo ($total_ingredientes); ?> Ingredientes  •  Costo: $<?php echo number_format($costo_valor, 2, ",", "."); ?></h2>
                         </div>
-                    </div>
-                    
-                    <div class="rdm-lista--linea-pocentaje-fondo" style="background-color: <?php echo "$porcentaje_color_fondo"; ?>">
-                        <div class="rdm-lista--linea-pocentaje-relleno" style="width: <?php echo "$porcentaje_inventario"; ?>%; background-color: <?php echo "$porcentaje_color_relleno"; ?>;"></div>
-                    </div>
+                    </div>                    
                 </article>
-
-            </a>
-
-            <a href="inventario_novedades.php?inventario_id=<?php echo "$inventario_id"; ?>">
-
-                <article class="rdm-lista--item-porcentaje">
-                    <div>
-                        <div class="rdm-lista--izquierda-porcentaje">
-                            <h2 class="rdm-lista--titulo-porcentaje"><?php echo ucfirst("$componente"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($cantidad_actual, 0, ",", "."); ?> <?php echo ucfirst("$unidad"); ?></h2>
-                        </div>
-                        <div class="rdm-lista--derecha-porcentaje">
-                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($porcentaje_inventario, 1, ".", "."); ?>%</h2>
-                        </div>
-                    </div>
-                    
-                    <div class="rdm-lista--linea-pocentaje-fondo" style="background-color: <?php echo "$porcentaje_color_fondo"; ?>">
-                        <div class="rdm-lista--linea-pocentaje-relleno" style="width: <?php echo "$porcentaje_inventario"; ?>%; background-color: <?php echo "$porcentaje_color_relleno"; ?>;"></div>
-                    </div>
-                </article>
-
-            </a>
-
-            <a href="inventario_novedades.php?inventario_id=<?php echo "$inventario_id"; ?>">
-
-                <article class="rdm-lista--item-porcentaje">
-                    <div>
-                        <div class="rdm-lista--izquierda-porcentaje">
-                            <h2 class="rdm-lista--titulo-porcentaje"><?php echo ucfirst("$componente"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($cantidad_actual, 0, ",", "."); ?> <?php echo ucfirst("$unidad"); ?></h2>
-                        </div>
-                        <div class="rdm-lista--derecha-porcentaje">
-                            <h2 class="rdm-lista--texto-secundario-porcentaje"><?php echo number_format($porcentaje_inventario, 1, ".", "."); ?>%</h2>
-                        </div>
-                    </div>
-                    
-                    <div class="rdm-lista--linea-pocentaje-fondo" style="background-color: <?php echo "$porcentaje_color_fondo"; ?>">
-                        <div class="rdm-lista--linea-pocentaje-relleno" style="width: <?php echo "$porcentaje_inventario"; ?>%; background-color: <?php echo "$porcentaje_color_relleno"; ?>;"></div>
-                    </div>
-                </article>
-
-            </a>
-
+            
+            
         <?php
         }
         ?>
@@ -243,8 +428,8 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 </div>
     
 <footer>
-
-    <a href="despachos_detalle.php?agregar_despacho=si&destino=<?php echo "$sesion_local_id"; ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-plus zmdi-hc-2x"></i></button></a>
+    
+    
 
 </footer>
 
