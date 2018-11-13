@@ -354,13 +354,23 @@ if ($editar == "si")
                         <p><b>Tipo</b> <br><?php echo ucfirst($tipo) ?></p>
                     <?php } ?>
 
-                    <?php if (!empty($unidad_minima)) { ?>
-                        <p><b>Unidad mínima</b> <br>$<?php echo number_format($costo_unidad_minima, 2, ",", "."); ?> x <?php echo ucfirst($unidad_minima); ?></p>
+                    <?php if (!empty($unidad_compra)) { ?>
+                        <p><b>Unidad de compra</b> <br><?php echo ucfirst($unidad_compra); ?></p>
                     <?php } ?>
 
                     <?php if (!empty($unidad_compra)) { ?>
-                        <p><b>Unidad de compra</b> <br>$<?php echo number_format($costo_unidad_compra, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></p>
+                        <p><b>Costo de unidad de compra</b> <br>$<?php echo number_format($costo_unidad_compra, 2, ",", "."); ?></p>
                     <?php } ?>
+
+                    <?php if (!empty($unidad_minima)) { ?>
+                        <p><b>Unidad mínima</b> <br><?php echo ucfirst($unidad_minima); ?></p>
+                    <?php } ?>
+
+                    <?php if (!empty($unidad_minima)) { ?>
+                        <p><b>Costo de unidad mínima</b> <br>$<?php echo number_format($costo_unidad_minima, 2, ",", "."); ?></p>
+                    <?php } ?>
+
+                    
 
                     
 

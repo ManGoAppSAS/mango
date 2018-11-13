@@ -343,12 +343,12 @@ if ($agregar == 'si')
             ?>
         
             <p class="rdm-formularios--label"><label for="ingrediente">Nombre*</label></p>
-            <p><input type="text" id="ingrediente" name="ingrediente" value="<?php echo "$ingrediente"; ?>" required autofocus /></p>
+            <p><input type="text" id="ingrediente" name="ingrediente" value="<?php echo "$ingrediente"; ?>" required autofocus/></p>
             <p class="rdm-formularios--ayuda">Nombre del ingrediente producido</p>
 
-            <p class="rdm-formularios--label"><label for="cantidad_unidad_compra">Cantidad básica*</label></p>
-            <p><input type="number" id="cantidad_unidad_compra" name="cantidad_unidad_compra" value="<?php echo "$cantidad_unidad_compra"; ?>" required autofocus /></p>
-            <p class="rdm-formularios--ayuda">Cantidad básica de producción</p>
+            <p class="rdm-formularios--label"><label for="cantidad_unidad_compra">Cantidad mínima de producción*</label></p>
+            <p><input type="number" id="cantidad_unidad_compra" name="cantidad_unidad_compra" value="<?php echo "$cantidad_unidad_compra"; ?>" step="any" required /></p>
+            <p class="rdm-formularios--ayuda">Cantidad mínima que se produce</p>
                         
             <p class="rdm-formularios--label"><label for="unidad_compra">Unidad de produccion*</label></p>
             <p><select id="unidad_compra" name="unidad_compra" required>

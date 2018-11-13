@@ -37,7 +37,7 @@ if (isset($busqueda))
         $proveedor_id = null;
     }
 
-    $consulta = mysqli_query($conexion, "SELECT * FROM ingrediente WHERE (ingrediente LIKE '%$busqueda%' or proveedor_id LIKE '$proveedor_id') and estado = 'activo' and tipo = 'comprado' ORDER BY ingrediente"); 
+    $consulta = mysqli_query($conexion, "SELECT * FROM ingrediente WHERE (ingrediente LIKE '%$busqueda%' or proveedor_id LIKE '$proveedor_id') and estado = 'activo' ORDER BY ingrediente"); 
 
 	//Si no existe ninguna fila que sea igual a $consultaBusqueda, entonces mostramos el siguiente mensaje
 	if ($consulta->num_rows == 0)
@@ -110,7 +110,7 @@ if (isset($busqueda))
 
                 </div>
                 <div class="rdm-lista--derecha-sencillo">
-                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus-circle-o zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-busqueda="<?php echo ucfirst($busqueda) ?>" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus-circle-o zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </article>
 

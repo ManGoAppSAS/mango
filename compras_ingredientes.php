@@ -47,7 +47,7 @@ if ($crear_compra == 'si')
 
     if ($consulta->num_rows == 0)
     {
-        $insercion = $conexion->query("INSERT INTO compra values ('', '$ahora', '', '', '$sesion_id', '', '', 'creado', '0', '', '', '$local_id')");
+        $insercion = $conexion->query("INSERT INTO compra values ('', '$ahora', '', '', '$sesion_id', '', '', 'creado', '', '', '$local_id')");
 
         $compra_id = $conexion->insert_id;
         
@@ -204,7 +204,7 @@ if ($agregar == 'si')
 
     <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar ingrediente o proveedor" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar(); this.select();" />
 
-    <div id="resultadoBusqueda"></div>       
+    <div id="resultadoBusqueda"></div>
 
     <?php
     //consulto y muestros los ingredientes en esta compra
@@ -296,7 +296,8 @@ if ($agregar == 'si')
                         <?php echo "$imagen"; ?>
                     </div>
                     <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad_enviada); ?> <?php echo ucfirst($unidad_compra); ?> de <?php echo ucfirst($ingrediente); ?></h2>
+                        <h2 class="rdm-lista--titulo"><?php echo ucfirst($ingrediente); ?></h2>
+                        <h2 class="rdm-lista--texto-secundario"><?php echo ($cantidad_enviada); ?> <?php echo ucfirst($unidad_compra); ?></h2>
                         <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($ingrediente_costo, 2, ",", "."); ?></h2>
                     </div>
                 </div>
@@ -332,7 +333,7 @@ if ($agregar == 'si')
 
 
 
-    <h2 class="rdm-lista--titulo-largo">Detalle</h2>
+    
 
     <?php
     //consulto y muestro los datos de la compra
@@ -342,10 +343,7 @@ if ($agregar == 'si')
     {
         ?>
 
-        <div class="rdm-vacio--caja">
-            <i class="zmdi zmdi-alert-circle-o zmdi-hc-4x"></i>
-            <p class="rdm-tipografia--subtitulo1">Esta compra ya no existe</p>
-        </div>
+        
 
         <?php
     }
@@ -356,7 +354,6 @@ if ($agregar == 'si')
             $compra_id = $fila['compra_id'];
 
             $estado = $fila['estado'];
-            $valor = $fila['valor'];
             $destino = $fila['destino'];
 
             //consulto la cantidad de ingredientes en la compra
@@ -420,6 +417,8 @@ if ($agregar == 'si')
             }
             ?>
 
+            <h2 class="rdm-lista--titulo-largo">Detalle</h2>
+
             <section class="rdm-tarjeta">
 
                 <div class="rdm-tarjeta--primario-largo">
@@ -453,7 +452,11 @@ if ($agregar == 'si')
     </div>
 </div>
     
-<footer></footer>
+<footer>
+    
+    <a href="" data-toggle="modal" data-target="#dialogo_enviar" data-compra_id="<?php echo ucfirst($compra_id) ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></button></a>
+
+</footer>
 
 <!--dialogo para agregar el ingrediente-->
 
@@ -476,9 +479,10 @@ if ($agregar == 'si')
 
                 <div class="rdm-tarjeta--modal-cuerpo">
                     <input type="hidden" name="compra_id" value="<?php echo "$compra_id"; ?>">
-                    <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
+                    <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">                    
 
-                    <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad_enviada" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+                    <p class="rdm-formularios--label"><label for="cantidad_enviada">Cantidad*</label></p>
+                    <p><input type="number" class="cantidad_enviada" id="cantidad_enviada" name="cantidad_enviada" id="cantidad_enviada" step="any" required autofocus/></p>
                 </div>            
 
                 <div class="rdm-tarjeta--acciones-derecha">
@@ -537,7 +541,8 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
                     <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
                     <input type="hidden" class="compra_ingrediente_id" name="compra_ingrediente_id" value="">
 
-                    <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad_enviada" value="" placeholder="cantidad_enviada..." step="any" required autofocus></p>
+                    <p class="rdm-formularios--label"><label for="cantidad_enviada">Cantidad*</label></p>
+                    <p><input type="number" class="cantidad_enviada" id="cantidad_enviada" name="cantidad_enviada" id="cantidad_enviada" step="any" required autofocus/></p>
                 </div>
 
                 <div class="rdm-tarjeta--acciones-derecha">
@@ -566,7 +571,7 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
   modal.find('.ingrediente').text('' + ingrediente + '')
   modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_compra').text('' + unidad_compra + '')
-  modal.find('.rdm-formularios--input-mediano').val(cantidad_enviada)
+  modal.find('.cantidad_enviada').val(cantidad_enviada)
   modal.find('.compra_ingrediente_id').val(compra_ingrediente_id)
   modal.find('.proveedor').text('' + proveedor + '')
 })
@@ -671,8 +676,6 @@ $('#dialogo_eliminar').on('show.bs.modal', function (event) {
 
 
 
-
-
 <!--dialogo para confirmar envio de compra-->
 
 <div class="modal" id="dialogo_enviar" tabindex="-1" role="dialog">
@@ -689,7 +692,8 @@ $('#dialogo_eliminar').on('show.bs.modal', function (event) {
             <form action="compras_ver.php" method="post" enctype="multipart/form-data">
 
                 <div class="rdm-tarjeta--cuerpo">
-                    ¿Desea terminar la compra <b>No <?php echo "$compra_id"; ?></b> y enviar todos los ingredientes hacia <b><?php echo "$local"; ?></b> para ser recibidos en el inventario?
+                    ¿Desea terminar la compra <b>No <?php echo "$compra_id"; ?></b> y enviar todos los ingredientes hacia <b><?php echo ucfirst($local); ?></b> para ser recibidos en el inventario?
+
                 </div>
 
                 <div class="rdm-tarjeta--modal-cuerpo">
@@ -731,11 +735,7 @@ $('#dialogo_enviar').on('show.bs.modal', function (event) {
 
 
 
-<footer>
-    
-    <a href="" data-toggle="modal" data-target="#dialogo_enviar" data-compra_id="<?php echo ucfirst($compra_id) ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></button></a>
 
-</footer>
 
 
 

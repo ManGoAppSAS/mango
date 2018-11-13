@@ -23,6 +23,7 @@ if(isset($_POST['busqueda'])) $busqueda = $_POST['busqueda']; elseif(isset($_GET
 
 //variables de envio de inventario
 if(isset($_POST['recibir_ingrediente'])) $recibir_ingrediente = $_POST['recibir_ingrediente']; elseif(isset($_GET['recibir_ingrediente'])) $recibir_ingrediente = $_GET['recibir_ingrediente']; else $recibir_ingrediente = null;
+if(isset($_POST['ingrediente_id'])) $ingrediente_id = $_POST['ingrediente_id']; elseif(isset($_GET['ingrediente_id'])) $ingrediente_id = $_GET['ingrediente_id']; else $ingrediente_id = null;
 if(isset($_POST['compra_id'])) $compra_id = $_POST['compra_id']; elseif(isset($_GET['compra_id'])) $compra_id = $_GET['compra_id']; else $compra_id = null;
 if(isset($_POST['compra_ingrediente_id'])) $compra_ingrediente_id = $_POST['compra_ingrediente_id']; elseif(isset($_GET['compra_ingrediente_id'])) $compra_ingrediente_id = $_GET['compra_ingrediente_id']; else $compra_ingrediente_id = null;
 
@@ -37,55 +38,54 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 
 
 <?php
-//envio los ingredientes al inventario
+//agrego el componente al inventario del local o punto de venta
 if ($recibir_ingrediente == 'si')
 {
-    //si la cantidad enviada es igual a la cantidad recibida
-    if ($cantidad_enviada == $cantidad_recibida)
-    {
-      $actualizar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET estado = 'recibido', fecha_baja = '$ahora', cantidad_recibida = '$cantidad_recibida' WHERE compra_ingrediente_id = '$compra_ingrediente_id'");
-    }
+    //consutlo si ya existe este componente en el inventario
+    $consulta_inventario = $conexion->query("SELECT * FROM inventario WHERE ingrediente_id = '$ingrediente_id' and local_id = '$sesion_local_id'");
 
-    if ($cantidad_enviada > $cantidad_recibida)
-    {
-      $actualizar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET estado = 'pendiente', fecha_mod = '$ahora', cantidad_recibida = '$cantidad_recibida' WHERE compra_ingrediente_id = '$compra_ingrediente_id'");
-    }
+    //si no existe lo creo en el inventario
+    if ($consulta_inventario->num_rows == 0)
+    { 
+        $cantidad_maxima = $cantidad_recibida;
+        $cantidad_minima = floor(($cantidad_recibida * 20) / 100);
 
-    
+        $crear_inventario = $conexion->query("INSERT INTO inventario values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$cantidad_recibida', '$cantidad_minima', '$cantidad_maxima', '$ingrediente_id', '$sesion_local_id')");
 
-    if ($actualizar_ingrediente)
-    {       
+        $inventario_id = $conexion->insert_id;
 
-        $mensaje = "Ingrediente recibido";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "aviso";
-    }
-}
-?>
-
-
-
-
-<?php
-//elimino la compra
-if ($eliminar_compra == 'si')
-{
-    $borrar_compra = $conexion->query("UPDATE compra SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
-
-    if ($borrar_compra)
-    {
-        $borrar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
-
-        $mensaje = "Compra eliminada";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "aviso";
+        if ($crear_inventario)
+        {
+            $mensaje = "Ingrediente recibido";
+            $body_snack = 'onLoad="Snackbar()"';
+            $mensaje_tema = "aviso";
+        }
     }
     else
     {
-        $mensaje = "No es posible eliminar la compra";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "error";
+        if ($fila_inventario = $consulta_inventario->fetch_assoc()) 
+        {
+            $inventario_id = $fila_inventario['inventario_id'];
+            $cantidad_actual = $fila_inventario['cantidad_actual'];
+        }
+
+        $nueva_cantidad = $cantidad_actual + $cantidad_recibida;
+
+        $cantidad_maxima = $nueva_cantidad;
+        $cantidad_minima = floor(($nueva_cantidad * 20) / 100);
+
+        $actualizar_inventario = $conexion->query("UPDATE inventario SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', cantidad_actual = '$nueva_cantidad', cantidad_minima = '$cantidad_minima', cantidad_maxima = '$cantidad_maxima' WHERE inventario_id = '$inventario_id'");
+
+        if ($actualizar_inventario)
+        {
+            $mensaje = "Ingrediente actualizado";
+            $body_snack = 'onLoad="Snackbar()"';
+            $mensaje_tema = "aviso";
+        }
     }
+
+    //actualizo el estado del componente en el despacho a recibido
+    $actualizo_ingrediente = $conexion->query("UPDATE compra_ingrediente SET estado = 'enviado' WHERE compra_ingrediente_id = '$compra_ingrediente_id'");    
 }
 ?>
 
@@ -137,16 +137,133 @@ if ($eliminar_compra == 'si')
 <main class="rdm--contenedor-toolbar">
 
     <?php
+    //consulto y muestro los datos de la compra
+    $consulta = $conexion->query("SELECT * FROM compra WHERE compra_id = '$compra_id'");
+
+    if ($consulta->num_rows == 0)
+    {
+        ?>
+
+        <div class="rdm-vacio--caja">
+            <i class="zmdi zmdi-alert-circle-o zmdi-hc-4x"></i>
+            <p class="rdm-tipografia--subtitulo1">Esta compra ya no existe</p>
+        </div>
+
+        <?php
+    }
+    else             
+    {
+        while ($fila = $consulta->fetch_assoc())
+        {
+            $compra_id = $fila['compra_id'];
+            $usuario_alta = $fila['usuario_alta'];
+            $estado = $fila['estado'];
+            $destino = $fila['destino'];
+            $observacion_envio = $fila['observacion_envio'];
+
+            //consulto el usuario alta
+            $consulta_usuario = $conexion->query("SELECT * FROM usuario WHERE usuario_id = '$usuario_alta'");           
+
+            if ($fila = $consulta_usuario->fetch_assoc()) 
+            {
+                $nombres = $fila['nombres'];
+                $apellidos = $fila['apellidos'];
+                $enviado_por = "$nombres $apellidos";
+
+            }
+            else
+            {
+                $enviado_por = "";
+            }
+
+            //consulto la cantidad de ingredientes en la compra
+            $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
+            $total_ingredientes = $consulta_ingredientes->num_rows;
+
+            //consulto el destino
+            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
+
+            if ($filas2 = $consulta2->fetch_assoc())
+            {
+                $local = $filas2['local'];
+            }
+            else
+            {
+                $local = "";
+            }
+
+            //consulto el costo
+            $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
+
+            if ($consulta_costo->num_rows != 0)
+            {
+                $composicion_costo = 0;
+
+                while ($fila = $consulta_costo->fetch_assoc())
+                {
+                    //datos de la composicion
+                    $compra_ingrediente_id = $fila['compra_ingrediente_id'];
+                    $cantidad_enviada = $fila['cantidad_enviada'];
+                    $ingrediente_id = $fila['ingrediente_id'];
+
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
+
+                    if ($filas2 = $consulta2->fetch_assoc())
+                    {            
+                        $unidad_compra_c = $filas2['unidad_compra'];
+                        $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
+                    }
+                    else
+                    {            
+                        $unidad_compra_c = "unid";
+                        $costo_unidad_compra_c = 0;
+                    }
+
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
+
+                    //costo de la composicion
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
+                }
+
+                //valor del costo
+                $costo_valor = $composicion_costo;       
+            }
+            else                 
+            {
+                //valor del costo
+                $costo_valor = 0;
+            }
+            ?>
+
+            <section class="rdm-tarjeta">
+
+                <div class="rdm-tarjeta--primario-largo">
+                    <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucwords($enviado_por) ?></h1>
+                    <h2 class="rdm-tarjeta--subtitulo-largo">Compra No <?php echo ($compra_id); ?></h2>
+                </div>
+
+                <div class="rdm-tarjeta--cuerpo">                    
+
+                    <p><b>Observación</b> <br><?php echo ($observacion_envio); ?></p>                    
+
+                </div>
+
+            </section>
+            
+            <?php
+        }
+    }
+    ?>
+
+
+
+
+
+    <?php
     //consulto los proveedores
-    $consulta = $conexion->query("SELECT DISTINCT p.proveedor AS proveedor, p.proveedor_id AS proveedor_id
-                                  FROM compra AS c
-                                  JOIN compra_ingrediente AS ci
-                                   ON c.compra_id = ci.compra_id
-                                  JOIN ingrediente AS i 
-                                   ON i.ingrediente_id = ci.ingrediente_id
-                                  JOIN proveedor AS p 
-                                   ON p.proveedor_id = i.proveedor_id
-                                  WHERE c.destino = '$sesion_local_id' AND ci.estado = 'enviado' and c.compra_id = '$compra_id'");    
+    $consulta = $conexion->query("SELECT DISTINCT p.proveedor AS proveedor,p.proveedor_id AS proveedor_id FROM compra AS c JOIN compra_ingrediente AS ci ON c.compra_id = ci.compra_id JOIN ingrediente AS i ON i.ingrediente_id = ci.ingrediente_id JOIN proveedor AS p ON p.proveedor_id = i.proveedor_id WHERE c.destino = '$sesion_local_id' AND ci.estado = 'enviado' AND c.compra_id = '$compra_id'");    
            
     while ($fila = $consulta->fetch_assoc()) 
     {
@@ -162,13 +279,7 @@ if ($eliminar_compra == 'si')
         <?php
 
         //consulto los ingredientes
-        $consulta2 = $conexion->query("SELECT ci.ingrediente_id AS ingrediente_id, i.ingrediente AS ingrediente, ci.cantidad_enviada AS cantidad_enviada, i.costo_unidad_compra AS costo_unidad_compra, i.unidad_compra AS unidad_compra, ci.compra_ingrediente_id AS compra_ingrediente_id
-                                      FROM compra AS c
-                                      JOIN compra_ingrediente AS ci
-                                       ON c.compra_id = ci.compra_id
-                                      JOIN ingrediente AS i 
-                                       ON i.ingrediente_id = ci.ingrediente_id
-                                      WHERE ci.compra_id = '$compra_id' AND i.proveedor_id = '$proveedor_id' AND ci.estado = 'enviado'");    
+        $consulta2 = $conexion->query("SELECT ci.ingrediente_id AS ingrediente_id,i.ingrediente AS ingrediente,ci.cantidad_enviada AS cantidad_enviada,i.costo_unidad_compra AS costo_unidad_compra,i.unidad_compra AS unidad_compra,ci.compra_ingrediente_id AS compra_ingrediente_id FROM compra AS c JOIN compra_ingrediente AS ci ON c.compra_id = ci.compra_id JOIN ingrediente AS i ON i.ingrediente_id = ci.ingrediente_id WHERE ci.compra_id = '$compra_id' AND i.proveedor_id = '$proveedor_id' AND ci.estado = 'enviado'");    
                
         while ($fila = $consulta2->fetch_assoc()) 
         {

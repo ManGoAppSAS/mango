@@ -30,50 +30,6 @@ if(isset($_POST['body_snack'])) $body_snack = $_POST['body_snack']; elseif(isset
 if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif(isset($_GET['mensaje_tema'])) $mensaje_tema = $_GET['mensaje_tema']; else $mensaje_tema = null;
 ?>
 
-
-<?php
-//envio los ingredientes al inventario
-if ($enviar == 'si')
-{
-    $actualizar_compra = $conexion->query("UPDATE compra SET estado = 'enviado' WHERE compra_id = '$compra_id'");
-
-    if ($actualizar_compra)
-    {
-        $actualizar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET estado = 'enviado' WHERE compra_id = '$compra_id'");
-
-        $mensaje = "Compra terminada y enviada";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "aviso";
-    }
-}
-?>
-
-
-
-
-<?php
-//elimino la compra
-if ($eliminar_compra == 'si')
-{
-    $borrar_compra = $conexion->query("UPDATE compra SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
-
-    if ($borrar_compra)
-    {
-        $borrar_ingrediente = $conexion->query("UPDATE compra_ingrediente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE compra_id = '$compra_id'");
-
-        $mensaje = "Compra eliminada";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "aviso";
-    }
-    else
-    {
-        $mensaje = "No es posible eliminar la compra";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "error";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -311,81 +267,20 @@ if ($eliminar_compra == 'si')
     {
         ?>        
             
-        <h2 class="rdm-lista--titulo-largo">Enviadas</h2>
+        <h2 class="rdm-lista--titulo-largo">Ingredientes</h2>
 
         <section class="rdm-lista">
 
         <?php
         while ($fila = $consulta->fetch_assoc()) 
         {
-            $compra_id = $fila['compra_id'];
-            $estado = $fila['estado'];
-            $destino = $fila['destino'];
-
-            //consulto el destino
-            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
-
-            if ($filas2 = $consulta2->fetch_assoc())
-            {
-                $local = $filas2['local'];
-
-            }
-            else
-            {
-                $local = "";
-            }
-
-            //consulto la cantidad_enviada de ingredientes en la compra
-            $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
-            $total_ingredientes = $consulta_ingredientes->num_rows;
-
-            //consulto el costo
-            $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
-
-            if ($consulta_costo->num_rows != 0)
-            {
-                $composicion_costo = 0;
-
-                while ($fila = $consulta_costo->fetch_assoc())
-                {
-                    //datos de la composicion
-                    $compra_ingrediente_id = $fila['compra_ingrediente_id'];
-                    $cantidad_enviada = $fila['cantidad_enviada'];
-                    $ingrediente_id = $fila['ingrediente_id'];
-
-                    //consulto el ingrediente
-                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
-
-                    if ($filas2 = $consulta2->fetch_assoc())
-                    {            
-                        $unidad_compra_c = $filas2['unidad_compra'];
-                        $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
-                    }
-                    else
-                    {            
-                        $unidad_compra_c = "unid";
-                        $costo_unidad_compra_c = 0;
-                    }
-
-                    //costo del ingrediente
-                    $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
-
-                    //costo de la composicion
-                    $composicion_costo = $composicion_costo + $ingrediente_costo;
-                }
-
-                //valor del costo
-                $costo_valor = $composicion_costo;       
-            }
-            else                 
-            {
-                //valor del costo
-                $costo_valor = 0;
-            }
+            $inventario_id = $fila['inventario_id'];
+            $cantidad_actual = $fila['cantidad_actual'];
+            $ingrediente_id = $fila['ingrediente_id'];
 
             //color de fondo segun la primer letra
-            $avatar_id = $compra_id;
-            $avatar_nombre = "$local";
+            $avatar_id = $inventario_id;
+            $avatar_nombre = "$ingrediente_id";
 
             include ("sis/avatar_color.php");
             
@@ -400,8 +295,8 @@ if ($eliminar_compra == 'si')
                             <?php echo "$imagen"; ?>
                         </div>
                         <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$local"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario"><?php echo ($total_ingredientes); ?> Ingredientes  •  Costo: $<?php echo number_format($costo_valor, 2, ",", "."); ?></h2>
+                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$ingrediente_id"); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario">Cantidad <?php echo ($cantidad_actual); ?></h2>
                         </div>
                     </div>                    
                 </article>

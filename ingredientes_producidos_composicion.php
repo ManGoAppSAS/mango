@@ -130,7 +130,7 @@ if ($agregar == 'si')
             var textoBusqueda = $("input#busqueda").val();
          
              if (textoBusqueda != "") {
-                $.post("ingredientes_producidos_composicion_buscar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>", {busqueda: textoBusqueda}, function(mensaje) {
+                $.post("ingredientes_producidos_composicion_buscar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>&busqueda=<?php echo "$busqueda"; ?>", {busqueda: textoBusqueda}, function(mensaje) {
                     $("#resultadoBusqueda").html(mensaje);
                  }); 
              } else { 
@@ -251,9 +251,9 @@ if ($agregar == 'si')
                     </div>
                 </div>
                 <div class="rdm-lista--derecha">
-                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>" data-cantidad="<?php echo ucfirst($cantidad) ?>" data-ingrediente_producido_composicion_id="<?php echo ucfirst($ingrediente_producido_composicion_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-busqueda="<?php echo ucfirst($busqueda) ?>" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_minima="<?php echo ucfirst($unidad_minima) ?>" data-cantidad="<?php echo ucfirst($cantidad) ?>" data-ingrediente_producido_composicion_id="<?php echo ucfirst($ingrediente_producido_composicion_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
 
-                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-ingrediente_producido_composicion_id="<?php echo ($ingrediente_producido_composicion_id) ?>" data-ingrediente="<?php echo ucfirst($ingrediente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-minus-circle-outline zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-busqueda="<?php echo ucfirst($busqueda) ?>" data-ingrediente_producido_composicion_id="<?php echo ($ingrediente_producido_composicion_id) ?>" data-ingrediente="<?php echo ucfirst($ingrediente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-minus-circle-outline zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
             </div>
            
@@ -415,6 +415,7 @@ if ($agregar == 'si')
                 <div class="rdm-tarjeta--modal-cuerpo">
                     <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
                     <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
+                    <input type="hidden" class="busqueda" name="busqueda">
 
                     <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
                 </div>            
@@ -433,10 +434,12 @@ if ($agregar == 'si')
 <script>
 $('#dialogo_agregar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
+  var busqueda = button.data('busqueda') 
   var ingrediente = button.data('ingrediente') 
   var ingrediente_id = button.data('ingrediente_id') 
   var unidad_minima = button.data('unidad_minima')
   var modal = $(this)
+  modal.find('.busqueda').val(busqueda)
   modal.find('.ingrediente').text('' + ingrediente + '')
   modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_minima').text('' + unidad_minima + '')
@@ -472,6 +475,7 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
                     <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
                     <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
                     <input type="hidden" class="ingrediente_producido_composicion_id" name="ingrediente_producido_composicion_id" value="">
+                    <input type="hidden" class="busqueda" name="busqueda">
 
                     <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
                 </div>
@@ -491,12 +495,14 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
 <script>
 $('#dialogo_editar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
+  var busqueda = button.data('busqueda') 
   var ingrediente = button.data('ingrediente') 
   var ingrediente_id = button.data('ingrediente_id') 
   var unidad_minima = button.data('unidad_minima')
   var cantidad = button.data('cantidad')
   var ingrediente_producido_composicion_id = button.data('ingrediente_producido_composicion_id')
   var modal = $(this)
+  modal.find('.busqueda').val(busqueda)
   modal.find('.ingrediente').text('' + ingrediente + '')
   modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_minima').text('' + unidad_minima + '')
@@ -531,6 +537,7 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
                 <div class="rdm-tarjeta--modal-cuerpo">
                     <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
                     <input type="hidden" class="ingrediente_producido_composicion_id" name="ingrediente_producido_composicion_id" value="">
+                    <input type="hidden" class="busqueda" name="busqueda">
                 </div>            
 
                 <div class="rdm-tarjeta--acciones-derecha">
@@ -548,9 +555,11 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
 <script>
 $('#dialogo_eliminar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
+  var busqueda = button.data('busqueda') 
   var ingrediente_producido_composicion_id = button.data('ingrediente_producido_composicion_id') //producto_composicion_id
   var ingrediente = button.data('ingrediente') //ingrediente
   var modal = $(this)    
+  modal.find('.busqueda').val(busqueda)
   modal.find('.ingrediente_producido_composicion_id').val(ingrediente_producido_composicion_id)
   modal.find('.ingrediente').text('' + ingrediente + '')
 })
