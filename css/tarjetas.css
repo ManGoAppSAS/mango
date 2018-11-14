@@ -113,7 +113,7 @@ Autor: Danny Estrada
     margin-left: 1em;
 }
 
-.rdm-tarjeta--media, .rdm-tarjeta--media-index{	
+.rdm-tarjeta--media, .rdm-tarjeta--media-index, .rdm-tarjeta--media-cuadrado{	
     background-position: center; 
     background-repeat: no-repeat;
     background-size: cover;
@@ -125,6 +125,10 @@ Autor: Danny Estrada
 
 .rdm-tarjeta--media-index{
     border-radius: 0em 0em 0.5em 0.5em;
+}
+
+.rdm-tarjeta--media-cuadrado{   
+    border-radius: 0em;
 }
 
 .rdm-tarjeta--avatar{

@@ -640,13 +640,13 @@ if ($editar == "si")
 
     <?php
     //consulto la composicion de este ingrediente producido
-    $consulta = $conexion->query("SELECT * FROM ingrediente_producido_composicion WHERE ingrediente_producido_id = '$ingrediente_producido_id' and estado = 'activo' ORDER BY fecha_alta DESC");
+    $consulta = $conexion->query("SELECT * FROM ingrediente_producido_preparacion WHERE ingrediente_producido_id = '$ingrediente_producido_id' and estado = 'activo' ORDER BY fecha_alta ASC");
 
     if ($consulta->num_rows == 0)
     {
         ?>
 
-        <h2 class="rdm-lista--titulo-largo">Composición</h2>
+        <h2 class="rdm-lista--titulo-largo">Preparación</h2>
 
         <section class="rdm-lista">
             
@@ -657,7 +657,7 @@ if ($editar == "si")
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los ingredientes de los que está hecho un ingrediente producido. Estos ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan produccciones</h2>
+                        <h2 class="rdm-lista--texto-secundario">La preparación son los pasos a realizar en la creación de un ingrediente producido</h2>
                     </div>
                 </div>
             </article>
@@ -665,7 +665,7 @@ if ($editar == "si")
             <div class="rdm-tarjeta--separador"></div>
 
             <div class="rdm-tarjeta--acciones-izquierda">
-                <a href="ingredientes_producidos_composicion.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+                <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
             </div>
 
         </section>
@@ -676,23 +676,32 @@ if ($editar == "si")
     else
     {   ?>
 
-        <a id="composicion">
+        <a id="preparacion">
 
         <h2 class="rdm-lista--titulo-largo">Preparación</h2>
 
-        <section class="rdm-lista">
+        <section class="rdm-tarjeta">   
 
         <?php
+
+        $contador = 0;
         while ($fila = $consulta->fetch_assoc())
         {
             //datos de la composicion
-            $ingrediente_producido_composicion_id = $fila['ingrediente_producido_composicion_id'];            
-            $cantidad = $fila['cantidad'];
+            $ingrediente_producido_preparacion_id = $fila['ingrediente_producido_preparacion_id'];
             $preparacion = $fila['preparacion'];
-            $ingrediente_id = $fila['ingrediente_id'];
+            $ingrediente_producido_id = $fila['ingrediente_producido_id'];
 
             $imagen_preparacion = $fila['imagen'];
             $imagen_nombre = $fila['imagen_nombre'];
+
+            $contador = $contador + 1;
+
+            //color de fondo segun la primer letra
+            $avatar_id = $ingrediente_producido_preparacion_id;
+            $avatar_nombre = "$preparacion";
+
+            include ("sis/avatar_color.php");
 
             //consulto la imagen de la preparacion
             if ($imagen_preparacion == "no")
@@ -701,63 +710,40 @@ if ($editar == "si")
             }
             else
             {
-                $imagen_preparacion = "img/avatares/composicion-$ingrediente_producido_composicion_id-$imagen_nombre.jpg";
-                $imagen_preparacion = '<div class="rdm-tarjeta--media" style="background-image: url('.$imagen_preparacion.');"></div>';
+                $imagen_preparacion = "img/avatares/preparacion-$ingrediente_producido_preparacion_id-$imagen_nombre.jpg";
+                $imagen_preparacion = '<div class="rdm-tarjeta--media-cuadrado" style="background-image: url('.$imagen_preparacion.');"></div>';
             }
-
-            //consulto el ingrediente
-            $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
-
-            if ($filas2 = $consulta2->fetch_assoc())
-            {
-                $ingrediente = $filas2['ingrediente'];
-                $unidad_minima = $filas2['unidad_minima'];
-                $costo_unidad_minima = $filas2['costo_unidad_minima'];
-
-                //color de fondo segun la primer letra
-                $avatar_id = $ingrediente_id;
-                $avatar_nombre = "$ingrediente";
-
-                include ("sis/avatar_color.php");
-                
-                //consulto el avatar
-                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><span class="rdm-lista--avatar-texto">'.strtoupper(substr($avatar_nombre, 0, 1)).'</span></div>';
-            }
-            else
-            {
-                $ingrediente = "No se ha asignado un ingrediente";
-                $unidad_minima = "";
-                $costo_unidad_minima = 0;
-            }
-
-            //calculo el costo del producto
-            $producto_costo = $costo_unidad_minima * $cantidad;
             ?>
 
-            <article class="rdm-lista--item-doble">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <?php echo "$imagen"; ?>
+
+                <div class="rdm-tarjeta--primario">
+                    <div class="rdm-tarjeta--primario-contenedor">
+                        <div class="rdm-lista--avatar-color" style="background-color: hsl(<?php echo $sca ?>, 50%, 80%); color: hsl(<?php echo $sca ?>, 80%, 30%);"><span class="rdm-lista--avatar-texto"><?php echo "$contador"; ?></span></div>
                     </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst($preparacion); ?></h2>
-                        <h2 class="rdm-lista--titulo"><?php echo ($cantidad); ?> <?php echo ucfirst($unidad_minima); ?> de <?php echo ucfirst($ingrediente); ?></h2>
-                        <?php echo "$imagen_preparacion"; ?>
+
+                    <div class="rdm-tarjeta--primario-contenedor">
+                        <h1 class="rdm-tarjeta--titulo"><?php echo ucfirst($preparacion); ?></h1>
                     </div>
                 </div>
-                <div class="rdm-lista--derecha-sencillo">
-                    
-                </div>
-            </article>
+
+                <?php echo "$imagen_preparacion"; ?>
+
+                <div class="rdm-tarjeta--separador"></div>
+
+                
+
+                
+
+                
+
+            
             
         <?php
         }
         ?>
 
-        <div class="rdm-tarjeta--separador"></div>
-
         <div class="rdm-tarjeta--acciones-izquierda">
-            <a href="ingredientes_producidos_composicion.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+            <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
         </div>
 
         </section>
