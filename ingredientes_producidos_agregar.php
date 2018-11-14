@@ -24,7 +24,6 @@ if(isset($_POST['unidad_minima'])) $unidad_minima = $_POST['unidad_minima']; els
 if(isset($_POST['unidad_compra'])) $unidad_compra = $_POST['unidad_compra']; elseif(isset($_GET['unidad_compra'])) $unidad_compra = $_GET['unidad_compra']; else $unidad_compra = null;
 if(isset($_POST['costo_unidad_minima'])) $costo_unidad_minima = $_POST['costo_unidad_minima']; elseif(isset($_GET['costo_unidad_minima'])) $costo_unidad_minima = $_GET['costo_unidad_minima']; else $costo_unidad_minima = 0;
 if(isset($_POST['costo_unidad_compra'])) $costo_unidad_compra = $_POST['costo_unidad_compra']; elseif(isset($_GET['costo_unidad_compra'])) $costo_unidad_compra = $_GET['costo_unidad_compra']; else $costo_unidad_compra = 0;
-if(isset($_POST['preparacion'])) $preparacion = $_POST['preparacion']; elseif(isset($_GET['preparacion'])) $preparacion = $_GET['preparacion']; else $preparacion = null;
 if(isset($_POST['cantidad_unidad_compra'])) $cantidad_unidad_compra = $_POST['cantidad_unidad_compra']; elseif(isset($_GET['cantidad_unidad_compra'])) $cantidad_unidad_compra = $_GET['cantidad_unidad_compra']; else $cantidad_unidad_compra = null;
 
 if(isset($_POST['productor_id'])) $productor_id = $_POST['productor_id']; elseif(isset($_GET['productor_id'])) $productor_id = $_GET['productor_id']; else $productor_id = 0;
@@ -232,15 +231,15 @@ if ($agregar == 'si')
             }
         }
 
-        $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ingrediente', 'producido', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '$preparacion', '$cantidad_unidad_compra', '0', '$productor_id')");        
+        $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ingrediente', 'producido', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '$cantidad_unidad_compra', '0', '$productor_id')");        
 
-        $mensaje = "ingrediente <b>" . ucfirst($ingrediente) . "</b> agregado";
+        $mensaje = "ingrediente <b>" . ($ingrediente) . "</b> agregado";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
     else
     {
-        $mensaje = "El ingrediente <b>" . ucfirst($ingrediente) . "</b> ya existe, no es posible agregarlo de nuevo";
+        $mensaje = "El ingrediente <b>" . ($ingrediente) . "</b> ya existe, no es posible agregarlo de nuevo";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "error";
     }
@@ -250,7 +249,7 @@ if ($agregar == 'si')
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>ingredientes producidos - ManGo!</title>    
+    <title>Ingredientes producidos - ManGo!</title>    
     <?php
     //información del head
     include ("partes/head.php");
@@ -263,7 +262,7 @@ if ($agregar == 'si')
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
             <a href="ingredientes_producidos_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
-            <h2 class="rdm-toolbar--titulo">ingredientes producidos</h2>
+            <h2 class="rdm-toolbar--titulo">Ingredientes producidos</h2>
         </div>
     </div>
 </header>
@@ -352,25 +351,19 @@ if ($agregar == 'si')
                         
             <p class="rdm-formularios--label"><label for="unidad_compra">Unidad de produccion*</label></p>
             <p><select id="unidad_compra" name="unidad_compra" required>
-                <option value="<?php echo "$unidad_compra"; ?>"><?php echo $unidad_compra ?></option>
+                <option value="<?php echo "$unidad_compra"; ?>"><?php echo ucfirst($unidad_compra) ?></option>
                 <option value="">---------</option>
-                <option value="g">Gramo (g)</option>
-                <option value="ml">Mililitro (ml)</option>
-                <option value="mm">Milimetro (mm)</option>
+                <option value="g">Gramo (G)</option>
+                <option value="ml">Mililitro (Ml)</option>
+                <option value="mm">Milimetro (Mm)</option>
                 <option value="">---------</option>
-                <option value="kg">Kilogramo (kg)</option>
-                <option value="l">Litro (l)</option>
-                <option value="m">Metro (m)</option>
+                <option value="kg">Kilogramo (Kg)</option>
+                <option value="l">Litro (L)</option>
+                <option value="m">Metro (M)</option>
                 <option value="">---------</option>
-                <option value="unid">unid</option>
+                <option value="unid">Unid</option>
             </select></p>
-            <p class="rdm-formularios--ayuda">Unidad de producción del ingrediente</p>
-
-            <p class="rdm-formularios--label"><label for="preparacion">Preparación</label></p>
-            <p><textarea id="preparacion" name="preparacion"><?php echo "$preparacion"; ?></textarea></p>
-            <p class="rdm-formularios--ayuda">Escribe el proceso de preparación o producción de este ingrediente</p>
-
-            
+            <p class="rdm-formularios--ayuda">Unidad de producción del ingrediente</p>            
             
             <button type="submit" class="rdm-boton--fab" name="agregar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>        
             

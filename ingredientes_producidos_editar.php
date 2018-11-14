@@ -32,7 +32,6 @@ if ($fila = $consulta->fetch_assoc())
     $unidad_compra = $fila['unidad_compra'];
     $costo_unidad_minima = $fila['costo_unidad_minima'];
     $costo_unidad_compra = $fila['costo_unidad_compra'];
-    $preparacion = $fila['preparacion'];
     $cantidad_unidad_compra = $fila['cantidad_unidad_compra'];
 
     $productor_id = $fila['productor_id'];
@@ -170,23 +169,19 @@ else
             
             <p class="rdm-formularios--label"><label for="unidad_compra">Unidad de produccion*</label></p>
             <p><select id="unidad_compra" name="unidad_compra" required>
-                <option value="<?php echo "$unidad_compra"; ?>"><?php echo $unidad_compra ?></option>
+                <option value="<?php echo "$unidad_compra"; ?>"><?php echo ucfirst($unidad_compra) ?></option>
                 <option value="">---------</option>
-                <option value="g">Gramo (g)</option>
-                <option value="ml">Mililitro (ml)</option>
-                <option value="mm">Milimetro (mm)</option>
+                <option value="g">Gramo (G)</option>
+                <option value="ml">Mililitro (Ml)</option>
+                <option value="mm">Milimetro (Mm)</option>
                 <option value="">---------</option>
-                <option value="kg">Kilogramo (kg)</option>
-                <option value="l">Litro (l)</option>
-                <option value="m">Metro (m)</option>
+                <option value="kg">Kilogramo (Kg)</option>
+                <option value="l">Litro (L)</option>
+                <option value="m">Metro (M)</option>
                 <option value="">---------</option>
-                <option value="unid">unid</option>
+                <option value="unid">Unid</option>
             </select></p>
             <p class="rdm-formularios--ayuda">Unidad de producción del ingrediente</p>
-
-            <p class="rdm-formularios--label"><label for="preparacion">Preparación</label></p>
-            <p><textarea id="preparacion" name="preparacion"><?php echo "$preparacion"; ?></textarea></p>
-            <p class="rdm-formularios--ayuda">Escribe el proceso de preparación o producción de este ingrediente</p>  
             
             <button type="submit" class="rdm-boton--fab" name="editar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>
 

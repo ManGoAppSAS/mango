@@ -230,7 +230,7 @@ if ($agregar == 'si')
             }
         }
 
-        $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ingrediente', 'comprado', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '', '0', '$proveedor_id', '0')");        
+        $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ingrediente', 'comprado', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '0', '$proveedor_id', '0')");        
 
         $mensaje = "ingrediente <b>" . ($ingrediente) . "</b> agregado";
         $body_snack = 'onLoad="Snackbar()"';
@@ -346,39 +346,39 @@ if ($agregar == 'si')
             
             <p class="rdm-formularios--label"><label for="unidad_compra">Unidad de compra*</label></p>
             <p><select id="unidad_compra" name="unidad_compra" required>
-                <option value="<?php echo "$unidad_compra"; ?>"><?php echo $unidad_compra ?></option>
+                <option value="<?php echo "$unidad_compra"; ?>"><?php echo ucfirst($unidad_compra) ?></option>
                 <option value="">---------</option>
-                <option value="g">Gramo (g)</option>
-                <option value="ml">Mililitro (ml)</option>
-                <option value="mm">Milimetro (mm)</option>
+                <option value="g">Gramo (G)</option>
+                <option value="ml">Mililitro (Ml)</option>
+                <option value="mm">Milimetro (Mm)</option>
                 <option value="">---------</option>
-                <option value="kg">Kilogramo (kg)</option>
-                <option value="l">Litro (l)</option>
-                <option value="m">Metro (m)</option>
+                <option value="kg">Kilogramo (Kg)</option>
+                <option value="l">Litro (L)</option>
+                <option value="m">Metro (M)</option>
                 <option value="">---------</option>
-                <option value="arroba 12.5 kg">arroba 12.5 kg</option>
-                <option value="bulto 25 kg">bulto 25 kg</option>
-                <option value="bulto 50 kg">bulto 50 kg</option>
+                <option value="arroba 12.5 kg">arroba 12.5 Kg</option>
+                <option value="bulto 25 kg">bulto 25 Kg</option>
+                <option value="bulto 50 kg">bulto 50 Kg</option>
                 <option value="">---------</option>
-                <option value="botella 375 ml">botella 375 ml</option>
-                <option value="botella 750 ml">botella 750 ml</option>
-                <option value="botella 1500 ml">botella 1500 ml</option>
-                <option value="garrafa 2000 ml">garrafa 2000 ml</option>
+                <option value="botella 375 ml">botella 375 Ml</option>
+                <option value="botella 750 ml">botella 750 Ml</option>
+                <option value="botella 1500 ml">botella 1500 Ml</option>
+                <option value="garrafa 2000 ml">garrafa 2000 Ml</option>
                 <option value="">---------</option>
-                <option value="galon 3.7 l">galon 3.7 l</option>
-                <option value="botella 3 l">botella 3 l</option>
-                <option value="botella 5 l">botella 5 l</option>
-                <option value="botellon 18 l">botellon 18 l</option>
-                <option value="botellon 20 l">botellon 20 l</option>
+                <option value="galon 3.7 l">galon 3.7 L</option>
+                <option value="botella 3 l">botella 3 L</option>
+                <option value="botella 5 l">botella 5 L</option>
+                <option value="botellon 18 l">botellon 18 L</option>
+                <option value="botellon 20 l">botellon 20 L</option>
                 <option value="">---------</option>
-                <option value="unid">unid</option>
-                <option value="par">par</option>
-                <option value="trio">trio</option>
-                <option value="decena">decena</option>
-                <option value="docena">docena</option>
-                <option value="quincena">quincena</option>
-                <option value="treintena">treintena</option>
-                <option value="centena">centena</option>
+                <option value="unid">Unid</option>
+                <option value="par">Par</option>
+                <option value="trio">Trio</option>
+                <option value="decena">Decena</option>
+                <option value="docena">Docena</option>
+                <option value="quincena">Quincena</option>
+                <option value="treintena">Treintena</option>
+                <option value="centena">Centena</option>
             </select></p>
             <p class="rdm-formularios--ayuda">Unidad de compra del ingrediente</p>
 

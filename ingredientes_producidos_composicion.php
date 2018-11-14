@@ -12,11 +12,16 @@ if (!isset($_SESSION['correo']))
 <?php
 //variables de la conexion, sesion y subida
 include ("sis/variables_sesion.php");
+include('sis/subir.php');
+
+$carpeta_destino = (isset($_GET['dir']) ? $_GET['dir'] : 'img/avatares');
+$dir_pics = (isset($_GET['pics']) ? $_GET['pics'] : $carpeta_destino);
 ?>
 
 <?php
 //capturo las variables que pasan por URL o formulario
 if(isset($_POST['agregar'])) $agregar = $_POST['agregar']; elseif(isset($_GET['agregar'])) $agregar = $_GET['agregar']; else $agregar = null;
+if(isset($_POST['archivo'])) $archivo = $_POST['archivo']; elseif(isset($_GET['archivo'])) $archivo = $_GET['archivo']; else $archivo = null;
 
 //variable para eliminar o editar
 if(isset($_POST['eliminar'])) $eliminar = $_POST['eliminar']; elseif(isset($_GET['eliminar'])) $eliminar = $_GET['eliminar']; else $eliminar = null;
@@ -96,7 +101,7 @@ if ($agregar == 'si')
         
         $mensaje = "ingrediente <b>".($ingrediente)."</b> agregado a la composición</b>";
         $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "aviso";
+        $mensaje_tema = "aviso";        
     }
     else
     {
@@ -296,7 +301,6 @@ if ($agregar == 'si')
             $unidad_compra = $fila['unidad_compra'];
             $costo_unidad_minima = $fila['costo_unidad_minima'];
             $costo_unidad_compra = $fila['costo_unidad_compra'];
-            $preparacion = $fila['preparacion'];
             $cantidad_unidad_compra = $fila['cantidad_unidad_compra'];
 
             //consulto el costo
@@ -344,32 +348,42 @@ if ($agregar == 'si')
                 //valor del costo
                 $costo_valor = 0;
             }
+
+            //calculo el costro de la unidad minima si la unidad es kilos, litros o metros se divide por mil para obtener la unidad minima
+            if (($unidad_compra == "kg") or ($unidad_compra == "l") or ($unidad_compra == "m"))
+            {
+                $costo_unidad_minima = $costo_valor / 1000;
+            }
+            else
+            {
+                $costo_unidad_minima = $costo_valor;
+            }
             ?>
 
             <section class="rdm-tarjeta">
 
                 <div class="rdm-tarjeta--primario-largo">
                     <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucfirst($ingrediente) ?></h1>
-                    <h2 class="rdm-tarjeta--subtitulo-largo">$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ($cantidad_unidad_compra); ?> <?php echo ucfirst($unidad_compra); ?></h2>
+                    <h2 class="rdm-tarjeta--subtitulo-largo">$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></h2>
                 </div>
 
-                <div class="rdm-tarjeta--cuerpo">
+                <div class="rdm-tarjeta--cuerpo">                    
 
-                    <?php if (!empty($preparacion)) { ?>
-                        <p><b>Preparación</b> <br><?php echo ucfirst(nl2br($preparacion)); ?></p>
-                        <div class="rdm-tarjeta--separador"></div>
+                    <?php if (!empty($unidad_compra)) { ?>
+                        <p><b>Unidad de producción</b> <br><?php echo ucfirst($unidad_compra); ?></p>
                     <?php } ?>
 
-                    <?php if (!empty($tipo)) { ?>
-                        <p><b>Tipo</b> <br><?php echo ucfirst($tipo) ?></p>
+                    <?php if (!empty($unidad_compra)) { ?>                        
+                        <p><b>Costo de unidad de producción</b> <br>$<?php echo number_format($costo_valor, 2, ",", "."); ?></p>
                     <?php } ?>
 
                     <?php if (!empty($unidad_minima)) { ?>
-                        <p><b>Unidad mínima</b> <br>$<?php echo number_format($costo_unidad_minima, 2, ",", "."); ?> x <?php echo ucfirst($unidad_minima); ?></p>
+                        <div class="rdm-tarjeta--separador"></div>
+                        <p><b>Unidad mínima</b> <br><?php echo ucfirst($unidad_minima); ?></p>
                     <?php } ?>
 
                     <?php if (!empty($unidad_compra)) { ?>
-                        <p><b>Unidad de producción</b> <br>$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ucfirst($unidad_compra); ?></p>
+                        <p><b>Costo de unidad mínima</b> <br>$<?php echo number_format($costo_unidad_minima, 2, ",", "."); ?></p>
                     <?php } ?>
 
                 </div>
