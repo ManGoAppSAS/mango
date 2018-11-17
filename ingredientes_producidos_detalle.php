@@ -397,7 +397,7 @@ if ($editar == "si")
                 $costo_valor = 0;
             }
 
-            //calculo el costro de la unidad minima si la unidad es kilos, litros o metros se divide por mil para obtener la unidad minima
+            //calculo el costo de la unidad minima si la unidad es kilos, litros o metros se divide por mil para obtener la unidad minima
             if (($unidad_compra == "kg") or ($unidad_compra == "l") or ($unidad_compra == "m"))
             {
                 $costo_unidad_minima = $costo_valor / 1000;
@@ -521,7 +521,7 @@ if ($editar == "si")
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los ingredientes de los que está hecho un ingrediente producido. Estos ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan produccciones</h2>
+                        <h2 class="rdm-lista--texto-secundario">No se han agregado ingredientes</h2>
                     </div>
                 </div>
             </article>
@@ -529,7 +529,7 @@ if ($editar == "si")
             <div class="rdm-tarjeta--separador"></div>
 
             <div class="rdm-tarjeta--acciones-izquierda">
-                <a href="ingredientes_producidos_composicion.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+                <a href="ingredientes_producidos_composicion.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Agregar</button></a>
             </div>
 
         </section>
@@ -646,6 +646,8 @@ if ($editar == "si")
     {
         ?>
 
+        <a id="preparacion">
+
         <h2 class="rdm-lista--titulo-largo">Preparación</h2>
 
         <section class="rdm-lista">
@@ -657,7 +659,7 @@ if ($editar == "si")
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La preparación son los pasos a realizar en la creación de un ingrediente producido</h2>
+                        <h2 class="rdm-lista--texto-secundario">No se han agregado pasos de preparación</h2>
                     </div>
                 </div>
             </article>
@@ -665,7 +667,7 @@ if ($editar == "si")
             <div class="rdm-tarjeta--separador"></div>
 
             <div class="rdm-tarjeta--acciones-izquierda">
-                <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+                <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Agregar</button></a>
             </div>
 
         </section>

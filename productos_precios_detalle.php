@@ -45,13 +45,20 @@ if ($editar == "si")
 
     $actualizar_precio = $conexion->query("UPDATE producto_precio SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', nombre = '$nombre', precio = '$precio', impuesto_incluido = '$impuesto_incluido', impuesto_id = '$impuesto_id' WHERE producto_precio_id = '$producto_precio_id'");
 
-
-
     if ($precio_principal == "si")
     {
         $actualizar_precio = $conexion->query("UPDATE producto_precio SET tipo = 'secundario' WHERE producto_id = '$producto_id'");
         $actualizar_precio = $conexion->query("UPDATE producto_precio SET tipo = 'principal' WHERE producto_precio_id = '$producto_precio_id'");
     }
+
+    if ($actualizar_precio)
+    {
+        $mensaje = "Cambios guardados";
+        $body_snack = 'onLoad="Snackbar()"';
+        $mensaje_tema = "aviso";
+
+        $agregar_producto_local = "si";
+    }   
     
 }
 ?>

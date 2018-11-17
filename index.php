@@ -118,7 +118,7 @@ include ("sis/variables_sesion.php");
 
         <a class="ancla" name="producciones"></a>
 
-        <a href="">     
+        <a href="producciones_ingredientes_producidos_ver.php">     
 
         <article class="rdm-lista--item-sencillo">
             <div class="rdm-lista--izquierda">

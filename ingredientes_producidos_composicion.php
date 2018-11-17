@@ -171,9 +171,11 @@ if ($agregar == 'si')
 
 <main class="rdm--contenedor-toolbar">
 
-    <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar ingrediente" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar(); this.select();" />
+    <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar y agregar ingrediente" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar(); this.select();" />
 
     <div id="resultadoBusqueda"></div>
+
+    <h2 class="rdm-lista--titulo-largo">Ingredientes</h2>
 
     <?php
     //consulto y muestros la composición de este ingrediente producido
@@ -192,7 +194,7 @@ if ($agregar == 'si')
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los ingredientes de los que está hecho un ingrediente producido. Estos ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan produccciones</h2>
+                        <h2 class="rdm-lista--texto-secundario">No se han agregado ingredientes</h2>
                     </div>
                 </div>
             </article>

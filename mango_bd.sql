@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2018 a las 01:33:05
+-- Tiempo de generación: 15-11-2018 a las 00:37:59
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -94,7 +94,6 @@ CREATE TABLE `compra` (
   `usuario_mod` int(11) NOT NULL,
   `usuario_baja` int(11) NOT NULL,
   `estado` text NOT NULL,
-  `valor` text NOT NULL,
   `observacion_envio` text NOT NULL,
   `observacion_recepcion` text NOT NULL,
   `destino` int(11) NOT NULL
@@ -104,9 +103,9 @@ CREATE TABLE `compra` (
 -- Volcado de datos para la tabla `compra`
 --
 
-INSERT INTO `compra` (`compra_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `valor`, `observacion_envio`, `observacion_recepcion`, `destino`) VALUES
-(1, '2018-11-06 17:56:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '0', '', '', 1),
-(2, '2018-11-06 18:03:37', '0000-00-00 00:00:00', '2018-11-06 18:03:47', 1, 0, 1, 'eliminado', '0', '', '', 4);
+INSERT INTO `compra` (`compra_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `observacion_envio`, `observacion_recepcion`, `destino`) VALUES
+(1, '2018-11-07 19:48:13', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', 'revisa las nueces que la ultima vez llegaron agrietadas', '', 1),
+(2, '2018-11-07 23:32:53', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'creado', '', '', 4);
 
 -- --------------------------------------------------------
 
@@ -135,9 +134,11 @@ CREATE TABLE `compra_ingrediente` (
 --
 
 INSERT INTO `compra_ingrediente` (`compra_ingrediente_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `cantidad_enviada`, `cantidad_recibida`, `cantidad_devuelta`, `compra_id`, `ingrediente_id`) VALUES
-(1, '2018-11-06 17:57:20', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '100', '0', '0', 1, 11),
-(2, '2018-11-06 17:57:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '50', '0', '0', 1, 17),
-(3, '2018-11-06 17:59:56', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '10', '0', '0', 1, 26);
+(1, '2018-11-07 19:48:19', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '46', '0', '0', 1, 11),
+(2, '2018-11-07 19:48:29', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '10', '0', '0', 1, 17),
+(3, '2018-11-07 19:48:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '3', '0', '0', 1, 27),
+(4, '2018-11-07 19:48:44', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'enviado', '5', '0', '0', 1, 26),
+(5, '2018-11-07 23:33:04', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'creado', '90', '0', '0', 2, 11);
 
 -- --------------------------------------------------------
 
@@ -218,7 +219,6 @@ CREATE TABLE `ingrediente` (
   `unidad_compra` text NOT NULL,
   `costo_unidad_minima` text NOT NULL,
   `costo_unidad_compra` text NOT NULL,
-  `preparacion` text NOT NULL,
   `cantidad_unidad_compra` text NOT NULL,
   `proveedor_id` int(11) NOT NULL,
   `productor_id` text NOT NULL
@@ -228,35 +228,37 @@ CREATE TABLE `ingrediente` (
 -- Volcado de datos para la tabla `ingrediente`
 --
 
-INSERT INTO `ingrediente` (`ingrediente_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `ingrediente`, `tipo`, `unidad_minima`, `unidad_compra`, `costo_unidad_minima`, `costo_unidad_compra`, `preparacion`, `cantidad_unidad_compra`, `proveedor_id`, `productor_id`) VALUES
-(1, '2018-10-08 17:27:41', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'coca cola 350ml', 'comprado', 'unid', 'unid', '1000', '1000', '', '0', 1, '0'),
-(2, '2018-10-08 17:31:10', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'seven up 350ml', 'comprado', 'unid', 'unid', '1000', '1000', '', '0', 1, '0'),
-(3, '2018-10-29 18:25:24', '2018-10-29 23:44:05', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'salsa de la casa', 'producido', 'g', 'kg', '0', '0', '', '1', 0, '1'),
-(4, '2018-10-29 18:25:40', '0000-00-00 00:00:00', '2018-10-29 18:27:53', 1, 0, 1, 'eliminado', 'cobertura especial', 'producido', 'g', 'g', '0', '0', '', '500', 0, '1'),
-(5, '2018-10-29 18:29:22', '0000-00-00 00:00:00', '2018-10-29 18:29:30', 1, 0, 1, 'eliminado', 'tomate', 'comprado', 'g', 'kg', '1', '1000', '', '0', 1, '0'),
-(6, '2018-10-29 19:29:41', '2018-10-29 21:22:43', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'tomate chonto', 'comprado', 'g', 'kg', '0.5', '500', '', '0', 1, '0'),
-(7, '2018-10-29 19:29:49', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'lechuga', 'comprado', 'g', 'kg', '0.5', '500', '', '0', 1, '0'),
-(8, '2018-10-29 19:29:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'queso', 'comprado', 'g', 'kg', '2', '2000', '', '0', 1, '0'),
-(9, '2018-10-29 20:05:17', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'aceite de oliva', 'comprado', 'ml', 'l', '5', '5000', '', '0', 1, '0'),
-(10, '2018-10-29 23:48:48', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cobertura', 'producido', 'ml', 'l', '0', '0', '', '1', 0, '1'),
-(11, '2018-10-30 19:41:10', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'harina de trigo', 'comprado', 'g', 'kg', '3', '3000', '', '0', 1, '0'),
-(12, '2018-10-30 19:41:31', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'sal', 'comprado', 'g', 'kg', '1', '1000', '', '0', 1, '0'),
-(13, '2018-10-30 19:41:57', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'levadura', 'comprado', 'g', 'kg', '5', '5000', '', '0', 1, '0'),
-(14, '2018-10-30 19:42:25', '2018-10-31 18:16:07', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'agua de la canilla', 'comprado', 'ml', 'l', '0', '0', '', '0', 1, '0'),
-(15, '2018-10-30 19:42:48', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'ajonjoli', 'comprado', 'g', 'kg', '8', '8000', '', '0', 1, '0'),
-(16, '2018-10-30 19:43:10', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'mijo', 'comprado', 'g', 'kg', '8', '8000', '', '0', 1, '0'),
-(17, '2018-10-30 19:43:26', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'nueces', 'comprado', 'g', 'kg', '20', '20000', '', '0', 1, '0'),
-(18, '2018-10-30 19:43:52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'chia', 'comprado', 'g', 'kg', '20', '20000', '', '0', 1, '0'),
-(19, '2018-10-30 19:55:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cocacola', 'comprado', 'unid', 'unid', '1300', '1300', '', '0', 1, '0'),
-(20, '2018-10-31 16:50:51', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cerveza', 'comprado', 'unid', 'unid', '1500', '1500', '', '0', 1, '0'),
-(21, '2018-10-31 17:22:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'pan integral', 'comprado', 'unid', 'unid', '0', '0', '', '0', 1, '0'),
-(22, '2018-10-31 19:02:25', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'agua manantial ', 'comprado', 'ml', 'botella 375 ml', '3.2', '1200', '', '0', 1, '0'),
-(23, '2018-10-31 19:02:33', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'agua manantial gas', 'comprado', 'ml', 'botella 375 ml', '3.2', '1200', '', '0', 1, '0'),
-(24, '2018-10-31 20:18:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cobertura de vainilla', 'producido', 'ml', 'l', '0', '0', 'Te recomendamos hacer para 8 personas (colocar en martita.cl opciÃ³n que te indica mano derecha de la pÃ¡gina)Tiempo de PreparaciÃ³n : 15 minutosImportante : Mantequilla debe estar a temperatura ambiente.1.- Batir mantequilla sin sal en un bowl con batidora elÃ©ctrica hasta que estÃ© pÃ¡lida y cremosa, 2 a 3 minutos.2.- Incorporar azÃºcar flor de a poco, la mitad primero y batir , luego el resto. Si no lo haces asÃ­, corres el riesgo que Ã©sta salte para todos lados fuera de tu bowl de trabajo. Batir hasta que la cobertura estÃ© cremosa, unos 5 minutos.3.- Incorporar esencia de vainilla y un par de gotas de colorante para alimentos ( opcional), batir por 1 minuto mÃ¡s.Puedes usar una manga de reposterÃ­a con la boquilla que mÃ¡s te guste para decorar tu cupcake. Finalmente, queda muy bien colocar mostacillas o decoraciones de azÃºcar sobre la cobertura. Estas las puedes encontrar en cualquier tienda de reposterÃ­a o supermercado.La cobertura puede ser refrigerada por una semana. Al volver a utilizarla traela a temperatura ambiente y vuelve a batir por algunos minutos.', '1', 0, '2'),
-(25, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'club colombia', 'comprado', 'unid', 'unid', '1500', '1500', '', '0', 1, '0'),
-(26, '2018-11-05 20:56:41', '2018-11-05 21:05:51', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'ron', 'comprado', 'ml', 'botella 750 ml', '26.666666666667', '20000', '', '0', 3, '0'),
-(27, '2018-11-05 20:56:59', '2018-11-05 21:05:38', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'Ginebra', 'comprado', 'ml', 'botella 1500 ml', '20', '30000', '', '0', 3, '0'),
-(28, '2018-11-05 20:57:33', '2018-11-05 21:06:02', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'whiskey', 'comprado', 'ml', 'botella 750 ml', '80', '60000', '', '0', 3, '0');
+INSERT INTO `ingrediente` (`ingrediente_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `ingrediente`, `tipo`, `unidad_minima`, `unidad_compra`, `costo_unidad_minima`, `costo_unidad_compra`, `cantidad_unidad_compra`, `proveedor_id`, `productor_id`) VALUES
+(1, '2018-10-08 17:27:41', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'coca cola 350ml', 'comprado', 'unid', 'unid', '1000', '1000', '0', 1, '0'),
+(2, '2018-10-08 17:31:10', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'seven up 350ml', 'comprado', 'unid', 'unid', '1000', '1000', '0', 1, '0'),
+(3, '2018-10-29 18:25:24', '2018-11-13 15:22:24', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'salsa de la casa', 'producido', 'g', 'kg', '0', '0', '2', 0, '2'),
+(4, '2018-10-29 18:25:40', '0000-00-00 00:00:00', '2018-10-29 18:27:53', 1, 0, 1, 'eliminado', 'cobertura especial', 'producido', 'g', 'g', '0', '0', '500', 0, '1'),
+(5, '2018-10-29 18:29:22', '0000-00-00 00:00:00', '2018-10-29 18:29:30', 1, 0, 1, 'eliminado', 'tomate', 'comprado', 'g', 'kg', '1', '1000', '0', 1, '0'),
+(6, '2018-10-29 19:29:41', '2018-10-29 21:22:43', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'tomate chonto', 'comprado', 'g', 'kg', '0.5', '500', '0', 1, '0'),
+(7, '2018-10-29 19:29:49', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'lechuga', 'comprado', 'g', 'kg', '0.5', '500', '0', 1, '0'),
+(8, '2018-10-29 19:29:55', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'queso', 'comprado', 'g', 'kg', '2', '2000', '0', 1, '0'),
+(9, '2018-10-29 20:05:17', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'aceite de oliva', 'comprado', 'ml', 'l', '5', '5000', '0', 1, '0'),
+(10, '2018-10-29 23:48:48', '2018-11-14 15:05:25', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'cobertura blanca', 'producido', 'g', 'kg', '0', '0', '1', 0, '2'),
+(11, '2018-10-30 19:41:10', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'harina de trigo', 'comprado', 'g', 'kg', '3', '3000', '0', 1, '0'),
+(12, '2018-10-30 19:41:31', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'sal', 'comprado', 'g', 'kg', '1', '1000', '0', 1, '0'),
+(13, '2018-10-30 19:41:57', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'levadura', 'comprado', 'g', 'kg', '5', '5000', '0', 1, '0'),
+(14, '2018-10-30 19:42:25', '2018-10-31 18:16:07', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'agua de la canilla', 'comprado', 'ml', 'l', '0', '0', '0', 1, '0'),
+(15, '2018-10-30 19:42:48', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'ajonjoli', 'comprado', 'g', 'kg', '8', '8000', '0', 1, '0'),
+(16, '2018-10-30 19:43:10', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'mijo', 'comprado', 'g', 'kg', '8', '8000', '0', 1, '0'),
+(17, '2018-10-30 19:43:26', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'nueces', 'comprado', 'g', 'kg', '20', '20000', '0', 1, '0'),
+(18, '2018-10-30 19:43:52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'chia', 'comprado', 'g', 'kg', '20', '20000', '0', 1, '0'),
+(19, '2018-10-30 19:55:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cocacola', 'comprado', 'unid', 'unid', '1300', '1300', '0', 1, '0'),
+(20, '2018-10-31 16:50:51', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cerveza', 'comprado', 'unid', 'unid', '1500', '1500', '0', 1, '0'),
+(21, '2018-10-31 17:22:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'pan integral', 'comprado', 'unid', 'unid', '0', '0', '0', 1, '0'),
+(22, '2018-10-31 19:02:25', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'agua manantial ', 'comprado', 'ml', 'botella 375 ml', '3.2', '1200', '0', 1, '0'),
+(23, '2018-10-31 19:02:33', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'agua manantial gas', 'comprado', 'ml', 'botella 375 ml', '3.2', '1200', '0', 1, '0'),
+(24, '2018-10-31 20:18:15', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'cobertura de vainilla', 'producido', 'ml', 'l', '0', '0', '1', 0, '2'),
+(25, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'club colombia', 'comprado', 'unid', 'unid', '1500', '1500', '0', 1, '0'),
+(26, '2018-11-05 20:56:41', '2018-11-05 21:05:51', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'ron', 'comprado', 'ml', 'botella 750 ml', '26.666666666667', '20000', '0', 3, '0'),
+(27, '2018-11-05 20:56:59', '2018-11-05 21:05:38', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'Ginebra', 'comprado', 'ml', 'botella 1500 ml', '20', '30000', '0', 3, '0'),
+(28, '2018-11-05 20:57:33', '2018-11-05 21:06:02', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'whiskey', 'comprado', 'ml', 'botella 750 ml', '80', '60000', '0', 3, '0'),
+(29, '2018-11-14 14:31:02', '2018-11-14 14:34:14', '0000-00-00 00:00:00', 1, 1, 0, 'activo', 'salsa secreta', 'producido', 'ml', 'l', '0', '0', '1', 0, '2'),
+(30, '2018-11-14 14:40:06', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'pimienta', 'comprado', 'g', 'kg', '2', '2000', '0', 1, '0');
 
 -- --------------------------------------------------------
 
@@ -283,11 +285,40 @@ CREATE TABLE `ingrediente_producido_composicion` (
 --
 
 INSERT INTO `ingrediente_producido_composicion` (`ingrediente_producido_composicion_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `cantidad`, `ingrediente_producido_id`, `ingrediente_id`) VALUES
-(7, '2018-10-31 20:16:27', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '10', 3, 9),
-(13, '2018-11-06 12:45:59', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '100', 3, 11),
-(6, '2018-10-29 23:49:30', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '666', 10, 6),
-(11, '2018-10-31 20:18:54', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '200', 24, 9),
-(12, '2018-11-06 12:13:40', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '100', 24, 11);
+(14, '2018-11-14 16:06:34', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '250', 10, 11),
+(15, '2018-11-14 16:06:42', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '100', 10, 17),
+(16, '2018-11-14 17:01:07', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '25', 10, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ingrediente_producido_preparacion`
+--
+
+CREATE TABLE `ingrediente_producido_preparacion` (
+  `ingrediente_producido_preparacion_id` int(11) NOT NULL,
+  `fecha_alta` datetime NOT NULL,
+  `fecha_mod` datetime NOT NULL,
+  `fecha_baja` datetime NOT NULL,
+  `usuario_alta` int(11) NOT NULL,
+  `usuario_mod` int(11) NOT NULL,
+  `usuario_baja` int(11) NOT NULL,
+  `estado` text NOT NULL,
+  `preparacion` text NOT NULL,
+  `imagen` text NOT NULL,
+  `imagen_nombre` text NOT NULL,
+  `ingrediente_producido_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `ingrediente_producido_preparacion`
+--
+
+INSERT INTO `ingrediente_producido_preparacion` (`ingrediente_producido_preparacion_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `preparacion`, `imagen`, `imagen_nombre`, `ingrediente_producido_id`) VALUES
+(1, '2018-11-14 17:36:21', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'se moja la harina', 'no', '20181114173621', 10),
+(2, '2018-11-14 17:36:32', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'se sirve y se mezcla', 'no', '20181114173632', 10),
+(3, '2018-11-14 17:36:50', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'se revuelve con cositas', 'si', '20181114173650', 10),
+(4, '2018-11-14 17:37:16', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'se deja secar al sol', 'si', '20181114173716', 10);
 
 -- --------------------------------------------------------
 
@@ -310,6 +341,16 @@ CREATE TABLE `inventario` (
   `ingrediente_id` int(11) NOT NULL,
   `local_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `inventario`
+--
+
+INSERT INTO `inventario` (`inventario_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `cantidad_actual`, `cantidad_minima`, `cantidad_maxima`, `ingrediente_id`, `local_id`) VALUES
+(1, '2018-11-07 20:00:04', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '46', '9', '46', 11, 1),
+(2, '2018-11-07 20:00:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '10', '2', '10', 17, 1),
+(3, '2018-11-07 20:00:06', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '3', '0', '3', 27, 1),
+(4, '2018-11-07 20:00:19', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '3', '0', '3', 26, 1);
 
 -- --------------------------------------------------------
 
@@ -547,13 +588,13 @@ CREATE TABLE `producto_composicion` (
 INSERT INTO `producto_composicion` (`producto_composicion_id`, `fecha_alta`, `fecha_mod`, `fecha_baja`, `usuario_alta`, `usuario_mod`, `usuario_baja`, `estado`, `cantidad`, `producto_id`, `ingrediente_id`) VALUES
 (1, '2018-10-08 17:27:41', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 1, 1),
 (28, '2018-10-30 19:55:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 7, 19),
-(27, '2018-10-30 19:36:11', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '21', 4, 9),
+(41, '2018-11-13 14:44:40', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '90', 4, 14),
 (25, '2018-10-30 00:38:46', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 2, 2),
 (29, '2018-10-31 16:50:51', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 8, 20),
 (30, '2018-10-31 17:22:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 10, 21),
-(32, '2018-10-31 19:04:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '100', 4, 15),
+(39, '2018-11-08 16:04:25', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '8', 4, 22),
 (33, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '1', 12, 25),
-(34, '2018-11-06 11:24:14', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '250', 4, 18);
+(38, '2018-11-08 15:44:53', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', '9', 4, 11);
 
 -- --------------------------------------------------------
 
@@ -648,7 +689,8 @@ INSERT INTO `producto_precio` (`producto_precio_id`, `fecha_alta`, `fecha_mod`, 
 (11, '2018-10-31 17:20:40', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '5000', 'si', 9, 1),
 (12, '2018-10-31 17:22:05', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '5000', 'si', 10, 1),
 (13, '2018-10-31 18:45:17', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '20000', 'si', 11, 3),
-(14, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '5000', 'si', 12, 1);
+(14, '2018-10-31 20:29:38', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'precio normal', 'principal', '5000', 'si', 12, 1),
+(15, '2018-11-14 16:13:53', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 0, 0, 'activo', 'distribuidor', 'secundario', '3500', 'si', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -842,8 +884,15 @@ ALTER TABLE `ingrediente`
 --
 ALTER TABLE `ingrediente_producido_composicion`
   ADD PRIMARY KEY (`ingrediente_producido_composicion_id`),
-  ADD KEY `componente_producido_id` (`ingrediente_producido_id`),
-  ADD KEY `componente_id` (`ingrediente_id`);
+  ADD KEY `ingrediente_producido_id` (`ingrediente_producido_id`),
+  ADD KEY `ingrediente_id` (`ingrediente_id`);
+
+--
+-- Indices de la tabla `ingrediente_producido_preparacion`
+--
+ALTER TABLE `ingrediente_producido_preparacion`
+  ADD PRIMARY KEY (`ingrediente_producido_preparacion_id`),
+  ADD KEY `ingrediente_producido_id` (`ingrediente_producido_id`);
 
 --
 -- Indices de la tabla `inventario`
@@ -968,7 +1017,7 @@ ALTER TABLE `compra`
 -- AUTO_INCREMENT de la tabla `compra_ingrediente`
 --
 ALTER TABLE `compra_ingrediente`
-  MODIFY `compra_ingrediente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `compra_ingrediente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `descuento`
@@ -986,19 +1035,25 @@ ALTER TABLE `impuesto`
 -- AUTO_INCREMENT de la tabla `ingrediente`
 --
 ALTER TABLE `ingrediente`
-  MODIFY `ingrediente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `ingrediente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `ingrediente_producido_composicion`
 --
 ALTER TABLE `ingrediente_producido_composicion`
-  MODIFY `ingrediente_producido_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ingrediente_producido_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT de la tabla `ingrediente_producido_preparacion`
+--
+ALTER TABLE `ingrediente_producido_preparacion`
+  MODIFY `ingrediente_producido_preparacion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `inventario_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `inventario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `local`
@@ -1040,7 +1095,7 @@ ALTER TABLE `productor`
 -- AUTO_INCREMENT de la tabla `producto_composicion`
 --
 ALTER TABLE `producto_composicion`
-  MODIFY `producto_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `producto_composicion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT de la tabla `producto_local`
@@ -1052,7 +1107,7 @@ ALTER TABLE `producto_local`
 -- AUTO_INCREMENT de la tabla `producto_precio`
 --
 ALTER TABLE `producto_precio`
-  MODIFY `producto_precio_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `producto_precio_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`

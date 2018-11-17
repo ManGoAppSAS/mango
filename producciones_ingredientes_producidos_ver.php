@@ -21,8 +21,8 @@ if(isset($_POST['eliminar'])) $eliminar = $_POST['eliminar']; elseif(isset($_GET
 //variable de consulta
 if(isset($_POST['busqueda'])) $busqueda = $_POST['busqueda']; elseif(isset($_GET['busqueda'])) $busqueda = $_GET['busqueda']; else $busqueda = null;
 
-if(isset($_POST['componente_producido_id'])) $componente_producido_id = $_POST['componente_producido_id']; elseif(isset($_GET['componente_producido_id'])) $componente_producido_id = $_GET['componente_producido_id']; else $componente_producido_id = null;
-if(isset($_POST['componente'])) $componente = $_POST['componente']; elseif(isset($_GET['componente'])) $componente = $_GET['componente']; else $componente = null;
+if(isset($_POST['ingrediente_producido_id'])) $ingrediente_producido_id = $_POST['ingrediente_producido_id']; elseif(isset($_GET['ingrediente_producido_id'])) $ingrediente_producido_id = $_GET['ingrediente_producido_id']; else $ingrediente_producido_id = null;
+if(isset($_POST['ingrediente'])) $ingrediente = $_POST['ingrediente']; elseif(isset($_GET['ingrediente'])) $ingrediente = $_GET['ingrediente']; else $ingrediente = null;
 
 if(isset($_POST['mensaje'])) $mensaje = $_POST['mensaje']; elseif(isset($_GET['mensaje'])) $mensaje = $_GET['mensaje']; else $mensaje = null;
 if(isset($_POST['body_snack'])) $body_snack = $_POST['body_snack']; elseif(isset($_GET['body_snack'])) $body_snack = $_GET['body_snack']; else $body_snack = null;
@@ -30,20 +30,20 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 ?>
 
 <?php
-//elimino el componente
+//elimino el ingrediente
 if ($eliminar == 'si')
 {
-    $borrar = $conexion->query("UPDATE componente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE componente_producido_id = '$componente_producido_id'");
+    $borrar = $conexion->query("UPDATE ingrediente SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE ingrediente_producido_id = '$ingrediente_producido_id'");
 
     if ($borrar)
     {
-        $mensaje = "Componente producido eliminado";
+        $mensaje = "ingrediente producido eliminado";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "aviso";
     }
     else
     {
-        $mensaje = "No es posible eliminar el componente producido";
+        $mensaje = "No es posible eliminar el ingrediente producido";
         $body_snack = 'onLoad="Snackbar()"';
         $mensaje_tema = "error";
     }
@@ -53,7 +53,7 @@ if ($eliminar == 'si')
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Componentes producidos - ManGo!</title>
+    <title>ingredientes producidos - ManGo!</title>
     <?php
     //información del head
     include ("partes/head.php");
@@ -65,23 +65,17 @@ if ($eliminar == 'si')
         $("#resultadoBusqueda").html('');
     });
 
-    var delayTimer;
     function buscar() {
-        clearTimeout(delayTimer);
-        delayTimer = setTimeout(function() {
-            
-            var textoBusqueda = $("input#busqueda").val();
-         
-             if (textoBusqueda != "") {
-                $.post("producciones_componentes_producidos_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
-                    $("#resultadoBusqueda").html(mensaje);
-                 }); 
-             } else { 
-                $("#resultadoBusqueda").html('');
-                };
-        
-        }, 500); // Will do the ajax stuff after 1000 ms, or 1 s
-    }
+        var textoBusqueda = $("input#busqueda").val();
+     
+         if (textoBusqueda != "") {
+            $.post("producciones_ingredientes_producidos_buscar.php", {busqueda: textoBusqueda}, function(mensaje) {
+                $("#resultadoBusqueda").html(mensaje);
+             }); 
+         } else { 
+            $("#resultadoBusqueda").html('');
+            };
+    };
     </script>
     
 </head>
@@ -92,7 +86,7 @@ if ($eliminar == 'si')
     <div class="rdm-toolbar--fila">
         <div class="rdm-toolbar--izquierda">
             <a href="index.php#producciones"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
-            <h2 class="rdm-toolbar--titulo">Componentes producidos</h2>
+            <h2 class="rdm-toolbar--titulo">ingredientes producidos</h2>
         </div>
     </div>
 </header>
@@ -100,8 +94,8 @@ if ($eliminar == 'si')
 <main class="rdm--contenedor-toolbar">
 
     <?php
-    //consulto los componentes
-    $consulta = $conexion->query("SELECT * FROM componente WHERE tipo = 'producido' and estado = 'activo' ORDER BY componente");
+    //consulto los ingredientes
+    $consulta = $conexion->query("SELECT * FROM ingrediente WHERE tipo = 'producido' and estado = 'activo' ORDER BY ingrediente");
 
     if ($consulta->num_rows == 0)
     {
@@ -109,8 +103,8 @@ if ($eliminar == 'si')
 
         <div class="rdm-vacio--caja">
             <i class="zmdi zmdi-alert-circle-o zmdi-hc-4x"></i>
-            <p class="rdm-tipografia--subtitulo1">No se han agregado componentes producidos</p>
-            <p class="rdm-tipografia--cuerpo1--margen-ajustada">Los componentes producidos son todos los elementos de los que están hechos los productos o servicios que vendes y que tu mismo produces a partir de otros componentes, por ejemplo: salsas, mezclas, masas, coberturas, etc.</p>
+            <p class="rdm-tipografia--subtitulo1">No se han agregado ingredientes producidos</p>
+            <p class="rdm-tipografia--cuerpo1--margen-ajustada">Los ingredientes producidos son todos los elementos de los que están hechos los productos o servicios que vendes y que tu mismo produces a partir de otros ingredientes, por ejemplo: salsas, mezclas, masas, coberturas, etc.</p>
         </div>
 
         <?php
@@ -127,8 +121,8 @@ if ($eliminar == 'si')
         <?php
         while ($fila = $consulta->fetch_assoc())
         {
-            $componente_producido_id = $fila['componente_id'];
-            $componente = $fila['componente'];
+            $ingrediente_producido_id = $fila['ingrediente_id'];
+            $ingrediente = $fila['ingrediente'];
             $unidad_minima = $fila['unidad_minima'];
             $unidad_compra = $fila['unidad_compra'];
             $costo_unidad_minima = $fila['costo_unidad_minima'];
@@ -138,8 +132,8 @@ if ($eliminar == 'si')
             $productor_id = $fila['productor_id'];
 
             //color de fondo segun la primer letra
-            $avatar_id = $componente_producido_id;
-            $avatar_nombre = "$componente";
+            $avatar_id = $ingrediente_producido_id;
+            $avatar_nombre = "$ingrediente";
 
             include ("sis/avatar_color.php");
             
@@ -160,7 +154,7 @@ if ($eliminar == 'si')
 
 
             //consulto el costo
-            $consulta_costo = $conexion->query("SELECT * FROM componente_producido_composicion WHERE componente_producido_id = '$componente_producido_id' ORDER BY fecha_alta DESC");
+            $consulta_costo = $conexion->query("SELECT * FROM ingrediente_producido_composicion WHERE ingrediente_producido_id = '$ingrediente_producido_id' ORDER BY fecha_alta DESC");
 
             if ($consulta_costo->num_rows != 0)
             {
@@ -169,12 +163,12 @@ if ($eliminar == 'si')
                 while ($fila = $consulta_costo->fetch_assoc())
                 {
                     //datos de la composicion
-                    $componente_producido_composicion_id = $fila['componente_producido_composicion_id'];
+                    $ingrediente_producido_composicion_id = $fila['ingrediente_producido_composicion_id'];
                     $cantidad = $fila['cantidad'];
-                    $componente_id = $fila['componente_id'];
+                    $ingrediente_id = $fila['ingrediente_id'];
 
-                    //consulto el componente
-                    $consulta2 = $conexion->query("SELECT * FROM componente WHERE componente_id = $componente_id");
+                    //consulto el ingrediente
+                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
                     if ($filas2 = $consulta2->fetch_assoc())
                     {            
@@ -187,11 +181,11 @@ if ($eliminar == 'si')
                         $costo_unidad_minima_c = 0;
                     }
 
-                    //costo del componente
-                    $componente_costo = $costo_unidad_minima_c * $cantidad;
+                    //costo del ingrediente
+                    $ingrediente_costo = $costo_unidad_minima_c * $cantidad;
 
                     //costo de la composicion
-                    $composicion_costo = $composicion_costo + $componente_costo;
+                    $composicion_costo = $composicion_costo + $ingrediente_costo;
                 }
 
                 //valor del costo
@@ -204,14 +198,14 @@ if ($eliminar == 'si')
             }
             ?>
 
-            <a href="producciones_componentes_producidos_detalle.php?componente_producido_id=<?php echo "$componente_producido_id"; ?>">
+            <a href="producciones_ingredientes_producidos_detalle.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>">
                 <article class="rdm-lista--item-doble">
                     <div class="rdm-lista--izquierda">
                         <div class="rdm-lista--contenedor">
                             <?php echo "$imagen"; ?>
                         </div>
                         <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo ucfirst($componente); ?></h2>
+                            <h2 class="rdm-lista--titulo"><?php echo ucfirst($ingrediente); ?></h2>
                             <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst($productor); ?></h2>
                             <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ($cantidad_unidad_compra); ?> <?php echo ucfirst($unidad_compra); ?></h2>
                         </div>

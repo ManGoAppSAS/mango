@@ -591,7 +591,7 @@ if ($eliminar == 'si')
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">Agregar diferentes precios para el mismo producto o servicio. Ej: Precio al por mayor, precio distribuidor, precio franquiciado, etc.</h2>
+                        <h2 class="rdm-lista--texto-secundario">No se han agregado precios</h2>
                     </div>
                 </div>
                 
@@ -757,7 +757,7 @@ if ($eliminar == 'si')
                     </div>
                     <div class="rdm-lista--contenedor">
                         <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">La composición son los ingredientes de los que está hecho un producto o servicio. Estos ingredientes se descontarán del inventario según la cantidad que se haya indicado cuando se hagan ventas</h2>
+                        <h2 class="rdm-lista--texto-secundario">No se han agregado ingredientes</h2>
                     </div>
                 </div>
             </article>
@@ -765,7 +765,7 @@ if ($eliminar == 'si')
             <div class="rdm-tarjeta--separador"></div>
 
             <div class="rdm-tarjeta--acciones-izquierda">
-                <a href="productos_composicion.php?producto_id=<?php echo "$producto_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+                <a href="productos_composicion.php?producto_id=<?php echo "$producto_id"; ?>"><button class="rdm-boton--plano-resaltado">Agregar</button></a>
             </div>
 
         </section>
