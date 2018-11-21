@@ -161,7 +161,7 @@ if ($agregar == 'si')
             var textoBusqueda = $("input#busqueda").val();
          
              if (textoBusqueda != "") {
-                $.post("compras_ingredientes_buscar.php?compra_id=<?php echo ($compra_id) ?>", {busqueda: textoBusqueda}, function(mensaje) {
+                $.post("compras_ingredientes_buscar.php?compra_id=<?php echo ($compra_id) ?>&busqueda=<?php echo ($busqueda) ?>", {busqueda: textoBusqueda}, function(mensaje) {
                     $("#resultadoBusqueda").html(mensaje);
                  }); 
              } else { 
@@ -206,36 +206,23 @@ if ($agregar == 'si')
 
     <div id="resultadoBusqueda"></div>
 
+    
+
     <?php
     //consulto y muestros los ingredientes en esta compra
     $consulta = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
 
     if ($consulta->num_rows == 0)
     {
-        ?>        
-
-        <section class="rdm-lista">
-            
-            <article class="rdm-lista--item-doble">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-info zmdi-hc-2x"></i></div></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Vacio</h2>
-                        <h2 class="rdm-lista--texto-secundario">Esta compra no tiene ingredientes agregados</h2>
-                    </div>
-                </div>
-            </article>
-
-        </section>
-
-        <?php
-        
+        $mostrar_detalle = "no";
     }
     else                 
     {
+        $mostrar_detalle = "si";
+
         ?>
+
+        <h2 class="rdm-lista--titulo-largo">Ingredientes agregados</h2>
 
         <section class="rdm-lista"> 
 
@@ -302,7 +289,7 @@ if ($agregar == 'si')
                     </div>
                 </div>
                 <div class="rdm-lista--derecha">
-                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_compra="<?php echo ucfirst($unidad_compra) ?>" data-cantidad_enviada="<?php echo ucfirst($cantidad_enviada) ?>" data-compra_ingrediente_id="<?php echo ucfirst($compra_ingrediente_id) ?>" data-proveedor="<?php echo ucfirst($proveedor) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-busqueda="<?php echo ucfirst($busqueda) ?>" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_compra="<?php echo ucfirst($unidad_compra) ?>" data-cantidad_enviada="<?php echo ucfirst($cantidad_enviada) ?>" data-compra_ingrediente_id="<?php echo ucfirst($compra_ingrediente_id) ?>" data-proveedor="<?php echo ucfirst($proveedor) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
 
                     <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-compra_ingrediente_id="<?php echo ($compra_ingrediente_id) ?>" data-ingrediente="<?php echo ucfirst($ingrediente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-minus-circle-outline zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
@@ -336,107 +323,107 @@ if ($agregar == 'si')
     
 
     <?php
-    //consulto y muestro los datos de la compra
-    $consulta = $conexion->query("SELECT * FROM compra WHERE compra_id = '$compra_id'");
-
-    if ($consulta->num_rows == 0)
+    //muestro el detalle de la compra
+    if ($mostrar_detalle == "si") 
     {
-        ?>
+        //consulto y muestro los datos de la compra
+        $consulta = $conexion->query("SELECT * FROM compra WHERE compra_id = '$compra_id'");
 
-        
-
-        <?php
-    }
-    else             
-    {
-        while ($fila = $consulta->fetch_assoc())
+        if ($consulta->num_rows == 0)
         {
-            $compra_id = $fila['compra_id'];
-
-            $estado = $fila['estado'];
-            $destino = $fila['destino'];
-
-            //consulto la cantidad de ingredientes en la compra
-            $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
-            $total_ingredientes = $consulta_ingredientes->num_rows;
-
-            //consulto el destino
-            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
-
-            if ($filas2 = $consulta2->fetch_assoc())
+            
+        }
+        else             
+        {
+            while ($fila = $consulta->fetch_assoc())
             {
-                $local = $filas2['local'];
-            }
-            else
-            {
-                $local = "";
-            }
+                $compra_id = $fila['compra_id'];
 
-            //consulto el costo
-            $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
+                $estado = $fila['estado'];
+                $destino = $fila['destino'];
 
-            if ($consulta_costo->num_rows != 0)
-            {
-                $composicion_costo = 0;
+                //consulto la cantidad de ingredientes en la compra
+                $consulta_ingredientes = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id'");
+                $total_ingredientes = $consulta_ingredientes->num_rows;
 
-                while ($fila = $consulta_costo->fetch_assoc())
+                //consulto el destino
+                $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $destino");
+
+                if ($filas2 = $consulta2->fetch_assoc())
                 {
-                    //datos de la composicion
-                    $compra_ingrediente_id = $fila['compra_ingrediente_id'];
-                    $cantidad_enviada = $fila['cantidad_enviada'];
-                    $ingrediente_id = $fila['ingrediente_id'];
-
-                    //consulto el ingrediente
-                    $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
-
-                    if ($filas2 = $consulta2->fetch_assoc())
-                    {            
-                        $unidad_compra_c = $filas2['unidad_compra'];
-                        $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
-                    }
-                    else
-                    {            
-                        $unidad_compra_c = "unid";
-                        $costo_unidad_compra_c = 0;
-                    }
-
-                    //costo del ingrediente
-                    $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
-
-                    //costo de la composicion
-                    $composicion_costo = $composicion_costo + $ingrediente_costo;
+                    $local = $filas2['local'];
+                }
+                else
+                {
+                    $local = "";
                 }
 
-                //valor del costo
-                $costo_valor = $composicion_costo;       
-            }
-            else                 
-            {
-                //valor del costo
-                $costo_valor = 0;
-            }
-            ?>
+                //consulto el costo
+                $consulta_costo = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = '$compra_id' ORDER BY fecha_alta DESC");
 
-            <h2 class="rdm-lista--titulo-largo">Detalle</h2>
+                if ($consulta_costo->num_rows != 0)
+                {
+                    $composicion_costo = 0;
 
-            <section class="rdm-tarjeta">
+                    while ($fila = $consulta_costo->fetch_assoc())
+                    {
+                        //datos de la composicion
+                        $compra_ingrediente_id = $fila['compra_ingrediente_id'];
+                        $cantidad_enviada = $fila['cantidad_enviada'];
+                        $ingrediente_id = $fila['ingrediente_id'];
 
-                <div class="rdm-tarjeta--primario-largo">
-                    <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucfirst($local) ?></h1>
-                    <h2 class="rdm-tarjeta--subtitulo-largo">Compra No <?php echo ($compra_id); ?></h2>
-                </div>
+                        //consulto el ingrediente
+                        $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
 
-                <div class="rdm-tarjeta--cuerpo">                    
+                        if ($filas2 = $consulta2->fetch_assoc())
+                        {            
+                            $unidad_compra_c = $filas2['unidad_compra'];
+                            $costo_unidad_compra_c = $filas2['costo_unidad_compra'];            
+                        }
+                        else
+                        {            
+                            $unidad_compra_c = "unid";
+                            $costo_unidad_compra_c = 0;
+                        }
+
+                        //costo del ingrediente
+                        $ingrediente_costo = $costo_unidad_compra_c * $cantidad_enviada;
+
+                        //costo de la composicion
+                        $composicion_costo = $composicion_costo + $ingrediente_costo;
+                    }
+
+                    //valor del costo
+                    $costo_valor = $composicion_costo;       
+                }
+                else                 
+                {
+                    //valor del costo
+                    $costo_valor = 0;
+                }
+                ?>
+
+                <h2 class="rdm-lista--titulo-largo">Detalle</h2>
+
+                <section class="rdm-tarjeta">
+
+                    <div class="rdm-tarjeta--primario-largo">
+                        <h1 class="rdm-tarjeta--titulo-largo"><?php echo ucfirst($local) ?></h1>
+                        <h2 class="rdm-tarjeta--subtitulo-largo">Compra No <?php echo ($compra_id); ?></h2>
+                    </div>
+
+                    <div class="rdm-tarjeta--cuerpo">                    
+                    
+                        <p><b>Ingredientes</b> <br><?php echo ($total_ingredientes); ?></p>
+                    
+                        <p><b>Costo</b> <br>$<?php echo number_format($costo_valor, 2, ",", "."); ?></p>                    
+
+                    </div>
+
+                </section>
                 
-                    <p><b>Ingredientes</b> <br><?php echo ($total_ingredientes); ?></p>
-                
-                    <p><b>Costo</b> <br>$<?php echo number_format($costo_valor, 2, ",", "."); ?></p>                    
-
-                </div>
-
-            </section>
-            
-            <?php
+                <?php
+            }
         }
     }
     ?>
@@ -453,8 +440,12 @@ if ($agregar == 'si')
 </div>
     
 <footer>
+
+    <?php if ($mostrar_detalle == "si") { ?>
     
-    <a href="" data-toggle="modal" data-target="#dialogo_enviar" data-compra_id="<?php echo ucfirst($compra_id) ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-mail-send zmdi-hc-2x"></i></button></a>
+    <a href="" data-toggle="modal" data-target="#dialogo_enviar" data-compra_id="<?php echo ucfirst($compra_id) ?>"><button class="rdm-boton--fab" ><i class="zmdi zmdi-arrow-right zmdi-hc-2x"></i></button></a>
+
+    <?php } ?>
 
 </footer>
 
@@ -479,10 +470,14 @@ if ($agregar == 'si')
 
                 <div class="rdm-tarjeta--modal-cuerpo">
                     <input type="hidden" name="compra_id" value="<?php echo "$compra_id"; ?>">
-                    <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">                    
+                    <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">  
+
+                    <input type="hidden" class="busqueda" name="busqueda">                   
 
                     <p class="rdm-formularios--label"><label for="cantidad_enviada">Cantidad*</label></p>
                     <p><input type="number" class="cantidad_enviada" id="cantidad_enviada" name="cantidad_enviada" id="cantidad_enviada" step="any" required autofocus/></p>
+
+
                 </div>            
 
                 <div class="rdm-tarjeta--acciones-derecha">
@@ -499,11 +494,13 @@ if ($agregar == 'si')
 <script>
 $('#dialogo_agregar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
+  var busqueda = button.data('busqueda') 
   var ingrediente = button.data('ingrediente') 
   var ingrediente_id = button.data('ingrediente_id') 
   var unidad_compra = button.data('unidad_compra')
   var proveedor = button.data('proveedor')
   var modal = $(this)
+  modal.find('.busqueda').val(busqueda)
   modal.find('.ingrediente').text('' + ingrediente + '')
   modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_compra').text('' + unidad_compra + '')
@@ -541,6 +538,8 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
                     <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
                     <input type="hidden" class="compra_ingrediente_id" name="compra_ingrediente_id" value="">
 
+                    <input type="hidden" class="busqueda" name="busqueda">
+
                     <p class="rdm-formularios--label"><label for="cantidad_enviada">Cantidad*</label></p>
                     <p><input type="number" class="cantidad_enviada" id="cantidad_enviada" name="cantidad_enviada" id="cantidad_enviada" step="any" required autofocus/></p>
                 </div>
@@ -561,6 +560,7 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
 <script>
 $('#dialogo_editar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
+  var busqueda = button.data('busqueda') 
   var ingrediente = button.data('ingrediente') 
   var ingrediente_id = button.data('ingrediente_id') 
   var unidad_compra = button.data('unidad_compra')
@@ -568,6 +568,7 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
   var compra_ingrediente_id = button.data('compra_ingrediente_id')
   var proveedor = button.data('proveedor')
   var modal = $(this)
+  modal.find('.busqueda').val(busqueda)
   modal.find('.ingrediente').text('' + ingrediente + '')
   modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_compra').text('' + unidad_compra + '')
@@ -603,6 +604,8 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
                 <div class="rdm-tarjeta--modal-cuerpo">
                     <input type="hidden" name="compra_id" value="<?php echo "$compra_id"; ?>">
                     <input type="hidden" class="compra_ingrediente_id" name="compra_ingrediente_id" value="">
+
+                    <input type="hidden" class="busqueda" name="busqueda">
                 </div>            
 
                 <div class="rdm-tarjeta--acciones-derecha">
@@ -620,9 +623,11 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
 <script>
 $('#dialogo_eliminar').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
+  var busqueda = button.data('busqueda') //compra_ingrediente_id
   var compra_ingrediente_id = button.data('compra_ingrediente_id') //compra_ingrediente_id
   var ingrediente = button.data('ingrediente') //ingrediente
   var modal = $(this)    
+  modal.find('.busqueda').val(busqueda)
   modal.find('.compra_ingrediente_id').val(compra_ingrediente_id)
   modal.find('.ingrediente').text('' + ingrediente + '')
 })

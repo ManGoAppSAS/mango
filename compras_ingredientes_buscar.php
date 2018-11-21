@@ -94,6 +94,19 @@ if (isset($busqueda))
             {
                 $proveedor = "";
             }
+
+            //consulto si este ingrediente ya esta en la compra
+            $consulta3 = $conexion->query("SELECT * FROM compra_ingrediente WHERE compra_id = $compra_id and ingrediente_id = '$ingrediente_id'");
+
+            if ($filas3 = $consulta3->fetch_assoc())
+            {
+                $compra_ingrediente_id = $filas3['compra_ingrediente_id'];
+                $cantidad_enviada = $filas3['cantidad_enviada'];
+            }
+            else
+            {
+                $cantidad_enviada = 0;
+            }
             ?>
             
             <article class="rdm-lista--item-doble">
@@ -108,9 +121,22 @@ if (isset($busqueda))
                     </div>
 
                 </div>
+
+                <?php if ($cantidad_enviada == 0) { ?>
+
                 <div class="rdm-lista--derecha-sencillo">
-                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_compra="<?php echo ucfirst($unidad_compra) ?>" data-proveedor="<?php echo ucfirst($proveedor) ?>" data-compra_id="<?php echo ucfirst($compra_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus-circle-o zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                    <a href="" data-toggle="modal" data-target="#dialogo_agregar" data-busqueda="<?php echo ucfirst($busqueda) ?>" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_compra="<?php echo ucfirst($unidad_compra) ?>" data-proveedor="<?php echo ucfirst($proveedor) ?>" data-compra_id="<?php echo ucfirst($compra_id) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-plus-circle-o zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
                 </div>
+
+                <?php } else { ?>
+
+                <div class="rdm-lista--derecha">
+                    <a href="" data-toggle="modal" data-target="#dialogo_editar" data-busqueda="<?php echo ucfirst($busqueda) ?>" data-ingrediente="<?php echo ucfirst($ingrediente) ?>" data-ingrediente_id="<?php echo "$ingrediente_id"; ?>" data-unidad_compra="<?php echo ucfirst($unidad_compra) ?>" data-cantidad_enviada="<?php echo ucfirst($cantidad_enviada) ?>" data-compra_ingrediente_id="<?php echo ucfirst($compra_ingrediente_id) ?>" data-proveedor="<?php echo ucfirst($proveedor) ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-edit zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+
+                    <a href="" data-toggle="modal" data-target="#dialogo_eliminar" data-busqueda="<?php echo ucfirst($busqueda) ?>" data-compra_ingrediente_id="<?php echo ($compra_ingrediente_id) ?>" data-ingrediente="<?php echo ucfirst($ingrediente); ?>"><div class="rdm-lista--icono"><i class="zmdi zmdi-minus-circle-outline zmdi-hc-2x" style="color: rgba(0, 0, 0, 0.6)"></i></div></a>
+                </div>
+
+                <?php } ?>
             </article>                       
 
 
@@ -125,5 +151,3 @@ if (isset($busqueda))
     }
 }
 ?>
-
-<h2 class="rdm-lista--titulo-largo">Ingredientes agregados</h2>

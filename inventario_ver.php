@@ -33,7 +33,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Iventario - ManGo!</title>
+    <title>Inventario - ManGo!</title>
     <?php
     //información del head
     include ("partes/head.php");
@@ -200,9 +200,10 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
                         </div>
                         <div class="rdm-lista--contenedor">
                             <h2 class="rdm-lista--titulo"><?php echo ucwords("$enviado_por"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario"><?php echo ($total_ingredientes); ?> Ingredientes  •  Costo: $<?php echo number_format($costo_valor, 2, ",", "."); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario"><?php echo ($total_ingredientes); ?> Ingredientes</h2>
+                            <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($costo_valor, 2, ",", "."); ?></h2>
                         </div>
-                    </div>                    
+                    </div>
                 </article>
             </a>
             
@@ -278,9 +279,21 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
             $cantidad_actual = $fila['cantidad_actual'];
             $ingrediente_id = $fila['ingrediente_id'];
 
+            //consulto el ingrediente
+            $consulta2 = $conexion->query("SELECT * FROM ingrediente WHERE ingrediente_id = $ingrediente_id");
+
+            if ($filas2 = $consulta2->fetch_assoc())
+            {            
+                $ingrediente = $filas2['ingrediente'];        
+            }
+            else
+            {            
+                $ingrediente = $filas2['ingrediente'];     
+            }
+
             //color de fondo segun la primer letra
             $avatar_id = $inventario_id;
-            $avatar_nombre = "$ingrediente_id";
+            $avatar_nombre = "$ingrediente";
 
             include ("sis/avatar_color.php");
             
@@ -295,7 +308,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
                             <?php echo "$imagen"; ?>
                         </div>
                         <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$ingrediente_id"); ?></h2>
+                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$ingrediente"); ?></h2>
                             <h2 class="rdm-lista--texto-secundario">Cantidad <?php echo ($cantidad_actual); ?></h2>
                         </div>
                     </div>                    

@@ -630,23 +630,15 @@ if ($editar == "si")
 
 
 
-
-
-
-
-
-
-
-
     <?php
     //consulto la composicion de este ingrediente producido
     $consulta = $conexion->query("SELECT * FROM ingrediente_producido_preparacion WHERE ingrediente_producido_id = '$ingrediente_producido_id' and estado = 'activo' ORDER BY fecha_alta ASC");
 
     if ($consulta->num_rows == 0)
     {
-        ?>
+        $paso = 0;
 
-        <a id="preparacion">
+        ?>
 
         <h2 class="rdm-lista--titulo-largo">Preparación</h2>
 
@@ -666,9 +658,12 @@ if ($editar == "si")
 
             <div class="rdm-tarjeta--separador"></div>
 
+
             <div class="rdm-tarjeta--acciones-izquierda">
                 <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Agregar</button></a>
             </div>
+
+            
 
         </section>
 
@@ -682,31 +677,29 @@ if ($editar == "si")
 
         <h2 class="rdm-lista--titulo-largo">Preparación</h2>
 
-        <section class="rdm-tarjeta">   
+        <section class="rdm-lista"> 
 
         <?php
 
-        $contador = 0;
         while ($fila = $consulta->fetch_assoc())
         {
             //datos de la composicion
             $ingrediente_producido_preparacion_id = $fila['ingrediente_producido_preparacion_id'];
+            $paso = $fila['paso'];
             $preparacion = $fila['preparacion'];
             $ingrediente_producido_id = $fila['ingrediente_producido_id'];
 
-            $imagen_preparacion = $fila['imagen'];
-            $imagen_nombre = $fila['imagen_nombre'];
-
-            $contador = $contador + 1;
+            $imagen = $fila['imagen'];
+            $imagen_nombre = $fila['imagen_nombre'];            
 
             //color de fondo segun la primer letra
             $avatar_id = $ingrediente_producido_preparacion_id;
-            $avatar_nombre = "$preparacion";
+            $avatar_nombre = "$paso";
 
             include ("sis/avatar_color.php");
 
             //consulto la imagen de la preparacion
-            if ($imagen_preparacion == "no")
+            if ($imagen == "no")
             {
                 $imagen_preparacion = "";
             }
@@ -715,34 +708,35 @@ if ($editar == "si")
                 $imagen_preparacion = "img/avatares/preparacion-$ingrediente_producido_preparacion_id-$imagen_nombre.jpg";
                 $imagen_preparacion = '<div class="rdm-tarjeta--media-cuadrado" style="background-image: url('.$imagen_preparacion.');"></div>';
             }
+            
             ?>
 
 
-                <div class="rdm-tarjeta--primario">
-                    <div class="rdm-tarjeta--primario-contenedor">
-                        <div class="rdm-lista--avatar-color" style="background-color: hsl(<?php echo $sca ?>, 50%, 80%); color: hsl(<?php echo $sca ?>, 80%, 30%);"><span class="rdm-lista--avatar-texto"><?php echo "$contador"; ?></span></div>
+                <div class="rdm-lista--item-doble">
+                    <div class="rdm-lista--izquierda">
+                        <div class="rdm-lista--contenedor">
+                            <div class="rdm-lista--avatar-color" style="background-color: hsl(<?php echo $sca ?>, 50%, 80%); color: hsl(<?php echo $sca ?>, 80%, 30%);"><span class="rdm-lista--avatar-texto"><?php echo "$paso"; ?></span></div>
+                        </div>
+                        <div class="rdm-lista--contenedor">
+                            <h2 class="rdm-lista--titulo">Paso <?php echo ($paso); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst($preparacion); ?></h2>
+
+                        </div>
                     </div>
 
-                    <div class="rdm-tarjeta--primario-contenedor">
-                        <h1 class="rdm-tarjeta--titulo"><?php echo ucfirst($preparacion); ?></h1>
+                    <div class="rdm-lista--derecha">
+                        
                     </div>
-                </div>
-
-                <?php echo "$imagen_preparacion"; ?>
-
-                <div class="rdm-tarjeta--separador"></div>
-
-                
-
-                
-
-                
+                </div>   
+                <?php echo "$imagen_preparacion"; ?>         
 
             
             
         <?php
         }
         ?>
+
+        <div class="rdm-tarjeta--separador"></div>
 
         <div class="rdm-tarjeta--acciones-izquierda">
             <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>

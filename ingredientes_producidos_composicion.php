@@ -431,9 +431,11 @@ if ($agregar == 'si')
                 <div class="rdm-tarjeta--modal-cuerpo">
                     <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
                     <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
-                    <input type="hidden" class="busqueda" name="busqueda">
+                    <input type="hidden" class="busqueda" name="busqueda">                    
 
-                    <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+                    <p class="rdm-formularios--label"><label for="cantidad">Cantidad*</label></p>
+                    <p><input type="number" class="cantidad" id="cantidad" name="cantidad" id="cantidad" step="any" required autofocus/></p>
+
                 </div>            
 
                 <div class="rdm-tarjeta--acciones-derecha">
@@ -491,9 +493,13 @@ $('#dialogo_agregar').on('show.bs.modal', function (event) {
                     <input type="hidden" name="ingrediente_producido_id" value="<?php echo "$ingrediente_producido_id"; ?>">
                     <input type="hidden" class="ingrediente_id" name="ingrediente_id" value="">
                     <input type="hidden" class="ingrediente_producido_composicion_id" name="ingrediente_producido_composicion_id" value="">
-                    <input type="hidden" class="busqueda" name="busqueda">
 
-                    <p><input class="rdm-formularios--input-mediano" type="number" name="cantidad" value="" placeholder="Cantidad..." step="any" required autofocus></p>
+                    <input type="hidden" class="busqueda" name="busqueda">                    
+
+                    <p class="rdm-formularios--label"><label for="cantidad">Cantidad*</label></p>
+                    <p><input type="number" class="cantidad" id="cantidad" name="cantidad" id="cantidad" step="any" required autofocus/></p>
+
+
                 </div>
 
                 <div class="rdm-tarjeta--acciones-derecha">
@@ -522,7 +528,7 @@ $('#dialogo_editar').on('show.bs.modal', function (event) {
   modal.find('.ingrediente').text('' + ingrediente + '')
   modal.find('.ingrediente_id').val(ingrediente_id)
   modal.find('.unidad_minima').text('' + unidad_minima + '')
-  modal.find('.rdm-formularios--input-mediano').val(cantidad)
+  modal.find('.cantidad').val(cantidad)
   modal.find('.ingrediente_producido_composicion_id').val(ingrediente_producido_composicion_id)
 })
 </script>
