@@ -24,7 +24,6 @@ if(isset($_POST['ubicacion'])) $ubicacion = $_POST['ubicacion']; elseif(isset($_
 if(isset($_POST['ubicada'])) $ubicada = $_POST['ubicada']; elseif(isset($_GET['ubicada'])) $ubicada = $_GET['ubicada']; else $ubicada = null;
 if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $tipo = $_GET['tipo']; else $tipo = null;
 if(isset($_POST['impuestos'])) $impuestos = $_POST['impuestos']; elseif(isset($_GET['impuestos'])) $impuestos = $_GET['impuestos']; else $impuestos = "no";
-if(isset($_POST['porcentaje_comision'])) $porcentaje_comision = $_POST['porcentaje_comision']; elseif(isset($_GET['porcentaje_comision'])) $porcentaje_comision = $_GET['porcentaje_comision']; else $porcentaje_comision = 0;
 if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET['local_id'])) $local_id = $_GET['local_id']; else $local_id = 0;
 
 //variables del mensaje
@@ -37,7 +36,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 //actualizo la información de la ubicación
 if ($editar == "si")
 {
-    $actualizar = $conexion->query("UPDATE ubicacion SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', ubicacion = '$ubicacion', ubicada = '$ubicada', tipo = '$tipo', impuestos = '$impuestos', porcentaje_comision = '$porcentaje_comision', local_id = '$local_id' WHERE ubicacion_id = '$ubicacion_id'");
+    $actualizar = $conexion->query("UPDATE ubicacion SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', ubicacion = '$ubicacion', ubicada = '$ubicada', tipo = '$tipo', impuestos = '$impuestos', local_id = '$local_id' WHERE ubicacion_id = '$ubicacion_id'");
 
     if ($actualizar)
     {
@@ -111,7 +110,6 @@ if ($editar == "si")
             $ubicada = $fila['ubicada'];
             $tipo = $fila['tipo'];
             $impuestos = $fila['impuestos'];
-            $porcentaje_comision = $fila['porcentaje_comision'];
 
             $local_id = $fila['local_id'];
 
@@ -233,14 +231,7 @@ if ($editar == "si")
                     <?php if (!empty($impuestos)) { ?>
                         <div class="rdm-tarjeta--separador"></div>
                         <p><b>¿Esta ubicación genera impuestos?</b> <br><?php echo ucfirst($impuestos); ?></p>                        
-                    <?php } ?>
-
-                    <?php if (!empty($porcentaje_comision)) { ?>
-                        <div class="rdm-tarjeta--separador"></div>
-                        <p><b>Comisión de ventas</b> <br><?php echo ($porcentaje_comision) ?>%</p>                        
-                    <?php } ?>
-
-                    
+                    <?php } ?>                    
 
                     <?php if (!empty($usuario_alta)) { ?>
                         <div class="rdm-tarjeta--separador"></div>

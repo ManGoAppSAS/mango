@@ -34,6 +34,7 @@ if(isset($_POST['contrasena'])) $contrasena = $_POST['contrasena']; elseif(isset
 if(isset($_POST['telefono'])) $telefono = $_POST['telefono']; elseif(isset($_GET['telefono'])) $telefono = $_GET['telefono']; else $telefono = null;
 if(isset($_POST['direccion'])) $direccion = $_POST['direccion']; elseif(isset($_GET['direccion'])) $direccion = $_GET['direccion']; else $direccion = null;
 if(isset($_POST['fecha_nacimiento'])) $fecha_nacimiento = $_POST['fecha_nacimiento']; elseif(isset($_GET['fecha_nacimiento'])) $fecha_nacimiento = $_GET['fecha_nacimiento']; else $fecha_nacimiento = null;
+if(isset($_POST['porcentaje_comision'])) $porcentaje_comision = $_POST['porcentaje_comision']; elseif(isset($_GET['porcentaje_comision'])) $porcentaje_comision = $_GET['porcentaje_comision']; else $porcentaje_comision = 0;
 if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET['local_id'])) $local_id = $_GET['local_id']; else $local_id = 0;
 
 //variables del mensaje
@@ -75,7 +76,7 @@ if ($agregar == 'si')
     if ($consulta->num_rows == 0)
     {
         $imagen_ref = "usuarios";
-        $insercion = $conexion->query("INSERT INTO usuario values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$nombres', '$apellidos', '$documento_tipo', '$documento_numero', '$tipo', '$correo', '$contrasena', '$telefono', '$direccion', '$fecha_nacimiento', '$imagen', '$ahora_img', '$local_id')");        
+        $insercion = $conexion->query("INSERT INTO usuario values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$nombres', '$apellidos', '$documento_tipo', '$documento_numero', '$tipo', '$correo', '$contrasena', '$telefono', '$direccion', '$fecha_nacimiento', '$porcentaje_comision', '$imagen', '$ahora_img', '$local_id')");        
 
         $mensaje = "Usuario <b>" . ($nombres) . " " . ($apellidos) . "</b> agregado";
         $body_snack = 'onLoad="Snackbar()"';
@@ -239,6 +240,10 @@ if ($agregar == 'si')
             <p class="rdm-formularios--label"><label for="fecha_nacimiento">Fecha de nacimiento</label></p>
             <p><input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo "$fecha_nacimiento"; ?>" spellcheck="false" /></p>
             <p class="rdm-formularios--ayuda">Fecha de nacimiento del usuario</p>
+
+            <p class="rdm-formularios--label"><label for="porcentaje_comision">Comisión de ventas</label></p>
+            <p><input type="number" min="0" max="100" id="porcentaje_comision" name="porcentaje_comision" value="<?php echo "$porcentaje_comision"; ?>" step="any" required /></p>
+            <p class="rdm-formularios--ayuda">Valor del porcentaje sin símbolos o guiones</p>
 
             <p class="rdm-formularios--label"><label for="archivo">Imagen</label></p>
             <p><input type="file" id="archivo" name="archivo" /></p>

@@ -38,6 +38,7 @@ if ($fila = $consulta->fetch_assoc())
     $telefono = $fila['telefono'];
     $direccion = $fila['direccion'];
     $fecha_nacimiento = $fila['fecha_nacimiento'];
+    $porcentaje_comision = $fila['porcentaje_comision'];
 
     $imagen = $fila['imagen'];
     $imagen_nombre = $fila['imagen_nombre'];
@@ -216,7 +217,11 @@ else
 
             <p class="rdm-formularios--label"><label for="fecha_nacimiento">Fecha de nacimiento</label></p>
             <p><input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo "$fecha_nacimiento"; ?>" spellcheck="false" /></p>
-            <p class="rdm-formularios--ayuda">Fecha de nacimiento del usuario</p>  
+            <p class="rdm-formularios--ayuda">Fecha de nacimiento del usuario</p>
+
+            <p class="rdm-formularios--label"><label for="porcentaje_comision">Comisión de ventas</label></p>
+            <p><input type="number" min="0" max="100" id="porcentaje_comision" name="porcentaje_comision" value="<?php echo "$porcentaje_comision"; ?>" step="any" required /></p>
+            <p class="rdm-formularios--ayuda">Valor del porcentaje sin símbolos o guiones</p>
 
             <p class="rdm-formularios--label"><label for="archivo">Imagen</label></p>
             <p><input type="file" id="archivo" name="archivo" /></p>

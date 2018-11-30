@@ -31,7 +31,6 @@ if ($fila = $consulta->fetch_assoc())
     $ubicada = $fila['ubicada'];
     $tipo = $fila['tipo'];
     $impuestos = $fila['impuestos'];
-    $porcentaje_comision = $fila['porcentaje_comision'];
 
     $local_id = $fila['local_id'];
 
@@ -201,10 +200,6 @@ else
                 </label>
             </p>            
             <p class="rdm-formularios--ayuda">¿Esta ubicación genera impuestos?</p>
-
-            <p class="rdm-formularios--label"><label for="porcentaje_comision">Comisión de ventas</label></p>
-            <p><input type="number" min="0" max="100" id="porcentaje_comision" name="porcentaje_comision" value="<?php echo "$porcentaje_comision"; ?>" step="any" required /></p>
-            <p class="rdm-formularios--ayuda">Valor del porcentaje sin símbolos o guiones</p>
             
             <button type="submit" class="rdm-boton--fab" name="editar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>
 

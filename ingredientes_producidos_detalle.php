@@ -242,6 +242,9 @@ if ($editar == "si")
             <a href="ingredientes_producidos_ver.php"><div class="rdm-toolbar--icono"><i class="zmdi zmdi-arrow-left zmdi-hc-2x"></i></div></a>
             <h2 class="rdm-toolbar--titulo">Ingrediente producido</h2>
         </div>
+        <div class="rdm-toolbar--derecha">
+            <a href="ingredientes_producidos_impresion.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>" target="_blank"><div class="rdm-lista--icono"><i class="zmdi zmdi-print zmdi-hc-2x"></i></div></a>
+        </div>
     </div>
 </header>
 

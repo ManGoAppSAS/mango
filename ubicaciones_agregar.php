@@ -24,7 +24,6 @@ if(isset($_POST['ubicacion'])) $ubicacion = $_POST['ubicacion']; elseif(isset($_
 if(isset($_POST['ubicada'])) $ubicada = $_POST['ubicada']; elseif(isset($_GET['ubicada'])) $ubicada = $_GET['ubicada']; else $ubicada = null;
 if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $tipo = $_GET['tipo']; else $tipo = null;
 if(isset($_POST['impuestos'])) $impuestos = $_POST['impuestos']; elseif(isset($_GET['impuestos'])) $impuestos = $_GET['impuestos']; else $impuestos = "no";
-if(isset($_POST['porcentaje_comision'])) $porcentaje_comision = $_POST['porcentaje_comision']; elseif(isset($_GET['porcentaje_comision'])) $porcentaje_comision = $_GET['porcentaje_comision']; else $porcentaje_comision = 0;
 if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET['local_id'])) $local_id = $_GET['local_id']; else $local_id = 0;
 
 //variables del mensaje
@@ -57,7 +56,7 @@ if ($agregar == 'si')
 
     if ($consulta->num_rows == 0)
     {
-        $insercion = $conexion->query("INSERT INTO ubicacion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ubicacion', '$ubicada', '$tipo', '$impuestos', '$porcentaje_comision', '$local_id')");        
+        $insercion = $conexion->query("INSERT INTO ubicacion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ubicacion', '$ubicada', '$tipo', '$impuestos', '$local_id')");        
 
         $mensaje = "Ubicación <b>" . ($ubicacion) . "</b> agregada";
         $body_snack = 'onLoad="Snackbar()"';
@@ -210,10 +209,6 @@ if ($agregar == 'si')
                 </label>
             </p>
             <p class="rdm-formularios--ayuda">¿Esta ubicación genera impuestos?</p>
-
-            <p class="rdm-formularios--label"><label for="porcentaje_comision">Comisión de ventas</label></p>
-            <p><input type="number" min="0" max="100" id="porcentaje_comision" name="porcentaje_comision" value="<?php echo "$porcentaje_comision"; ?>" step="any" required /></p>
-            <p class="rdm-formularios--ayuda">Valor del porcentaje sin símbolos o guiones</p>
             
             <button type="submit" class="rdm-boton--fab" name="agregar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>        
             

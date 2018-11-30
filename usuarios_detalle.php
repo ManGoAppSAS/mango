@@ -36,6 +36,7 @@ if(isset($_POST['contrasena'])) $contrasena = $_POST['contrasena']; elseif(isset
 if(isset($_POST['telefono'])) $telefono = $_POST['telefono']; elseif(isset($_GET['telefono'])) $telefono = $_GET['telefono']; else $telefono = null;
 if(isset($_POST['direccion'])) $direccion = $_POST['direccion']; elseif(isset($_GET['direccion'])) $direccion = $_GET['direccion']; else $direccion = null;
 if(isset($_POST['fecha_nacimiento'])) $fecha_nacimiento = $_POST['fecha_nacimiento']; elseif(isset($_GET['fecha_nacimiento'])) $fecha_nacimiento = $_GET['fecha_nacimiento']; else $fecha_nacimiento = null;
+if(isset($_POST['porcentaje_comision'])) $porcentaje_comision = $_POST['porcentaje_comision']; elseif(isset($_GET['porcentaje_comision'])) $porcentaje_comision = $_GET['porcentaje_comision']; else $porcentaje_comision = 0;
 if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET['local_id'])) $local_id = $_GET['local_id']; else $local_id = 0;
 
 //variables de la imagen
@@ -68,7 +69,7 @@ if ($editar == "si")
         $imagen_nombre = $imagen_nombre;
     }
     
-    $actualizar = $conexion->query("UPDATE usuario SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', nombres = '$nombres', apellidos = '$apellidos', documento_tipo = '$documento_tipo', documento_numero = '$documento_numero', tipo = '$tipo', correo = '$correo', contrasena = '$contrasena', telefono = '$telefono', direccion = '$direccion', fecha_nacimiento = '$fecha_nacimiento', imagen = '$imagen', imagen_nombre = '$imagen_nombre', local_id = '$local_id' WHERE usuario_id = '$usuario_id'");
+    $actualizar = $conexion->query("UPDATE usuario SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', nombres = '$nombres', apellidos = '$apellidos', documento_tipo = '$documento_tipo', documento_numero = '$documento_numero', tipo = '$tipo', correo = '$correo', contrasena = '$contrasena', telefono = '$telefono', direccion = '$direccion', fecha_nacimiento = '$fecha_nacimiento', porcentaje_comision = '$porcentaje_comision', imagen = '$imagen', imagen_nombre = '$imagen_nombre', local_id = '$local_id' WHERE usuario_id = '$usuario_id'");
 
     if ($actualizar)
     {
@@ -149,6 +150,7 @@ if ($editar == "si")
             $telefono = $fila['telefono'];
             $direccion = $fila['direccion'];
             $fecha_nacimiento = date('d/m/Y', strtotime($fila['fecha_nacimiento']));
+            $porcentaje_comision = $fila['porcentaje_comision'];
 
             $imagen = $fila['imagen'];
             $imagen_nombre = $fila['imagen_nombre'];
@@ -255,7 +257,12 @@ if ($editar == "si")
                     <?php if (!empty($fecha_nacimiento)) { ?>
                         <div class="rdm-tarjeta--separador"></div>
                         <p><b>Cumpleaños</b> <br><?php echo ucfirst("$fecha_nacimiento"); ?></p>                        
-                    <?php } ?>                    
+                    <?php } ?>
+
+                    <?php if (!empty($porcentaje_comision)) { ?>
+                        <div class="rdm-tarjeta--separador"></div>
+                        <p><b>Porcentaje de comision</b> <br><?php echo ucfirst("$porcentaje_comision"); ?>%</p>                        
+                    <?php } ?>
 
                     <?php if (!empty($usuario_alta)) { ?>
                         <div class="rdm-tarjeta--separador"></div>
