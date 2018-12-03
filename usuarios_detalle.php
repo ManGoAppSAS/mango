@@ -34,6 +34,7 @@ if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $
 if(isset($_POST['correo'])) $correo = $_POST['correo']; elseif(isset($_GET['correo'])) $correo = $_GET['correo']; else $correo = null;
 if(isset($_POST['contrasena'])) $contrasena = $_POST['contrasena']; elseif(isset($_GET['contrasena'])) $contrasena = $_GET['contrasena']; else $contrasena = null;
 if(isset($_POST['telefono'])) $telefono = $_POST['telefono']; elseif(isset($_GET['telefono'])) $telefono = $_GET['telefono']; else $telefono = null;
+if(isset($_POST['telefono_emergencia'])) $telefono_emergencia = $_POST['telefono_emergencia']; elseif(isset($_GET['telefono_emergencia'])) $telefono_emergencia = $_GET['telefono_emergencia']; else $telefono_emergencia = null;
 if(isset($_POST['direccion'])) $direccion = $_POST['direccion']; elseif(isset($_GET['direccion'])) $direccion = $_GET['direccion']; else $direccion = null;
 if(isset($_POST['fecha_nacimiento'])) $fecha_nacimiento = $_POST['fecha_nacimiento']; elseif(isset($_GET['fecha_nacimiento'])) $fecha_nacimiento = $_GET['fecha_nacimiento']; else $fecha_nacimiento = null;
 if(isset($_POST['porcentaje_comision'])) $porcentaje_comision = $_POST['porcentaje_comision']; elseif(isset($_GET['porcentaje_comision'])) $porcentaje_comision = $_GET['porcentaje_comision']; else $porcentaje_comision = 0;
@@ -69,7 +70,7 @@ if ($editar == "si")
         $imagen_nombre = $imagen_nombre;
     }
     
-    $actualizar = $conexion->query("UPDATE usuario SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', nombres = '$nombres', apellidos = '$apellidos', documento_tipo = '$documento_tipo', documento_numero = '$documento_numero', tipo = '$tipo', correo = '$correo', contrasena = '$contrasena', telefono = '$telefono', direccion = '$direccion', fecha_nacimiento = '$fecha_nacimiento', porcentaje_comision = '$porcentaje_comision', imagen = '$imagen', imagen_nombre = '$imagen_nombre', local_id = '$local_id' WHERE usuario_id = '$usuario_id'");
+    $actualizar = $conexion->query("UPDATE usuario SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', nombres = '$nombres', apellidos = '$apellidos', documento_tipo = '$documento_tipo', documento_numero = '$documento_numero', tipo = '$tipo', correo = '$correo', contrasena = '$contrasena', telefono = '$telefono', telefono_emergencia = '$telefono_emergencia', direccion = '$direccion', fecha_nacimiento = '$fecha_nacimiento', porcentaje_comision = '$porcentaje_comision', imagen = '$imagen', imagen_nombre = '$imagen_nombre', local_id = '$local_id' WHERE usuario_id = '$usuario_id'");
 
     if ($actualizar)
     {
@@ -148,6 +149,7 @@ if ($editar == "si")
             $contrasena = $fila['contrasena'];
 
             $telefono = $fila['telefono'];
+            $telefono_emergencia = $fila['telefono_emergencia'];
             $direccion = $fila['direccion'];
             $fecha_nacimiento = date('d/m/Y', strtotime($fila['fecha_nacimiento']));
             $porcentaje_comision = $fila['porcentaje_comision'];
@@ -245,6 +247,11 @@ if ($editar == "si")
                         <p><b>Contraseña</b> <br><?php echo ($contrasena); ?></p>                        
                     <?php } ?>
 
+                    <?php if (!empty($telefono_emergencia)) { ?>
+                        <div class="rdm-tarjeta--separador"></div>
+                        <p><b>Teléfono de emergencia</b> <br><a href="https://api.whatsapp.com/send?phone=57<?php echo ucfirst($telefono_emergencia) ?>" target="_blank"><?php echo ucfirst($telefono_emergencia) ?></a></p>
+                    <?php } ?>
+
                     <?php if (!empty($telefono)) { ?>
                         <div class="rdm-tarjeta--separador"></div>
                         <p><b>Teléfono</b> <br><a href="https://api.whatsapp.com/send?phone=57<?php echo ucfirst($telefono) ?>" target="_blank"><?php echo ucfirst($telefono) ?></a></p>
@@ -261,7 +268,7 @@ if ($editar == "si")
 
                     <?php if (!empty($porcentaje_comision)) { ?>
                         <div class="rdm-tarjeta--separador"></div>
-                        <p><b>Porcentaje de comision</b> <br><?php echo ucfirst("$porcentaje_comision"); ?>%</p>                        
+                        <p><b>Porcentaje de comision en las ventas</b> <br><?php echo ucfirst("$porcentaje_comision"); ?>%</p>                        
                     <?php } ?>
 
                     <?php if (!empty($usuario_alta)) { ?>

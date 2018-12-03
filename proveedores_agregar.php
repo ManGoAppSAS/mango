@@ -28,9 +28,11 @@ if(isset($_POST['proveedor'])) $proveedor = $_POST['proveedor']; elseif(isset($_
 if(isset($_POST['documento_tipo'])) $documento_tipo = $_POST['documento_tipo']; elseif(isset($_GET['documento_tipo'])) $documento_tipo = $_GET['documento_tipo']; else $documento_tipo = null;
 if(isset($_POST['documento_numero'])) $documento_numero = $_POST['documento_numero']; elseif(isset($_GET['documento_numero'])) $documento_numero = $_GET['documento_numero']; else $documento_numero = null;
 if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $tipo = $_GET['tipo']; else $tipo = null;
-if(isset($_POST['correo'])) $correo = $_POST['correo']; elseif(isset($_GET['correo'])) $correo = $_GET['correo']; else $correo = null;
 if(isset($_POST['contacto'])) $contacto = $_POST['contacto']; elseif(isset($_GET['contacto'])) $contacto = $_GET['contacto']; else $contacto = null;
+if(isset($_POST['telefono_pedidos'])) $telefono_pedidos = $_POST['telefono_pedidos']; elseif(isset($_GET['telefono_pedidos'])) $telefono_pedidos = $_GET['telefono_pedidos']; else $telefono_pedidos = null;
+if(isset($_POST['correo_pedidos'])) $correo_pedidos = $_POST['correo_pedidos']; elseif(isset($_GET['correo_pedidos'])) $correo_pedidos = $_GET['correo_pedidos']; else $correo_pedidos = null;
 if(isset($_POST['telefono'])) $telefono = $_POST['telefono']; elseif(isset($_GET['telefono'])) $telefono = $_GET['telefono']; else $telefono = null;
+if(isset($_POST['correo'])) $correo = $_POST['correo']; elseif(isset($_GET['correo'])) $correo = $_GET['correo']; else $correo = null;
 if(isset($_POST['direccion'])) $direccion = $_POST['direccion']; elseif(isset($_GET['direccion'])) $direccion = $_GET['direccion']; else $direccion = null;
 if(isset($_POST['cuenta_bancaria'])) $cuenta_bancaria = $_POST['cuenta_bancaria']; elseif(isset($_GET['cuenta_bancaria'])) $cuenta_bancaria = $_GET['cuenta_bancaria']; else $cuenta_bancaria = null;
 
@@ -58,7 +60,7 @@ if ($agregar == 'si')
     if ($consulta->num_rows == 0)
     {
         $imagen_ref = "proveedores";
-        $insercion = $conexion->query("INSERT INTO proveedor values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$proveedor', '$documento_tipo', '$documento_numero', '$tipo', '$correo', '$contacto', '$telefono', '$direccion', '$cuenta_bancaria', '$imagen', '$ahora_img')");        
+        $insercion = $conexion->query("INSERT INTO proveedor values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$proveedor', '$documento_tipo', '$documento_numero', '$tipo', '$contacto', '$telefono_pedidos', '$correo_pedidos', '$telefono', '$correo', '$direccion', '$cuenta_bancaria', '$imagen', '$ahora_img')");        
 
         $mensaje = "Proveedor <b>" . ($proveedor) . "</b> agregado";
         $body_snack = 'onLoad="Snackbar()"';
@@ -127,24 +129,39 @@ if ($agregar == 'si')
             <p class="rdm-formularios--ayuda">Tipo de documento, CC, NIT, TI, etc.</p>
 
             <p class="rdm-formularios--label"><label for="documento_numero">Documento*</label></p>
-            <p><input type="number" id="documento_numero" name="documento_numero" value="<?php echo "$documento_numero"; ?>" required /></p>
+            <p><input type="tel" id="documento_numero" name="documento_numero" value="<?php echo "$documento_numero"; ?>" required /></p>
             <p class="rdm-formularios--ayuda">Documento de identificación del usuario</p>
 
             <p class="rdm-formularios--label"><label for="tipo">Tipo</label></p>
             <p><input type="text" id="tipo" name="tipo" value="<?php echo "$tipo"; ?>" spellcheck="false" /></p>
             <p class="rdm-formularios--ayuda">Tipo de proveedor, carnes, licores, empaques, etc.</p>            
             
-            <p class="rdm-formularios--label"><label for="correo">Correo electrónico</label></p>
-            <p><input type="email" id="correo" name="correo" value="<?php echo "$correo"; ?>" spellcheck="false" /></p>
-            <p class="rdm-formularios--ayuda">Correo electrónico de contacto</p>
+            
             
             <p class="rdm-formularios--label"><label for="contacto">Contacto</label></p>
             <p><input type="text" id="contacto" name="contacto" value="<?php echo "$contacto"; ?>" /></p>
             <p class="rdm-formularios--ayuda">Nombre de la persona encargada de facturación o pedidos</p>
 
+
+
+
+            <p class="rdm-formularios--label"><label for="telefono_pedidos">Teléfono de pedidos</label></p>
+            <p><input type="number" id="telefono_pedidos" name="telefono_pedidos" value="<?php echo "$telefono_pedidos"; ?>" /></p>
+            <p class="rdm-formularios--ayuda">Teléfono para pedidos del proveedor</p>
+
+            <p class="rdm-formularios--label"><label for="correo_pedidos">Correo electrónico de pedidos</label></p>
+            <p><input type="email" id="correo_pedidos" name="correo_pedidos" value="<?php echo "$correo_pedidos"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Correo electrónico para pedidos</p>
+
+
+
             <p class="rdm-formularios--label"><label for="telefono">Teléfono</label></p>
             <p><input type="number" id="telefono" name="telefono" value="<?php echo "$telefono"; ?>" /></p>
             <p class="rdm-formularios--ayuda">Teléfono del proveedor</p>
+
+            <p class="rdm-formularios--label"><label for="correo">Correo electrónico</label></p>
+            <p><input type="email" id="correo" name="correo" value="<?php echo "$correo"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Correo electrónico de contacto</p>
 
             <p class="rdm-formularios--label"><label for="direccion">Dirección</label></p>
             <p><input type="text" id="direccion" name="direccion" value="<?php echo "$direccion"; ?>" spellcheck="false"  /></p>

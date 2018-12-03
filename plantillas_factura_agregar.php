@@ -29,8 +29,7 @@ if(isset($_POST['prefijo'])) $prefijo = $_POST['prefijo']; elseif(isset($_GET['p
 if(isset($_POST['numero_inicio'])) $numero_inicio = $_POST['numero_inicio']; elseif(isset($_GET['numero_inicio'])) $numero_inicio = $_GET['numero_inicio']; else $numero_inicio = 1;
 if(isset($_POST['numero_fin'])) $numero_fin = $_POST['numero_fin']; elseif(isset($_GET['numero_fin'])) $numero_fin = $_GET['numero_fin']; else $numero_fin = null;
 if(isset($_POST['sufijo'])) $sufijo = $_POST['sufijo']; elseif(isset($_GET['sufijo'])) $sufijo = $_GET['sufijo']; else $sufijo = null;
-if(isset($_POST['encabezado'])) $encabezado = $_POST['encabezado']; elseif(isset($_GET['encabezado'])) $encabezado = $_GET['encabezado']; else $encabezado = "Somos régimen... NIT... Resolución de facturación No...";
-if(isset($_POST['mostrar_local'])) $mostrar_local = $_POST['mostrar_local']; elseif(isset($_GET['mostrar_local'])) $mostrar_local = $_GET['mostrar_local']; else $mostrar_local = "no";
+if(isset($_POST['encabezado'])) $encabezado = $_POST['encabezado']; elseif(isset($_GET['encabezado'])) $encabezado = $_GET['encabezado']; else $encabezado = null;
 if(isset($_POST['mostrar_atendido'])) $mostrar_atendido = $_POST['mostrar_atendido']; elseif(isset($_GET['mostrar_atendido'])) $mostrar_atendido = $_GET['mostrar_atendido']; else $mostrar_atendido = "no";
 if(isset($_POST['mostrar_impuesto'])) $mostrar_impuesto = $_POST['mostrar_impuesto']; elseif(isset($_GET['mostrar_impuesto'])) $mostrar_impuesto = $_GET['mostrar_impuesto']; else $mostrar_impuesto = "no";
 if(isset($_POST['pie'])) $pie = $_POST['pie']; elseif(isset($_GET['pie'])) $pie = $_GET['pie']; else $pie = null;
@@ -75,7 +74,7 @@ if ($agregar == 'si')
     if ($consulta->num_rows == 0)
     {
         $imagen_ref = "plantillas_factura";
-        $insercion = $conexion->query("INSERT INTO plantilla_factura values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$titulo', '$prefijo', '$numero_inicio', '$numero_fin', '$sufijo', '$encabezado', '$mostrar_local', '$mostrar_atendido', '$mostrar_impuesto', '$pie', '$imagen', '$ahora_img', '$local_id')");        
+        $insercion = $conexion->query("INSERT INTO plantilla_factura values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$titulo', '$prefijo', '$numero_inicio', '$numero_fin', '$sufijo', '$encabezado', '$mostrar_atendido', '$mostrar_impuesto', '$pie', '$imagen', '$ahora_img', '$local_id')");        
 
         $mensaje = "Plantilla de factura <b>" . ucfirst($titulo) . "</b> agregada";
         $body_snack = 'onLoad="Snackbar()"';
@@ -220,30 +219,7 @@ if ($agregar == 'si')
 
             <p class="rdm-formularios--label"><label for="encabezado">Encabezado*</label></p>
             <p><textarea rows="8" id="encabezado" name="encabezado"><?php echo "$encabezado"; ?></textarea></p>
-            <p class="rdm-formularios--ayuda">Ej: Nit xxxxxx-x, somos regimen xxx, resolución de faturación No xxx, etc.</p>
-
-            <?php
-            //atributo checked
-            if ($mostrar_local == "si")
-            {
-                $mostrar_local_checked = "checked";
-            }
-            else
-            {
-                $mostrar_local_checked = "";
-            }
-            ?>
-
-            <p class="rdm-formularios--label"><label for="mostrar_local">Datos del local*</label></p>
-            <p class="rdm-formularios--checkbox">
-                <input type="checkbox" id="mostrar_local" name="mostrar_local" class="rdm-formularios--switch" value="si" <?php echo "$mostrar_local_checked"; ?>>
-                <label for="mostrar_local" class="rdm-formularios--switch-label">
-                    <span class="rdm-formularios--switch-encendido">Si</span>
-                    <span class="rdm-formularios--switch-apagado">No</span>
-                </label>
-            </p> 
-            <p class="rdm-formularios--ayuda">Mostrar datos del local</p>           
-            
+            <p class="rdm-formularios--ayuda">Ej: Resolución de faturación No xxx, Razón social, etc.</p>            
 
             <?php
             //atributo checked

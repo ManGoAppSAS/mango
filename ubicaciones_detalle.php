@@ -23,7 +23,6 @@ if(isset($_POST['ubicacion_id'])) $ubicacion_id = $_POST['ubicacion_id']; elseif
 if(isset($_POST['ubicacion'])) $ubicacion = $_POST['ubicacion']; elseif(isset($_GET['ubicacion'])) $ubicacion = $_GET['ubicacion']; else $ubicacion = null;
 if(isset($_POST['ubicada'])) $ubicada = $_POST['ubicada']; elseif(isset($_GET['ubicada'])) $ubicada = $_GET['ubicada']; else $ubicada = null;
 if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $tipo = $_GET['tipo']; else $tipo = null;
-if(isset($_POST['impuestos'])) $impuestos = $_POST['impuestos']; elseif(isset($_GET['impuestos'])) $impuestos = $_GET['impuestos']; else $impuestos = "no";
 if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET['local_id'])) $local_id = $_GET['local_id']; else $local_id = 0;
 
 //variables del mensaje
@@ -36,7 +35,7 @@ if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif
 //actualizo la información de la ubicación
 if ($editar == "si")
 {
-    $actualizar = $conexion->query("UPDATE ubicacion SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', ubicacion = '$ubicacion', ubicada = '$ubicada', tipo = '$tipo', impuestos = '$impuestos', local_id = '$local_id' WHERE ubicacion_id = '$ubicacion_id'");
+    $actualizar = $conexion->query("UPDATE ubicacion SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', ubicacion = '$ubicacion', ubicada = '$ubicada', tipo = '$tipo', local_id = '$local_id' WHERE ubicacion_id = '$ubicacion_id'");
 
     if ($actualizar)
     {
@@ -109,7 +108,6 @@ if ($editar == "si")
             $ubicacion = $fila['ubicacion'];
             $ubicada = $fila['ubicada'];
             $tipo = $fila['tipo'];
-            $impuestos = $fila['impuestos'];
 
             $local_id = $fila['local_id'];
 
@@ -226,12 +224,7 @@ if ($editar == "si")
 
                     <?php if (!empty($ubicada)) { ?>
                         <p><b>Ubicada en</b> <br><?php echo ucfirst($ubicada); ?></p>                        
-                    <?php } ?>                    
-
-                    <?php if (!empty($impuestos)) { ?>
-                        <div class="rdm-tarjeta--separador"></div>
-                        <p><b>¿Esta ubicación genera impuestos?</b> <br><?php echo ucfirst($impuestos); ?></p>                        
-                    <?php } ?>                    
+                    <?php } ?>
 
                     <?php if (!empty($usuario_alta)) { ?>
                         <div class="rdm-tarjeta--separador"></div>

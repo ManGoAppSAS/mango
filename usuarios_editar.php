@@ -36,6 +36,7 @@ if ($fila = $consulta->fetch_assoc())
     $contrasena = $fila['contrasena'];
 
     $telefono = $fila['telefono'];
+    $telefono_emergencia = $fila['telefono_emergencia'];
     $direccion = $fila['direccion'];
     $fecha_nacimiento = $fila['fecha_nacimiento'];
     $porcentaje_comision = $fila['porcentaje_comision'];
@@ -210,6 +211,10 @@ else
             <p class="rdm-formularios--label"><label for="telefono">Teléfono</label></p>
             <p><input type="number" id="telefono" name="telefono" value="<?php echo "$telefono"; ?>"  /></p>
             <p class="rdm-formularios--ayuda">Teléfono del usuario</p>
+
+            <p class="rdm-formularios--label"><label for="telefono_emergencia">Teléfono de emergencia</label></p>
+            <p><input type="number" id="telefono_emergencia" name="telefono_emergencia" value="<?php echo "$telefono_emergencia"; ?>"  /></p>
+            <p class="rdm-formularios--ayuda">Teléfono de en caso de emergencia</p>
 
             <p class="rdm-formularios--label"><label for="direccion">Dirección</label></p>
             <p><input type="text" id="direccion" name="direccion" value="<?php echo "$direccion"; ?>" spellcheck="false"  /></p>

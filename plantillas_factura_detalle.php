@@ -31,7 +31,6 @@ if(isset($_POST['numero_inicio'])) $numero_inicio = $_POST['numero_inicio']; els
 if(isset($_POST['numero_fin'])) $numero_fin = $_POST['numero_fin']; elseif(isset($_GET['numero_fin'])) $numero_fin = $_GET['numero_fin']; else $numero_fin = null;
 if(isset($_POST['sufijo'])) $sufijo = $_POST['sufijo']; elseif(isset($_GET['sufijo'])) $sufijo = $_GET['sufijo']; else $sufijo = null;
 if(isset($_POST['encabezado'])) $encabezado = $_POST['encabezado']; elseif(isset($_GET['encabezado'])) $encabezado = $_GET['encabezado']; else $encabezado = null;
-if(isset($_POST['mostrar_local'])) $mostrar_local = $_POST['mostrar_local']; elseif(isset($_GET['mostrar_local'])) $mostrar_local = $_GET['mostrar_local']; else $mostrar_local = "no";
 if(isset($_POST['mostrar_atendido'])) $mostrar_atendido = $_POST['mostrar_atendido']; elseif(isset($_GET['mostrar_atendido'])) $mostrar_atendido = $_GET['mostrar_atendido']; else $mostrar_atendido = "no";
 if(isset($_POST['mostrar_impuesto'])) $mostrar_impuesto = $_POST['mostrar_impuesto']; elseif(isset($_GET['mostrar_impuesto'])) $mostrar_impuesto = $_GET['mostrar_impuesto']; else $mostrar_impuesto = "no";
 if(isset($_POST['pie'])) $pie = $_POST['pie']; elseif(isset($_GET['pie'])) $pie = $_GET['pie']; else $pie = null;
@@ -67,7 +66,7 @@ if ($editar == "si")
         $imagen_nombre = $imagen_nombre;
     }
     
-    $actualizar = $conexion->query("UPDATE plantilla_factura SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', titulo = '$titulo', prefijo = '$prefijo', numero_inicio = '$numero_inicio', numero_fin = '$numero_fin', sufijo = '$sufijo', encabezado = '$encabezado', mostrar_local = '$mostrar_local', mostrar_atendido = '$mostrar_atendido', mostrar_impuesto = '$mostrar_impuesto', pie = '$pie', imagen = '$imagen', imagen_nombre = '$imagen_nombre', local_id = '$local_id' WHERE plantilla_factura_id = '$plantilla_factura_id'");
+    $actualizar = $conexion->query("UPDATE plantilla_factura SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', titulo = '$titulo', prefijo = '$prefijo', numero_inicio = '$numero_inicio', numero_fin = '$numero_fin', sufijo = '$sufijo', encabezado = '$encabezado', mostrar_atendido = '$mostrar_atendido', mostrar_impuesto = '$mostrar_impuesto', pie = '$pie', imagen = '$imagen', imagen_nombre = '$imagen_nombre', local_id = '$local_id' WHERE plantilla_factura_id = '$plantilla_factura_id'");
 
     if ($actualizar)
     {
@@ -145,7 +144,6 @@ if ($editar == "si")
             $numero_relleno = str_pad($numero_inicio, $numero_longitud, "0", STR_PAD_LEFT);
             $sufijo = $fila['sufijo'];
             $encabezado = $fila['encabezado'];
-            $mostrar_local = $fila['mostrar_local'];
             $mostrar_atendido = $fila['mostrar_atendido'];
             $mostrar_impuesto = $fila['mostrar_impuesto'];
             $pie = $fila['pie'];
@@ -160,12 +158,16 @@ if ($editar == "si")
 
             if ($fila = $consulta_local->fetch_assoc()) 
             {
+                $nit = $fila['nit'];
+                $regimen = $fila['regimen'];
                 $local = $fila['local'];
                 $direccion = $fila['direccion'];
                 $telefono = $fila['telefono'];
             }
             else
             {
+                $nit = "";
+                $regimen = "";
                 $local = "";
                 $direccion = "";
                 $telefono = "";
@@ -220,6 +222,16 @@ if ($editar == "si")
                 </div>
 
                 <div class="rdm-tarjeta--cuerpo">
+
+                    <?php if (!empty($nit)) { ?>
+                        <p><b>NIT</b> <br><?php echo ucfirst($nit) ?></p>
+                    <?php } ?>
+
+                    <?php if (!empty($regimen)) { ?>
+                        <p><b>Texto de régimen</b> <br><?php echo ucfirst($regimen) ?></p>
+                        <div class="rdm-tarjeta--separador"></div>
+                    <?php } ?>
+
                     <?php if ($imagen == "si") { ?>
                         <p><b>Logo</b> <br><?php echo ("Si"); ?></p>
                     <?php } ?>
@@ -249,12 +261,8 @@ if ($editar == "si")
                         <p><b>Encabezado</b> <br><?php echo ucfirst(nl2br($encabezado)); ?></p>                        
                     <?php } ?>
 
-                    <?php if (!empty($mostrar_local)) { ?>
-                        <div class="rdm-tarjeta--separador"></div>
-                        <p><b>Datos del local</b> <br><?php echo ucfirst($mostrar_local) ?></p>
-                    <?php } ?>
-
                     <?php if (!empty($mostrar_atendido)) { ?>
+                        <div class="rdm-tarjeta--separador"></div>
                         <p><b>Atendido por</b> <br><?php echo ucfirst($mostrar_atendido) ?></p>
                     <?php } ?>
 

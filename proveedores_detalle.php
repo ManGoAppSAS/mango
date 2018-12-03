@@ -29,9 +29,11 @@ if(isset($_POST['proveedor'])) $proveedor = $_POST['proveedor']; elseif(isset($_
 if(isset($_POST['documento_tipo'])) $documento_tipo = $_POST['documento_tipo']; elseif(isset($_GET['documento_tipo'])) $documento_tipo = $_GET['documento_tipo']; else $documento_tipo = null;
 if(isset($_POST['documento_numero'])) $documento_numero = $_POST['documento_numero']; elseif(isset($_GET['documento_numero'])) $documento_numero = $_GET['documento_numero']; else $documento_numero = null;
 if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $tipo = $_GET['tipo']; else $tipo = null;
-if(isset($_POST['correo'])) $correo = $_POST['correo']; elseif(isset($_GET['correo'])) $correo = $_GET['correo']; else $correo = null;
 if(isset($_POST['contacto'])) $contacto = $_POST['contacto']; elseif(isset($_GET['contacto'])) $contacto = $_GET['contacto']; else $contacto = null;
+if(isset($_POST['telefono_pedidos'])) $telefono_pedidos = $_POST['telefono_pedidos']; elseif(isset($_GET['telefono_pedidos'])) $telefono_pedidos = $_GET['telefono_pedidos']; else $telefono_pedidos = null;
+if(isset($_POST['correo_pedidos'])) $correo_pedidos = $_POST['correo_pedidos']; elseif(isset($_GET['correo_pedidos'])) $correo_pedidos = $_GET['correo_pedidos']; else $correo_pedidos = null;
 if(isset($_POST['telefono'])) $telefono = $_POST['telefono']; elseif(isset($_GET['telefono'])) $telefono = $_GET['telefono']; else $telefono = null;
+if(isset($_POST['correo'])) $correo = $_POST['correo']; elseif(isset($_GET['correo'])) $correo = $_GET['correo']; else $correo = null;
 if(isset($_POST['direccion'])) $direccion = $_POST['direccion']; elseif(isset($_GET['direccion'])) $direccion = $_GET['direccion']; else $direccion = null;
 if(isset($_POST['cuenta_bancaria'])) $cuenta_bancaria = $_POST['cuenta_bancaria']; elseif(isset($_GET['cuenta_bancaria'])) $cuenta_bancaria = $_GET['cuenta_bancaria']; else $cuenta_bancaria = null;
 
@@ -65,7 +67,7 @@ if ($editar == "si")
         $imagen_nombre = $imagen_nombre;
     }
 
-    $actualizar = $conexion->query("UPDATE proveedor SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', proveedor = '$proveedor', documento_tipo = '$documento_tipo', documento_numero = '$documento_numero', tipo = '$tipo', correo = '$correo', contacto = '$contacto', telefono = '$telefono', direccion = '$direccion', cuenta_bancaria = '$cuenta_bancaria', imagen = '$imagen', imagen_nombre = '$imagen_nombre' WHERE proveedor_id = '$proveedor_id'");
+    $actualizar = $conexion->query("UPDATE proveedor SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', proveedor = '$proveedor', documento_tipo = '$documento_tipo', documento_numero = '$documento_numero', tipo = '$tipo', contacto = '$contacto', telefono_pedidos = '$telefono_pedidos', correo_pedidos = '$correo_pedidos', telefono = '$telefono', direccion = '$direccion', cuenta_bancaria = '$cuenta_bancaria', imagen = '$imagen', imagen_nombre = '$imagen_nombre' WHERE proveedor_id = '$proveedor_id'");
 
     if ($actualizar)
     {
@@ -139,9 +141,11 @@ if ($editar == "si")
             $documento_tipo = $fila['documento_tipo'];
             $documento_numero = $fila['documento_numero'];
             $tipo = $fila['tipo'];
-            $correo = $fila['correo'];  
             $contacto = $fila['contacto'];  
+            $telefono_pedidos = $fila['telefono_pedidos'];  
+            $correo_pedidos = $fila['correo_pedidos'];  
             $telefono = $fila['telefono'];  
+            $correo = $fila['correo'];  
             $direccion = $fila['direccion'];  
             $cuenta_bancaria = $fila['cuenta_bancaria'];
 
@@ -218,6 +222,14 @@ if ($editar == "si")
                     <?php if (!empty($contacto)) { ?>                        
                         <div class="rdm-tarjeta--separador"></div>
                         <p><b>Contacto</b> <br><?php echo ucwords($contacto) ?></p>
+                    <?php } ?>
+
+                    <?php if (!empty($telefono_pedidos)) { ?>
+                        <p><b>Teléfono para pedidos</b> <br><a href="https://api.whatsapp.com/send?phone=57<?php echo ucfirst($telefono_pedidos) ?>" target="_blank"><?php echo ucfirst($telefono_pedidos) ?></a></p>
+                    <?php } ?>
+
+                    <?php if (!empty($correo_pedidos)) { ?>
+                        <p><b>Correo electrónico para pedidos</b> <br><a href="mailto:<?php echo ($correo_pedidos) ?>"><?php echo ($correo_pedidos) ?></a></p>
                     <?php } ?>
 
                     <?php if (!empty($telefono)) { ?>

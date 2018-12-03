@@ -30,7 +30,6 @@ if ($fila = $consulta->fetch_assoc())
     $ubicacion = $fila['ubicacion'];
     $ubicada = $fila['ubicada'];
     $tipo = $fila['tipo'];
-    $impuestos = $fila['impuestos'];
 
     $local_id = $fila['local_id'];
 
@@ -178,28 +177,6 @@ else
                 }
             }
             ?>
-
-            <?php
-            //atributo checked
-            if ($impuestos == "si")
-            {
-                $impuestos_checked = "checked";
-            }
-            else
-            {
-                $impuestos_checked = "";
-            }
-            ?>
-    
-            <p class="rdm-formularios--label"><label for="impuestos">Impuestos*</label></p>
-            <p class="rdm-formularios--checkbox">
-                <input type="checkbox" id="impuestos" name="impuestos" class="rdm-formularios--switch" value="si" <?php echo "$impuestos_checked"; ?>>
-                <label for="impuestos" class="rdm-formularios--switch-label">
-                    <span class="rdm-formularios--switch-encendido">Si</span>
-                    <span class="rdm-formularios--switch-apagado">No</span>
-                </label>
-            </p>            
-            <p class="rdm-formularios--ayuda">¿Esta ubicación genera impuestos?</p>
             
             <button type="submit" class="rdm-boton--fab" name="editar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>
 

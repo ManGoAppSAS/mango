@@ -23,7 +23,6 @@ if(isset($_POST['archivo'])) $archivo = $_POST['archivo']; elseif(isset($_GET['a
 if(isset($_POST['ubicacion'])) $ubicacion = $_POST['ubicacion']; elseif(isset($_GET['ubicacion'])) $ubicacion = $_GET['ubicacion']; else $ubicacion = null;
 if(isset($_POST['ubicada'])) $ubicada = $_POST['ubicada']; elseif(isset($_GET['ubicada'])) $ubicada = $_GET['ubicada']; else $ubicada = null;
 if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $tipo = $_GET['tipo']; else $tipo = null;
-if(isset($_POST['impuestos'])) $impuestos = $_POST['impuestos']; elseif(isset($_GET['impuestos'])) $impuestos = $_GET['impuestos']; else $impuestos = "no";
 if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET['local_id'])) $local_id = $_GET['local_id']; else $local_id = 0;
 
 //variables del mensaje
@@ -56,7 +55,7 @@ if ($agregar == 'si')
 
     if ($consulta->num_rows == 0)
     {
-        $insercion = $conexion->query("INSERT INTO ubicacion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ubicacion', '$ubicada', '$tipo', '$impuestos', '$local_id')");        
+        $insercion = $conexion->query("INSERT INTO ubicacion values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ubicacion', '$ubicada', '$tipo', '$local_id')");        
 
         $mensaje = "Ubicación <b>" . ($ubicacion) . "</b> agregada";
         $body_snack = 'onLoad="Snackbar()"';
@@ -187,28 +186,6 @@ if ($agregar == 'si')
                 }
             }
             ?>
-
-            <?php
-            //atributo checked
-            if ($impuestos == "si")
-            {
-                $impuestos_checked = "checked";
-            }
-            else
-            {
-                $impuestos_checked = "";
-            }
-            ?>
-    
-            <p class="rdm-formularios--label"><label for="impuestos">Impuestos*</label></p>
-            <p class="rdm-formularios--checkbox">
-                <input type="checkbox" id="impuestos" name="impuestos" class="rdm-formularios--switch" value="si" <?php echo "$impuestos_checked"; ?>>
-                <label for="impuestos" class="rdm-formularios--switch-label">
-                    <span class="rdm-formularios--switch-encendido">Si</span>
-                    <span class="rdm-formularios--switch-apagado">No</span>
-                </label>
-            </p>
-            <p class="rdm-formularios--ayuda">¿Esta ubicación genera impuestos?</p>
             
             <button type="submit" class="rdm-boton--fab" name="agregar" value="si"><i class="zmdi zmdi-check zmdi-hc-2x"></i></button>        
             

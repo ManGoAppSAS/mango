@@ -33,7 +33,6 @@ if ($fila = $consulta->fetch_assoc())
     $numero_fin = $fila['numero_fin'];
     $sufijo = $fila['sufijo'];
     $encabezado = $fila['encabezado'];
-    $mostrar_local = $fila['mostrar_local'];
     $mostrar_atendido = $fila['mostrar_atendido'];
     $mostrar_impuesto = $fila['mostrar_impuesto'];
     $pie = $fila['pie'];
@@ -198,30 +197,7 @@ else
 
             <p class="rdm-formularios--label"><label for="encabezado">Encabezado*</label></p>
             <p><textarea rows="8" id="encabezado" name="encabezado"><?php echo "$encabezado"; ?></textarea></p>
-            <p class="rdm-formularios--ayuda">Ej: Nit xxxxxx-x, somos regimen xxx, resolución de faturación No xxx, etc.</p>
-
-            <?php
-            //atributo checked
-            if ($mostrar_local == "si")
-            {
-                $mostrar_local_checked = "checked";
-            }
-            else
-            {
-                $mostrar_local_checked = "";
-            }
-            ?>
-
-            <p class="rdm-formularios--label"><label for="mostrar_local">Datos del local*</label></p>
-            <p class="rdm-formularios--checkbox">
-                <input type="checkbox" id="mostrar_local" name="mostrar_local" class="rdm-formularios--switch" value="si" <?php echo "$mostrar_local_checked"; ?>>
-                <label for="mostrar_local" class="rdm-formularios--switch-label">
-                    <span class="rdm-formularios--switch-encendido">Si</span>
-                    <span class="rdm-formularios--switch-apagado">No</span>
-                </label>
-            </p> 
-            <p class="rdm-formularios--ayuda">Mostrar datos del local</p>           
-            
+            <p class="rdm-formularios--ayuda">Ej: Resolución de faturación No xxx, Razón social, etc.</p>
 
             <?php
             //atributo checked

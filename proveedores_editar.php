@@ -31,9 +31,11 @@ if ($fila = $consulta->fetch_assoc())
     $documento_tipo = $fila['documento_tipo'];
     $documento_numero = $fila['documento_numero'];
     $tipo = $fila['tipo'];
-    $correo = $fila['correo'];  
     $contacto = $fila['contacto'];  
+    $telefono_pedidos = $fila['telefono_pedidos'];  
+    $correo_pedidos = $fila['correo_pedidos'];  
     $telefono = $fila['telefono'];  
+    $correo = $fila['correo'];  
     $direccion = $fila['direccion'];  
     $cuenta_bancaria = $fila['cuenta_bancaria'];
 
@@ -110,17 +112,30 @@ else
             <p><input type="text" id="tipo" name="tipo" value="<?php echo "$tipo"; ?>" spellcheck="false" /></p>
             <p class="rdm-formularios--ayuda">Tipo de proveedor, carnes, licores, empaques, etc.</p>            
             
-            <p class="rdm-formularios--label"><label for="correo">Correo electrónico</label></p>
-            <p><input type="email" id="correo" name="correo" value="<?php echo "$correo"; ?>" spellcheck="false" /></p>
-            <p class="rdm-formularios--ayuda">Correo electrónico de contacto</p>
-            
             <p class="rdm-formularios--label"><label for="contacto">Contacto</label></p>
             <p><input type="text" id="contacto" name="contacto" value="<?php echo "$contacto"; ?>" /></p>
             <p class="rdm-formularios--ayuda">Nombre de la persona encargada de facturación o pedidos</p>
 
+
+
+
+            <p class="rdm-formularios--label"><label for="telefono_pedidos">Teléfono de pedidos</label></p>
+            <p><input type="number" id="telefono_pedidos" name="telefono_pedidos" value="<?php echo "$telefono_pedidos"; ?>" /></p>
+            <p class="rdm-formularios--ayuda">Teléfono para pedidos del proveedor</p>
+
+            <p class="rdm-formularios--label"><label for="correo_pedidos">Correo electrónico de pedidos</label></p>
+            <p><input type="email" id="correo_pedidos" name="correo_pedidos" value="<?php echo "$correo_pedidos"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Correo electrónico para pedidos</p>
+
+
+
             <p class="rdm-formularios--label"><label for="telefono">Teléfono</label></p>
             <p><input type="number" id="telefono" name="telefono" value="<?php echo "$telefono"; ?>" /></p>
             <p class="rdm-formularios--ayuda">Teléfono del proveedor</p>
+
+            <p class="rdm-formularios--label"><label for="correo">Correo electrónico</label></p>
+            <p><input type="email" id="correo" name="correo" value="<?php echo "$correo"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Correo electrónico de contacto</p>
 
             <p class="rdm-formularios--label"><label for="direccion">Dirección</label></p>
             <p><input type="text" id="direccion" name="direccion" value="<?php echo "$direccion"; ?>" spellcheck="false"  /></p>

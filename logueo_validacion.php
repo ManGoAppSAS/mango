@@ -32,8 +32,31 @@ if ($consulta_local->num_rows == 0)
 {
     $insercion_local = $conexion->query("INSERT INTO local values ('', '$ahora', '', '', '1', '', '', 'activo', 'local de prueba', 'punto de venta', '', '', '09:00:00', '17:00:00', '0', 'no', '')");
 }
-?>
 
+//sino existe por lo menos un impuesto creo el de cero sin impuesto
+$consulta_impuesto = $conexion->query("SELECT * FROM impuesto");
+
+if ($consulta_impuesto->num_rows == 0)
+{
+    $insercion_impuesto = $conexion->query("INSERT INTO impuesto values ('', '$ahora', '', '', '1', '', '', 'activo', 'sin impuesto', '0')");
+}
+
+//sino existe por lo menos un impuesto creo el de cero sin impuesto
+$consulta_impuesto = $conexion->query("SELECT * FROM impuesto");
+
+if ($consulta_impuesto->num_rows == 0)
+{
+    $insercion_impuesto = $conexion->query("INSERT INTO impuesto values ('', '$ahora', '', '', '1', '', '', 'activo', 'sin impuesto', '0')");
+}
+
+//sino existe por lo menos un metodo de pago creo el de efectivo
+$consulta_metodo_pago = $conexion->query("SELECT * FROM metodo_pago");
+
+if ($consulta_metodo_pago->num_rows == 0)
+{
+    $insercion_metodo_pago = $conexion->query("INSERT INTO metodo_pago values ('', '$ahora', '', '', '1', '', '', 'activo', 'efectivo', 'efectivo', '0')");
+}
+?>
 
 <?php
 //consulto si el correo se encuentra en la tabla usuario

@@ -84,7 +84,6 @@ include ("sis/variables_sesion.php");
             $numero_relleno = str_pad($numero_inicio, $numero_longitud, "0", STR_PAD_LEFT);
             $sufijo = $fila['sufijo'];
             $encabezado = $fila['encabezado'];
-            $mostrar_local = $fila['mostrar_local'];
             $mostrar_atendido = $fila['mostrar_atendido'];
             $mostrar_impuesto = $fila['mostrar_impuesto'];
             $pie = $fila['pie'];
@@ -99,14 +98,17 @@ include ("sis/variables_sesion.php");
 
             if ($fila = $consulta_local->fetch_assoc()) 
             {
+                $nit = $fila['nit'];
+                $regimen = $fila['regimen'];
                 $local = $fila['local'];
-                $tipo = $fila['tipo'];
                 $direccion = $fila['direccion'];
                 $telefono = $fila['telefono'];
             }
             else
             {
-                $local = "No se ha asignado un local";
+                $nit = "";
+                $regimen = "";
+                $local = "";
                 $direccion = "";
                 $telefono = "";
 
@@ -181,13 +183,14 @@ include ("sis/variables_sesion.php");
 
                         <div><?php echo ucfirst(nl2br($encabezado)) ?></div>
                         
-                        <?php if ($mostrar_local == "si") { ?>
-                            
+                        
+                        <?php if (!empty($nit)) { ?><div>NIT <?php echo ucfirst($nit) ?></div> <?php } ?>
+                        <?php if (!empty($regimen)) { ?><div><?php echo ucfirst($regimen) ?></div> <?php } ?>    
                         <?php if (!empty($local)) { ?><div><?php echo ucfirst($local) ?></div> <?php } ?>
                         <?php if (!empty($direccion)) { ?><div><?php echo ucfirst($direccion) ?></div> <?php } ?>
                         <?php if (!empty($telefono)) { ?><div><?php echo ucfirst($telefono) ?></div> <?php } ?>
 
-                        <?php } ?>
+                        
 
                     </div>                
 

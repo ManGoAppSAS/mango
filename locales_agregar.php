@@ -25,6 +25,8 @@ if(isset($_POST['archivo'])) $archivo = $_POST['archivo']; elseif(isset($_GET['a
 
 //variables del formulario
 if(isset($_POST['local'])) $local = $_POST['local']; elseif(isset($_GET['local'])) $local = $_GET['local']; else $local = null;
+if(isset($_POST['nit'])) $nit = $_POST['nit']; elseif(isset($_GET['nit'])) $nit = $_GET['nit']; else $nit = null;
+if(isset($_POST['regimen'])) $regimen = $_POST['regimen']; elseif(isset($_GET['regimen'])) $regimen = $_GET['regimen']; else $regimen = null;
 if(isset($_POST['tipo'])) $tipo = $_POST['tipo']; elseif(isset($_GET['tipo'])) $tipo = $_GET['tipo']; else $tipo = null;
 if(isset($_POST['direccion'])) $direccion = $_POST['direccion']; elseif(isset($_GET['direccion'])) $direccion = $_GET['direccion']; else $direccion = null;
 if(isset($_POST['telefono'])) $telefono = $_POST['telefono']; elseif(isset($_GET['telefono'])) $telefono = $_GET['telefono']; else $telefono = null;
@@ -57,7 +59,7 @@ if ($agregar == 'si')
     if ($consulta->num_rows == 0)
     {
         $imagen_ref = "locales";
-        $insercion = $conexion->query("INSERT INTO local values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$local', 'punto de venta', '$direccion', '$telefono', '$apertura', '$cierre', '$propina', '$imagen', '$ahora_img')");
+        $insercion = $conexion->query("INSERT INTO local values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$local', '$nit','$regimen', 'punto de venta', '$direccion', '$telefono', '$apertura', '$cierre', '$propina', '$imagen', '$ahora_img')");
 
         $mensaje = "Local <b>" . ($local) . "</b> agregado";
         $body_snack = 'onLoad="Snackbar()"';
@@ -110,7 +112,15 @@ if ($agregar == 'si')
 
             <p class="rdm-formularios--label"><label for="local">Nombre*</label></p>
             <p><input type="text" id="local" name="local" value="<?php echo "$local"; ?>" spellcheck="false" required autofocus /></p>
-            <p class="rdm-formularios--ayuda">Nombre del local o punto de venta</p>            
+            <p class="rdm-formularios--ayuda">Nombre del local o punto de venta</p>
+
+            <p class="rdm-formularios--label"><label for="nit">NIT</label></p>
+            <p><input type="tel" id="nit" name="nit" value="<?php echo "$nit"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Número de NIT o RUT</p>
+
+            <p class="rdm-formularios--label"><label for="regimen">Texto de régimen</label></p>
+            <p><input type="text" id="regimen" name="regimen" value="<?php echo "$regimen"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Ej: Común, simplificado, gran contribuyente, etc.</p>            
 
             <p class="rdm-formularios--label"><label for="direccion">Dirección*</label></p>
             <p><input type="text" id="direccion" name="direccion" value="<?php echo "$direccion"; ?>" spellcheck="false" required /></p>

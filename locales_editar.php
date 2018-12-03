@@ -27,6 +27,8 @@ if ($fila = $consulta->fetch_assoc())
 {
     $local_id = $fila['local_id'];
     $local = $fila['local'];
+    $nit = $fila['nit'];
+    $regimen = $fila['regimen'];
     $direccion = $fila['direccion'];
     $telefono = $fila['telefono'];
     $apertura = $fila['apertura'];
@@ -82,7 +84,15 @@ else
 
             <p class="rdm-formularios--label"><label for="local">Nombre*</label></p>
             <p><input type="text" id="local" name="local" value="<?php echo "$local"; ?>" spellcheck="false" required autofocus /></p>
-            <p class="rdm-formularios--ayuda">Nombre del local o punto de venta</p>           
+            <p class="rdm-formularios--ayuda">Nombre del local o punto de venta</p>
+
+            <p class="rdm-formularios--label"><label for="nit">NIT</label></p>
+            <p><input type="tel" id="nit" name="nit" value="<?php echo "$nit"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Número de NIT o RUT</p>
+
+            <p class="rdm-formularios--label"><label for="regimen">Texto de régimen</label></p>
+            <p><input type="text" id="regimen" name="regimen" value="<?php echo "$regimen"; ?>" spellcheck="false" /></p>
+            <p class="rdm-formularios--ayuda">Ej: Común, simplificado, gran contribuyente, etc.</p> 
             
             <p class="rdm-formularios--label"><label for="direccion">Dirección*</label></p>
             <p><input type="text" id="direccion" name="direccion" value="<?php echo "$direccion"; ?>" spellcheck="false" required /></p>

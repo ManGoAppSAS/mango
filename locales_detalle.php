@@ -26,6 +26,8 @@ if(isset($_POST['archivo'])) $archivo = $_POST['archivo']; elseif(isset($_GET['a
 //variables del formulario
 if(isset($_POST['local_id'])) $local_id = $_POST['local_id']; elseif(isset($_GET['local_id'])) $local_id = $_GET['local_id']; else $local_id = null;
 if(isset($_POST['local'])) $local = $_POST['local']; elseif(isset($_GET['local'])) $local = $_GET['local']; else $local = null;
+if(isset($_POST['nit'])) $nit = $_POST['nit']; elseif(isset($_GET['nit'])) $nit = $_GET['nit']; else $nit = null;
+if(isset($_POST['regimen'])) $regimen = $_POST['regimen']; elseif(isset($_GET['regimen'])) $regimen = $_GET['regimen']; else $regimen = null;
 if(isset($_POST['direccion'])) $direccion = $_POST['direccion']; elseif(isset($_GET['direccion'])) $direccion = $_GET['direccion']; else $direccion = null;
 if(isset($_POST['telefono'])) $telefono = $_POST['telefono']; elseif(isset($_GET['telefono'])) $telefono = $_GET['telefono']; else $telefono = null;
 if(isset($_POST['apertura'])) $apertura = $_POST['apertura']; elseif(isset($_GET['apertura'])) $apertura = $_GET['apertura']; else $apertura = null;
@@ -62,7 +64,7 @@ if ($editar == "si")
         $imagen_nombre = $imagen_nombre;
     }
 
-    $actualizar = $conexion->query("UPDATE local SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', local = '$local', direccion = '$direccion', telefono = '$telefono', apertura = '$apertura', cierre = '$cierre', propina = '$propina', imagen = '$imagen', imagen_nombre = '$imagen_nombre' WHERE local_id = '$local_id'");
+    $actualizar = $conexion->query("UPDATE local SET fecha_mod = '$ahora', usuario_mod = '$sesion_id', local = '$local', nit = '$nit', regimen = '$regimen', direccion = '$direccion', telefono = '$telefono', apertura = '$apertura', cierre = '$cierre', propina = '$propina', imagen = '$imagen', imagen_nombre = '$imagen_nombre' WHERE local_id = '$local_id'");
 
     if ($actualizar)
     {
@@ -133,6 +135,8 @@ if ($editar == "si")
             $estado = $fila['estado'];
 
             $local = $fila['local'];
+            $nit = $fila['nit'];
+            $regimen = $fila['regimen'];
             $direccion = $fila['direccion'];
             $telefono = $fila['telefono'];
             $apertura = date('h:i a', strtotime($fila['apertura']));
@@ -215,6 +219,15 @@ if ($editar == "si")
 
                     <?php if (!empty($telefono)) { ?>
                         <p><b>Teléfono</b> <br><a href="https://api.whatsapp.com/send?phone=57<?php echo ucfirst($telefono) ?>" target="_blank"><?php echo ucfirst($telefono) ?></a></p>
+                    <?php } ?>
+
+                    <?php if (!empty($nit)) { ?>
+                        <div class="rdm-tarjeta--separador"></div>
+                        <p><b>NIT</b> <br><?php echo ($nit) ?></p>                        
+                    <?php } ?>
+
+                    <?php if (!empty($regimen)) { ?>
+                        <p><b>Texto de régimen</b> <br><?php echo ucfirst($regimen) ?></p>                        
                     <?php } ?>
 
                     <?php if (!empty($apertura)) { ?>

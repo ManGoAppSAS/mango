@@ -215,7 +215,7 @@ if ($eliminar == 'si')
                             <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst($productor); ?></h2>
                             <h2 class="rdm-lista--texto-secundario">$<?php echo number_format($costo_valor, 2, ",", "."); ?> x <?php echo ($cantidad_unidad_compra); ?> <?php echo ucfirst($unidad_compra); ?></h2>
                         </div>
-                    </div>
+                    </div>                    
                 </article>
             </a>
             
