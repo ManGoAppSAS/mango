@@ -105,7 +105,7 @@ else
             <p class="rdm-formularios--ayuda">Tipo de documento, CC, NIT, TI, etc.</p>
 
             <p class="rdm-formularios--label"><label for="documento_numero">Documento*</label></p>
-            <p><input type="number" id="documento_numero" name="documento_numero" value="<?php echo "$documento_numero"; ?>" required /></p>
+            <p><input type="text" id="documento_numero" name="documento_numero" value="<?php echo "$documento_numero"; ?>" required /></p>
             <p class="rdm-formularios--ayuda">Documento de identificación del usuario</p>
 
             <p class="rdm-formularios--label"><label for="tipo">Tipo</label></p>

@@ -39,15 +39,10 @@ $consulta_impuesto = $conexion->query("SELECT * FROM impuesto");
 if ($consulta_impuesto->num_rows == 0)
 {
     $insercion_impuesto = $conexion->query("INSERT INTO impuesto values ('', '$ahora', '', '', '1', '', '', 'activo', 'sin impuesto', '0')");
+    $insercion_impuesto = $conexion->query("INSERT INTO impuesto values ('', '$ahora', '', '', '1', '', '', 'activo', 'Ipoonsumo', '5')");
+    $insercion_impuesto = $conexion->query("INSERT INTO impuesto values ('', '$ahora', '', '', '1', '', '', 'activo', 'IVA', '19')");
 }
 
-//sino existe por lo menos un impuesto creo el de cero sin impuesto
-$consulta_impuesto = $conexion->query("SELECT * FROM impuesto");
-
-if ($consulta_impuesto->num_rows == 0)
-{
-    $insercion_impuesto = $conexion->query("INSERT INTO impuesto values ('', '$ahora', '', '', '1', '', '', 'activo', 'sin impuesto', '0')");
-}
 
 //sino existe por lo menos un metodo de pago creo el de efectivo
 $consulta_metodo_pago = $conexion->query("SELECT * FROM metodo_pago");

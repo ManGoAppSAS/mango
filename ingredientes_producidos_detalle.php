@@ -306,19 +306,7 @@ if ($editar == "si")
 
 
 
-            //consulto el productor
-            $consulta2 = $conexion->query("SELECT * FROM productor WHERE productor_id = $productor_id");
-
-            if ($filas2 = $consulta2->fetch_assoc())
-            {
-                $productor = $filas2['productor'];
-                $telefono = $filas2['telefono'];
-                $correo = $filas2['correo'];
-            }
-            else
-            {
-                $productor = "";
-            }
+            
 
             //consulto el usuario alta
             $consulta_usuario = $conexion->query("SELECT * FROM usuario WHERE usuario_id = '$usuario_alta'");           
@@ -445,22 +433,7 @@ if ($editar == "si")
 
                     <?php if (!empty($unidad_compra)) { ?>
                         <p><b>Costo de unidad mínima</b> <br>$<?php echo number_format($costo_unidad_minima, 2, ",", "."); ?></p>
-                    <?php } ?>
-
-                    <?php if (!empty($productor)) { ?>
-                        <div class="rdm-tarjeta--separador"></div>
-                        <p><b>Productor</b> <br><?php echo ucfirst($productor) ?></p>
-                    <?php } ?>
-
-                    <?php if (!empty($contacto)) { ?>
-                        <p><b>Contacto</b> <br><?php echo ucwords($contacto) ?></p>
-                    <?php } ?>
-
-                    <?php if (!empty($correo)) { ?>
-                        <p><b>Correo electrónico</b> <br><a href="mailto:<?php echo ($correo) ?>"><?php echo ($correo) ?></a></p>
-                    <?php } ?>
-
-                    <?php if (!empty($telefono)) { ?><p><b>Teléfono</b> <br><a href="https://api.whatsapp.com/send?phone=57<?php echo ucfirst($telefono) ?>" target="_blank"><?php echo ucfirst($telefono) ?></a></p><?php } ?>
+                    <?php } ?>                    
 
                     <?php if (!empty($usuario_alta)) { ?>
                         <div class="rdm-tarjeta--separador"></div>
@@ -616,6 +589,143 @@ if ($editar == "si")
     <?php
     }
     ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <?php
+    //consulto la composicion de este ingrediente producido
+    $consulta = $conexion->query("SELECT * FROM ingrediente_producido_preparacion WHERE ingrediente_producido_id = '$ingrediente_producido_id' and estado = 'activo' ORDER BY fecha_alta ASC");
+
+    if ($consulta->num_rows == 0)
+    {
+        $paso = 0;
+
+        ?>
+
+        <h2 class="rdm-lista--titulo-largo">Preparación</h2>
+
+        <section class="rdm-lista">
+            
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-info zmdi-hc-2x"></i></div></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Vacio</h2>
+                        <h2 class="rdm-lista--texto-secundario">No se han agregado pasos de preparación</h2>
+                    </div>
+                </div>
+            </article>
+
+            <div class="rdm-tarjeta--separador"></div>
+
+
+            <div class="rdm-tarjeta--acciones-izquierda">
+                <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Agregar</button></a>
+            </div>
+
+            
+
+        </section>
+
+        
+        <?php
+    }
+    else
+    {   ?>
+
+        <a id="preparacion">
+
+        <h2 class="rdm-lista--titulo-largo">Preparación</h2>
+
+        <section class="rdm-lista"> 
+
+        <?php
+
+        while ($fila = $consulta->fetch_assoc())
+        {
+            //datos de la composicion
+            $ingrediente_producido_preparacion_id = $fila['ingrediente_producido_preparacion_id'];
+            $paso = $fila['paso'];
+            $preparacion = $fila['preparacion'];
+            $ingrediente_producido_id = $fila['ingrediente_producido_id'];
+
+            $imagen = $fila['imagen'];
+            $imagen_nombre = $fila['imagen_nombre'];            
+
+            //color de fondo segun la primer letra
+            $avatar_id = $ingrediente_producido_preparacion_id;
+            $avatar_nombre = "$paso";
+
+            include ("sis/avatar_color.php");
+
+            //consulto la imagen de la preparacion
+            if ($imagen == "no")
+            {
+                $imagen_preparacion = "";
+            }
+            else
+            {
+                $imagen_preparacion = "img/avatares/preparacion-$ingrediente_producido_preparacion_id-$imagen_nombre.jpg";
+                $imagen_preparacion = '<div class="rdm-tarjeta--media-cuadrado" style="background-image: url('.$imagen_preparacion.');"></div>';
+            }
+            
+            ?>
+
+
+                <div class="rdm-lista--item-doble">
+                    <div class="rdm-lista--izquierda">
+                        <div class="rdm-lista--contenedor">
+                            <div class="rdm-lista--avatar-color" style="background-color: hsl(<?php echo $sca ?>, 50%, 80%); color: hsl(<?php echo $sca ?>, 80%, 30%);"><span class="rdm-lista--avatar-texto"><?php echo "$paso"; ?></span></div>
+                        </div>
+                        <div class="rdm-lista--contenedor">
+                            <h2 class="rdm-lista--titulo">Paso <?php echo ($paso); ?></h2>
+                            <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst($preparacion); ?></h2>
+
+                        </div>
+                    </div>
+
+                    <div class="rdm-lista--derecha">
+                        
+                    </div>
+                </div>           
+
+            
+            
+        <?php
+        }
+        ?>
+
+        <div class="rdm-tarjeta--separador"></div>
+
+        <div class="rdm-tarjeta--acciones-izquierda">
+            <a href="ingredientes_producidos_preparacion_agregar.php?ingrediente_producido_id=<?php echo "$ingrediente_producido_id"; ?>"><button class="rdm-boton--plano-resaltado">Editar</button></a>
+        </div>
+
+        </section>
+
+    <?php
+    }
+    ?>
+
+
+
+
 
 
 

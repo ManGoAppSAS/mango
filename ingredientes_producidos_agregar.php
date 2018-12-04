@@ -231,7 +231,7 @@ if ($agregar == 'si')
             }
         }
 
-        $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ingrediente', 'producido', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '$cantidad_unidad_compra', '0', '$productor_id')");        
+        $insercion = $conexion->query("INSERT INTO ingrediente values ('', '$ahora', '', '', '$sesion_id', '', '', 'activo', '$ingrediente', 'producido', '$unidad_minima', '$unidad_compra', '$costo_unidad_minima', '$costo_unidad_compra', '$cantidad_unidad_compra', '0', '0')");        
 
         $mensaje = "ingrediente <b>" . ($ingrediente) . "</b> agregado";
         $body_snack = 'onLoad="Snackbar()"';
@@ -273,73 +273,7 @@ if ($agregar == 'si')
 
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
     
-        <section class="rdm-formulario">
-
-            <?php
-            //consulto y muestro los productores
-            $consulta = $conexion->query("SELECT * FROM productor WHERE estado = 'activo' ORDER BY productor");
-
-            //sin no hay regisros creo un input hidden con id 1
-            if ($consulta->num_rows == 0)
-            {
-                ?>
-
-                <input type="hidden" id="1" name="productor_id" value="1">
-
-                <?php
-            }
-            else
-            {
-                //si solo hay un registro muestro un input hidden con el id
-                if ($consulta->num_rows == 1)
-                {
-                    while ($fila = $consulta->fetch_assoc()) 
-                    {
-                        $productor_id = $fila['productor_id'];
-                        $productor = $fila['productor'];
-                    }
-                    ?>
-                        
-                    <input type="hidden" id="<?php echo ($productor_id) ?>" name="productor_id" value="<?php echo ($productor_id) ?>">
-
-                    <?php
-                    
-                }
-                else
-                {
-                    ?>
-
-                    <p class="rdm-formularios--label"><label for="productor_id">Productor*</label></p>
-                    <p><select id="productor_id" name="productor_id" required autofocus>
-
-                    <?php
-                    //si hay mas de un registro los muestro todos menos el productor que acabe de guardar
-                    $consulta = $conexion->query("SELECT * FROM productor WHERE productor_id != $productor_id and estado = 'activo' ORDER BY productor");
-
-                    ?>
-                        
-                    <?php echo "$productor_g"; ?>
-
-                    <?php
-                    while ($fila = $consulta->fetch_assoc()) 
-                    {
-                        $productor_id = $fila['productor_id'];
-                        $productor = $fila['productor'];
-                        ?>
-
-                        <option value="<?php echo "$productor_id"; ?>"><?php echo ucfirst($productor) ?></option>
-
-                        <?php
-                    }
-                    ?>
-
-                    </select></p>
-                    <p class="rdm-formularios--ayuda">Productor que produce el ingrediente producido/p>
-                    
-                    <?php
-                }
-            }
-            ?>
+        <section class="rdm-formulario">            
         
             <p class="rdm-formularios--label"><label for="ingrediente">Nombre*</label></p>
             <p><input type="text" id="ingrediente" name="ingrediente" value="<?php echo "$ingrediente"; ?>" required autofocus/></p>

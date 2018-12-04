@@ -757,61 +757,7 @@ include ("sis/variables_sesion.php");
             </article>
         </a>
 
-        <?php
-        //consulto el total de productores
-        $consulta = $conexion->query("SELECT * FROM productor WHERE estado = 'activo'");
-        $productores_total = $consulta->num_rows;
-        ?>        
-
-        <a class="ancla" name="productores"></a>
-        <a href="productores_ver.php">
-            <article class="rdm-lista--item-doble">
-                <div class="rdm-lista--izquierda">
-                    <div class="rdm-lista--contenedor">
-                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-city zmdi-hc-2x"></i></div></div>
-                    </div>
-                    <div class="rdm-lista--contenedor">
-                        <h2 class="rdm-lista--titulo">Productores</h2>
-
-                        <?php
-                        //consulto los proveedores              
-                        $consulta = $conexion->query("SELECT productor FROM productor WHERE estado = 'activo' ORDER BY fecha_mod DESC LIMIT 3");
-
-                        if ($consulta->num_rows != 0)
-                        {
-                        ?>
-                            <h2 class="rdm-lista--texto-secundario">
-
-                            <?php                            
-                            while ($fila = $consulta->fetch_assoc())
-                            {
-                                $productor = $fila['productor'];
-
-                                echo ucfirst(substr($productor, 0, 15)).'... ';
-                            }
-                            ?>
-
-                            </h2>
-
-                        <?php
-                        }
-                        else
-                        {
-                        ?>
-                        
-                        <h2 class="rdm-lista--texto-secundario">Vacío</h2>
-
-                        <?php
-                        }
-                        ?>
-
-                    </div>
-                </div>
-                <div class="rdm-lista--derecha">
-                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador"><?php echo $productores_total; ?></h2></div>
-                </div>
-            </article>
-        </a>
+        
 
         <?php
         //consulto el total de ingredientes producidos
