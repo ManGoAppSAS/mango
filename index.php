@@ -76,9 +76,28 @@ include ("sis/variables_sesion.php");
 
     <section class="rdm-lista-sencillo">
 
+        <a class="ancla" name="ventas"></a>
+
+        <a href="ventas_ver.php">
+
+            <article class="rdm-lista--item-sencillo">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--icono"><i class="zmdi zmdi-inbox zmdi-hc-2x"></i></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Ventas</h2>
+                        <h2 class="rdm-lista--texto-secundario">Hacer o continuar una venta</h2>
+                    </div>
+                </div>
+                
+            </article>
+
+        </a>
+
         <a class="ancla" name="inventario"></a>
 
-        <a href="inventario_ver.php">          
+        <a href="inventario_ver.php">
 
             <article class="rdm-lista--item-sencillo">
                 <div class="rdm-lista--izquierda">
