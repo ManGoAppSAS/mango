@@ -29,26 +29,7 @@ if(isset($_POST['body_snack'])) $body_snack = $_POST['body_snack']; elseif(isset
 if(isset($_POST['mensaje_tema'])) $mensaje_tema = $_POST['mensaje_tema']; elseif(isset($_GET['mensaje_tema'])) $mensaje_tema = $_GET['mensaje_tema']; else $mensaje_tema = null;
 ?>
 
-<?php
-//elimino la ubicacion
-if ($eliminar == 'si')
-{
-    $borrar = $conexion->query("UPDATE ubicacion SET fecha_baja = '$ahora', usuario_baja = '$sesion_id', estado = 'eliminado' WHERE ubicacion_id = '$ubicacion_id'");
 
-    if ($borrar)
-    {
-        $mensaje = "Ubicacíón eliminada";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "aviso";
-    }
-    else
-    {
-        $mensaje = "No es posible eliminar la ubicación";
-        $body_snack = 'onLoad="Snackbar()"';
-        $mensaje_tema = "error";
-    }
-}
-?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -97,130 +78,62 @@ if ($eliminar == 'si')
 
 <main class="rdm--contenedor-toolbar">
 
-    <?php
-    //consulto las ubicaciones              
-    $consulta = $conexion->query("SELECT ubicacion_id, ubicacion, ubicada, tipo, local_id FROM ubicacion WHERE estado = 'activo' ORDER BY ubicacion");
+    <h2 class="rdm-lista--titulo-largo">Resúmen</h2>
 
-    if ($consulta->num_rows == 0)
-    {
-        ?>        
+    <section class="rdm-lista">
 
-        <div class="rdm-vacio--caja">
-            <i class="zmdi zmdi-alert-circle-o zmdi-hc-4x"></i>
-            <p class="rdm-tipografia--subtitulo1">No se han agregado ubicaciones</p>
-            <p class="rdm-tipografia--cuerpo1--margen-ajustada">Las ubicaciones son los distintos lugares desde donde puedes atender a tus clientes en un punto de venta. Todas las ventas siempre comienzan desde una ubicación, por ejemplo: mesas, barras, habitaciones, cajas registradoras, etc.</p>
-        </div>
+        <a href="">
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-money zmdi-hc-2x"></i></div></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Venta No xx</h2>
+                        <h2 class="rdm-lista--texto-secundario">$ xx.xxx</h2>
+                    </div>
+                </div>
+                <div class="rdm-lista--derecha">
+                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador">1</h2></div>
+                </div>
+            </article>
+        </a>
 
-        <?php
-    }
-    else
-    {
-        ?>        
-            
-        <input type="search" name="busqueda" id="busqueda" value="<?php echo "$busqueda"; ?>" placeholder="Buscar" maxlength="30" autofocus autocomplete="off" onKeyUp="buscar();" onFocus="buscar();" />
+        <a href="">
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-money zmdi-hc-2x"></i></div></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Venta No xx</h2>
+                        <h2 class="rdm-lista--texto-secundario">$ xx.xxx</h2>
+                    </div>
+                </div>
+                <div class="rdm-lista--derecha">
+                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador">1</h2></div>
+                </div>
+            </article>
+        </a>
 
-        <div id="resultadoBusqueda"></div>
+        <a href="">
+            <article class="rdm-lista--item-doble">
+                <div class="rdm-lista--izquierda">
+                    <div class="rdm-lista--contenedor">
+                        <div class="rdm-lista--avatar"><div class="rdm-lista--icono"><i class="zmdi zmdi-money zmdi-hc-2x"></i></div></div>
+                    </div>
+                    <div class="rdm-lista--contenedor">
+                        <h2 class="rdm-lista--titulo">Venta No xx</h2>
+                        <h2 class="rdm-lista--texto-secundario">$ xx.xxx</h2>
+                    </div>
+                </div>
+                <div class="rdm-lista--derecha">
+                    <div class="rdm-lista--contador"><h2 class="rdm-lista--texto-contador">1</h2></div>
+                </div>
+            </article>
+        </a>
 
-        <section class="rdm-lista">
-
-        <?php
-        while ($fila = $consulta->fetch_assoc()) 
-        {
-            $ubicacion_id = $fila['ubicacion_id'];
-            $ubicacion = $fila['ubicacion'];
-            $ubicada = $fila['ubicada'];
-            $tipo = $fila['tipo'];
-            $local_id = $fila['local_id'];
-
-            //consulto el local
-            $consulta2 = $conexion->query("SELECT * FROM local WHERE local_id = $local_id");
-
-            if ($filas2 = $consulta2->fetch_assoc())
-            {
-                $local = ucfirst($filas2['local']);
-                $local = "$tipo en $local";
-            }
-            else
-            {
-                $local = "$tipo";
-            }
-
-            //color de fondo segun la primer letra
-            $avatar_id = $ubicacion_id;
-            $avatar_nombre = "$ubicacion";
-
-            include ("sis/avatar_color.php");
-
-            //muestro el icono según el tipo de ubicación
-            if ($tipo == "barra")
-            {
-                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-cocktail zmdi-hc-2x"></i></div>';
-            }
-            else
-            {
-                if ($tipo == "caja")
-                {
-                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-laptop zmdi-hc-2x"></i></div>';
-                }
-                else
-                {
-                    if ($tipo == "habitacion")
-                    {
-                        $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-hotel zmdi-hc-2x"></i></div>';
-                    }
-                    else
-                    {
-                        if ($tipo == "mesa")
-                        {
-                            $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-cutlery zmdi-hc-2x"></i></div>';
-                        }
-                        else
-                        {
-                            if ($tipo == "persona")
-                            {
-                                $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-face zmdi-hc-2x"></i></div>';
-
-                            }
-                            else
-                            {
-                                if ($tipo == "domicilio")
-                                {
-                                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-bike zmdi-hc-2x"></i></div>';
-                                }
-                                else
-                                {
-                                    $imagen = '<div class="rdm-lista--avatar-color" style="background-color: hsl('.$ab_hue.', '.$ab_sat.', '.$ab_lig.'); color: hsl('.$at_hue.', '.$at_sat.', '.$at_lig.');"><i class="zmdi zmdi-seat zmdi-hc-2x"></i></div>';
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            ?>
-
-            <a href="ubicaciones_detalle.php?ubicacion_id=<?php echo "$ubicacion_id"; ?>">
-                <article class="rdm-lista--item-doble">
-                    <div class="rdm-lista--izquierda">
-                        <div class="rdm-lista--contenedor">
-                            <?php echo "$imagen"; ?>
-                        </div>
-                        <div class="rdm-lista--contenedor">
-                            <h2 class="rdm-lista--titulo"><?php echo ucfirst("$ubicacion"); ?></h2>
-                            <h2 class="rdm-lista--texto-secundario"><?php echo ucfirst("$local"); ?></h2>
-                        </div>
-                    </div>                    
-                </article>
-            </a>
-            
-        <?php
-        }
-        ?>
-
-        </section>
-
-    <?php
-    }
-    ?>
+    </section>
 
 </main>
 
@@ -234,7 +147,7 @@ if ($eliminar == 'si')
     
 <footer>
     
-    <a href="ubicaciones_agregar.php"><button class="rdm-boton--fab" ><i class="zmdi zmdi-plus zmdi-hc-2x"></i></button></a>
+    <a href="ventas_ubicaciones.php"><button class="rdm-boton--fab" ><i class="zmdi zmdi-plus zmdi-hc-2x"></i></button></a>
 
 </footer>
 
