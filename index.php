@@ -21,7 +21,7 @@ include ("sis/variables_sesion.php");
     <?php
     //información del head
     include ("partes/head.php");
-    ?>    
+    ?>
 </head>
 <body>
 
